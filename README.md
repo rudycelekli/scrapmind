@@ -75,7 +75,7 @@ npm run workbench -- plan
 
 The engine generates up to three ideas, checks action capabilities and conserved quantities, flags some prose contradictions, requests a resource critique, and attempts a bounded correction. It makes at most five model calls per explicit operation. Model critique cannot override software text signals. A generated recipe remains a **draft** even when its allocation is complete, and cannot start a build until reviewed. Its claimed new use is not proof of global novelty; model advice and physical assumptions still need inspection.
 
-Reasoning-model compatibility and a separately configured critic are supported. No background inference, model downloads, or automatic upgrades occur. See [the AI engine and actual evaluation limits](docs/AI.md).
+Reasoning-model compatibility, explicit reasoning-effort settings, and a separately configured critic are supported. The application performs no background inference, automatic model downloads, or upgrades. See [the AI engine and actual evaluation limits](docs/AI.md).
 
 Measure a configured model with `npm run evaluate -- --list`, then explicitly run selected inventory challenges. Reports retain rejected generations, allocated/missing resources, model critique, and removal-challenge plans. A contract pass still requires human review and a physical trial. See [the evaluation guide](docs/EVALUATION.md) and [recorded local-model results](evaluations/README.md).
 

@@ -1,6 +1,16 @@
 import { z } from 'zod';
 import type { ProviderConfig } from './inventor.js';
 
+export const reasoningEffortSchema = z.enum([
+  'none',
+  'minimal',
+  'low',
+  'medium',
+  'high',
+  'xhigh',
+  'max',
+]);
+
 export function validateProvider(config: ProviderConfig): void {
   const url = new URL(config.baseUrl);
   if (
@@ -16,6 +26,7 @@ export function validateProvider(config: ProviderConfig): void {
       'Configure an HTTP(S) model provider without embedded credentials and with a model name.',
     );
   z.enum(['compatible', 'reasoning']).optional().parse(config.profile);
+  reasoningEffortSchema.optional().parse(config.reasoningEffort);
   z.number().int().min(1024).max(32768).optional().parse(config.maxOutputTokens);
   z.string().trim().min(1).max(200).optional().parse(config.reviewModel);
   z.string().trim().min(1).max(200).optional().parse(config.visionModel);
@@ -23,9 +34,14 @@ export function validateProvider(config: ProviderConfig): void {
 
 /** Reasoning profile avoids optional sampling controls and uses the newer token limit field. */
 export function requestTuning(config: ProviderConfig, temperature: number, defaultLimit: number) {
-  return config.profile === 'reasoning'
-    ? { max_completion_tokens: config.maxOutputTokens ?? 16384 }
-    : { temperature, max_tokens: config.maxOutputTokens ?? defaultLimit };
+  const limits =
+    config.profile === 'reasoning'
+      ? { max_completion_tokens: config.maxOutputTokens ?? 16384 }
+      : { temperature, max_tokens: config.maxOutputTokens ?? defaultLimit };
+  return {
+    ...limits,
+    ...(config.reasoningEffort !== undefined ? { reasoning_effort: config.reasoningEffort } : {}),
+  };
 }
 
 /** Bound bytes before JSON parsing, including chunked responses without Content-Length. */

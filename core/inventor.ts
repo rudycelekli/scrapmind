@@ -21,6 +21,7 @@ export interface ProviderConfig {
   apiKey?: string;
   format?: 'json_schema' | 'json_object';
   profile?: 'compatible' | 'reasoning';
+  reasoningEffort?: 'none' | 'minimal' | 'low' | 'medium' | 'high' | 'xhigh' | 'max';
   maxOutputTokens?: number;
   reviewModel?: string;
   visionModel?: string;

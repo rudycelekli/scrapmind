@@ -44,7 +44,7 @@ export function createApi(config?: ProviderConfig, fetcher: typeof fetch = fetch
     const path = request.url?.split('?')[0];
     if (request.method === 'GET' && path === '/api/status')
       return respond(response, 200, {
-        version: '0.1.0-alpha.6',
+        version: '0.1.0-alpha.7',
         model: config
           ? {
               enabled: true,
@@ -52,6 +52,7 @@ export function createApi(config?: ProviderConfig, fetcher: typeof fetch = fetch
               name: config.model,
               reviewModel: config.reviewModel ?? config.model,
               profile: config.profile ?? 'compatible',
+              reasoningEffort: config.reasoningEffort ?? 'provider-default',
               vision: config.visionModel
                 ? { configured: true, name: config.visionModel }
                 : { configured: false },

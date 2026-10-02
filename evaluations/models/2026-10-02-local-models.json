@@ -1,0 +1,37 @@
+{
+  "recordedAt": "2026-10-02T23:24:54.748Z",
+  "serverVersion": "0.13.0",
+  "source": "live-loopback-server-metadata",
+  "models": [
+    {
+      "name": "qwen2:0.5b",
+      "digest": "6f48b936a09f7743c7dd30e72fdb14cba296bc5861902e4d0c387e8fb5050b39",
+      "sizeBytes": 352164041,
+      "quantization": "Q4_0",
+      "capabilities": ["completion"]
+    },
+    {
+      "name": "llama3.2:3b",
+      "digest": "a80c4f17acd55265feec403c7aef86be0c25983ab279d83f3bcd3abbcb5b8b72",
+      "sizeBytes": 2019393189,
+      "quantization": "Q4_K_M",
+      "capabilities": ["completion", "tools"]
+    },
+    {
+      "name": "qwen3:1.7b",
+      "digest": "8f68893c685c3ddff2aa3fffce2aa60a30bb2da65ca488b61fff134a4d1730e7",
+      "sizeBytes": 1359293444,
+      "quantization": "Q4_K_M",
+      "capabilities": ["completion", "tools", "thinking"]
+    },
+    {
+      "name": "scrapmind-qwen3-16k:eval",
+      "digest": "f42932f659ba6dc704bef0c9fc374a891f1faf95eca05a4792c5f226c43c6171",
+      "sizeBytes": 1359293460,
+      "quantization": "Q4_K_M",
+      "capabilities": ["completion", "tools", "thinking"],
+      "observedAllocatedContext": 16384
+    }
+  ],
+  "boundary": "Reported configuration and capabilities are not independent physical or reasoning-performance validation. Unloaded models have no observed allocated context in this snapshot. The 16k variant reuses the Qwen3 weights; it changes only its requested context size."
+}

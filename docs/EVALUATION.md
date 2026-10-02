@@ -35,14 +35,20 @@ Exit codes: `0` means all selected portfolios were generated and all returned pr
 ## Read the result without inflating it
 
 - `generatedCases / selectedCases` measures returned schema-valid portfolios. Failed or cancelled cases are separately counted. A missing portfolio is not a passing contract.
-- `contractPasses / generatedProposals` checks explicit required actions, allocated capabilities, inventory coverage, expected missing roles, and conservative English instruction-resource signals. It uses freshly compiled concepts and plans rather than trusting an exported coverage claim.
+- `contractPasses / generatedProposals` checks explicit required actions, allocated capabilities, inventory coverage, expected missing roles, and conservative English resource signals in instructions, checks, assumptions, and boundaries. It uses freshly compiled concepts and plans rather than trusting an exported coverage claim.
 - `criticIssues` and `incompleteCritiques` retain the model review's limitations separately. A clean model critic never establishes correctness. A deterministic contract pass does not erase an incomplete critique.
 - `removalChallenge` reruns allocation after the listed items become unavailable. It records changed roles and missing parts; it does not manufacture substitutes, generate a fresh invention, or simulate assembly.
 - `humanReview` and `physicalValidation` remain pending/not performed regardless of software outcomes. Global novelty is never scored.
 
-The artifact records model names, routing mode, output format, token limit, case inputs, and operation timestamps. It omits the provider URL and API key. Successful drafts may reproduce private inventory names or notes, so store private evaluations in the ignored `.scrapmind` directory. Arbitrary network exception text is not saved because it can contain credentials or URLs; failures receive bounded category labels. There is no automatic publication or upload of the resulting report.
+The artifact records model names, routing mode, output format, token limit, requested reasoning effort (or provider default), case inputs, and operation timestamps. It omits the provider URL and API key. Successful drafts may reproduce private inventory names or notes, so store private evaluations in the ignored `.scrapmind` directory. Arbitrary network exception text is not saved because it can contain credentials or URLs; failures receive bounded category labels. There is no automatic publication or upload of the resulting report.
 
 `live-model` means the runner used the configured endpoint rather than an injected test response. It is not an attestation that the endpoint really ran the named model; verify the server and model revision separately. Injected protocol responses must be labeled `synthetic-protocol` and cannot be presented as live benchmarks. Sampling and provider changes mean identical inputs may yield different outputs.
+
+## Assessment revisions
+
+`inventory-idea-contracts-v1` is the original assessment procedure. `inventory-idea-contracts-v2` adds mandatory support-hardware signals and extends the concept text inspected to checks, assumptions, boundaries, purpose, and proposed new use. Neither is a complete semantic verifier. Format version 1 remains unchanged; compare procedure identifiers as well as case snapshots before comparing contract counts.
+
+[The retained Qwen3 rescore](../evaluations/reviews/2026-10-02-qwen3-16k-resource-review.json) applies v2 to saved v1 outputs, with zero new model requests. It records the original and revised assessments separately; the original live report remains unchanged. This is assessment of existing text, not another generation run or independent human review.
 
 ## Independent review rubric
 

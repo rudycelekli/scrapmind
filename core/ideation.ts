@@ -218,10 +218,33 @@ export function resourceSignals(concepts: InventionConcept[]): z.infer<typeof is
   }
   concepts.forEach((concept, conceptIndex) => {
     const allText = [
+      concept.purpose,
       concept.reasoning,
+      concept.newUse,
       ...concept.roles.map((role) => role.explanation),
       ...concept.steps.map((step) => step.instruction),
+      ...concept.checks.map((check) => check.procedure),
+      ...concept.assumptionsToTest,
+      ...concept.boundaries,
     ].join('\n');
+    const supportNoun =
+      '(?:a|an|the|its|your|existing|additional)\\s+(?:[a-z-]+\\s+){0,2}(?:stand|tripod|mount|holder)';
+    const requiredSupport = `(?:must|requires?|needs?|use|using|place|position)\\b[^.!?\\n]{0,100}\\b${supportNoun}|${supportNoun}\\s+(?:is\\s+)?(?:required|needed)`;
+    if (
+      positiveMention(allText, requiredSupport) &&
+      !concept.roles.some((role) =>
+        role.capabilities.some((capability) =>
+          ['stable-base', 'vertical-support', 'clamp', 'fastener'].includes(capability),
+        ),
+      )
+    )
+      issues.push({
+        conceptIndex,
+        stepIndex: null,
+        kind: 'undeclared-resource',
+        detail:
+          'Software text rule: the proposal requires a stand, tripod, mount, or holder, but no physical role declares support or attachment capabilities. Inspect the omitted hardware; requirements in assumptions, checks, and boundaries still need explicit roles.',
+      });
     if (
       positiveMention(
         allText,

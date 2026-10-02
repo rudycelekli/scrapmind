@@ -1,0 +1,1257 @@
+{
+  "format": "scrapmind-ai-evaluation",
+  "version": 1,
+  "procedure": "inventory-idea-contracts-v1",
+  "id": "37b0c095-71d6-4a03-9446-871aecfa3586",
+  "provenance": "live-model",
+  "startedAt": "2026-10-02T23:23:09.709Z",
+  "finishedAt": "2026-10-02T23:24:59.114Z",
+  "provider": {
+    "model": "scrapmind-qwen3-16k:eval",
+    "reviewModel": "scrapmind-qwen3-16k:eval",
+    "mode": "local",
+    "profile": "compatible",
+    "reasoningEffort": "none",
+    "format": "json_schema",
+    "maxOutputTokens": 8192
+  },
+  "summary": {
+    "selectedCases": 4,
+    "attemptedCases": 4,
+    "generatedCases": 2,
+    "failedCases": 2,
+    "cancelledCases": 0,
+    "generatedProposals": 2,
+    "contractPasses": 1,
+    "contractFailures": 1,
+    "pendingHumanReviews": 2,
+    "criticIssues": 0,
+    "incompleteCritiques": 2,
+    "requests": 8
+  },
+  "results": [
+    {
+      "case": {
+        "id": "lamp-panel",
+        "label": "Two parts, no hidden fastening or camera",
+        "goal": "Use only the supplied desk lamp and flat panel to illuminate the panel and manually compare its appearance under two lamp positions. Use no objects, desk, mount, fastener, measuring tool, camera, or additional resource. Keep both supplied parts as explicit roles, and make manual positioning and comparison clear. Do not invent optical accuracy or successful tests.",
+        "inventory": [
+          {
+            "id": "lamp",
+            "name": "Desk lamp",
+            "kind": "device",
+            "quantity": 1,
+            "available": true,
+            "capabilities": ["light"],
+            "testedCapabilities": [],
+            "evidence": "declared",
+            "notes": "Demo declaration. Position externally; keep ventilation clear."
+          },
+          {
+            "id": "panel",
+            "name": "Plywood offcut",
+            "kind": "material",
+            "quantity": 1,
+            "available": true,
+            "capabilities": ["flat-panel", "stable-base"],
+            "testedCapabilities": [],
+            "dimensions": {
+              "length": 320,
+              "width": 240,
+              "height": 12
+            },
+            "evidence": "declared",
+            "notes": "Demo measurements in mm. Inspect and measure your own material."
+          }
+        ],
+        "count": 1,
+        "requiredActions": ["illuminate", "compare"],
+        "requiredAllocatedCapabilities": [],
+        "resourcePolicy": "declared-only",
+        "requiredMissingCapabilities": [],
+        "removeItemIds": ["lamp"]
+      },
+      "outcome": "failed",
+      "requests": 2,
+      "elapsedMs": 26430,
+      "error": "The model operation failed; no validated portfolio was returned.",
+      "failureKind": "invalid-concepts"
+    },
+    {
+      "case": {
+        "id": "camera-light-panel",
+        "label": "Camera, host, light, and explicit framing evidence",
+        "goal": "Propose a tabletop comparison workflow using only the supplied webcam, laptop host, lamp, and panel: illuminate the panel, use the webcam with its laptop host to capture its appearance under two lamp positions, and compare the captures manually. Declare all four supplied parts as roles, including the compute host. Do not assume mounts, fastening, sample objects, optical accuracy, or a successful test. Represent any additional required resource explicitly rather than silently introducing it.",
+        "inventory": [
+          {
+            "id": "laptop",
+            "name": "Laptop",
+            "kind": "device",
+            "quantity": 1,
+            "available": true,
+            "capabilities": ["compute", "display", "network", "usb-power"],
+            "testedCapabilities": [],
+            "evidence": "declared",
+            "notes": "Demo declaration. Runs the workbench and camera tools in a browser."
+          },
+          {
+            "id": "webcam",
+            "name": "USB webcam",
+            "kind": "device",
+            "quantity": 1,
+            "available": true,
+            "capabilities": ["camera"],
+            "testedCapabilities": [],
+            "evidence": "declared",
+            "notes": "Demo declaration. Test with the Camera Lab before accepting this capability."
+          },
+          {
+            "id": "lamp",
+            "name": "Desk lamp",
+            "kind": "device",
+            "quantity": 1,
+            "available": true,
+            "capabilities": ["light"],
+            "testedCapabilities": [],
+            "evidence": "declared",
+            "notes": "Demo declaration. Position externally; keep ventilation clear."
+          },
+          {
+            "id": "panel",
+            "name": "Plywood offcut",
+            "kind": "material",
+            "quantity": 1,
+            "available": true,
+            "capabilities": ["flat-panel", "stable-base"],
+            "testedCapabilities": [],
+            "dimensions": {
+              "length": 320,
+              "width": 240,
+              "height": 12
+            },
+            "evidence": "declared",
+            "notes": "Demo measurements in mm. Inspect and measure your own material."
+          }
+        ],
+        "count": 1,
+        "requiredActions": ["illuminate", "capture", "compare"],
+        "requiredAllocatedCapabilities": ["camera", "compute", "light", "flat-panel"],
+        "resourcePolicy": "declared-only",
+        "requiredMissingCapabilities": [],
+        "removeItemIds": ["webcam"]
+      },
+      "outcome": "generated",
+      "requests": 2,
+      "elapsedMs": 29630,
+      "portfolio": {
+        "operationId": "bacc4a3c-26de-4b26-8553-6d59635ec3d5",
+        "goal": "Propose a tabletop comparison workflow using only the supplied webcam, laptop host, lamp, and panel: illuminate the panel, use the webcam with its laptop host to capture its appearance under two lamp positions, and compare the captures manually. Declare all four supplied parts as roles, including the compute host. Do not assume mounts, fastening, sample objects, optical accuracy, or a successful test. Represent any additional required resource explicitly rather than silently introducing it.",
+        "proposals": [
+          {
+            "concept": {
+              "title": "Tabletop Comparison Workflow",
+              "purpose": "Propose a tabletop comparison workflow using only the supplied webcam, laptop host, lamp, and panel.",
+              "reasoning": "The goal is to illuminate the panel, use the webcam with its laptop host to capture its appearance under two lamp positions, and compare the captures manually. All four supplied parts must be declared as roles, including the compute host. The workflow must be represented with steps and checks, ensuring all materials are used and no additional resources are assumed.",
+              "newUse": "A tabletop comparison workflow using the webcam, laptop host, lamp, and panel to illuminate and compare the panel's appearance under two lamp positions.",
+              "category": "fabrication",
+              "minutes": 120,
+              "difficulty": "Moderate",
+              "visual": "stand",
+              "roles": [
+                {
+                  "label": "webcam",
+                  "explanation": "Capture the panel's appearance under two lamp positions using the webcam and laptop host.",
+                  "quantity": 1,
+                  "capabilities": [
+                    "camera",
+                    "compute",
+                    "display",
+                    "light",
+                    "stable-base",
+                    "vertical-support",
+                    "clamp",
+                    "fastener"
+                  ],
+                  "kinds": ["material", "device", "tool"]
+                },
+                {
+                  "label": "laptop",
+                  "explanation": "Host for the webcam and provide compute capabilities for image processing and comparison.",
+                  "quantity": 1,
+                  "capabilities": ["compute", "display", "network", "usb-power"],
+                  "kinds": ["material", "device", "tool"]
+                },
+                {
+                  "label": "lamp",
+                  "explanation": "Illuminate the panel under two different positions for comparison.",
+                  "quantity": 1,
+                  "capabilities": ["light"],
+                  "kinds": ["material", "device", "tool"]
+                },
+                {
+                  "label": "panel",
+                  "explanation": "Plywood offcut used for comparison, illuminated under two lamp positions.",
+                  "quantity": 1,
+                  "capabilities": ["flat-panel", "stable-base"],
+                  "kinds": ["material", "device", "tool"]
+                }
+              ],
+              "steps": [
+                {
+                  "title": "Arrange and Compare",
+                  "instruction": "Arrange the webcam, laptop host, lamp, and panel in a linear configuration for comparison.",
+                  "action": "arrange",
+                  "targetRole": 0,
+                  "roles": [0, 1, 2, 3],
+                  "check": "Verify the physical arrangement of all four components."
+                },
+                {
+                  "title": "Capture Under Lamp Positions",
+                  "instruction": "Capture the panel's appearance under two lamp positions using the webcam and laptop host.",
+                  "action": "capture",
+                  "targetRole": 0,
+                  "roles": [0],
+                  "check": "Confirm the webcam captures the panel under both lamp positions."
+                },
+                {
+                  "title": "Illuminate Panel",
+                  "instruction": "Illuminate the panel under both lamp positions using the lamp.",
+                  "action": "illuminate",
+                  "targetRole": 0,
+                  "roles": [0],
+                  "check": "Verify the panel is illuminated under both lamp positions."
+                },
+                {
+                  "title": "Display and Compare",
+                  "instruction": "Display the captured images and compare them manually.",
+                  "action": "display",
+                  "targetRole": 0,
+                  "roles": [0],
+                  "check": "Confirm the images are displayed and compared manually."
+                }
+              ],
+              "checks": [
+                {
+                  "label": "Panel Illumination Check",
+                  "procedure": "Verify the panel is illuminated under both lamp positions.",
+                  "evidenceKind": "observation"
+                },
+                {
+                  "label": "Image Capture Check",
+                  "procedure": "Confirm the webcam captures the panel under both lamp positions.",
+                  "evidenceKind": "capture"
+                },
+                {
+                  "label": "Physical Arrangement Check",
+                  "procedure": "Verify the physical arrangement of all four components.",
+                  "evidenceKind": "observation"
+                },
+                {
+                  "label": "Image Comparison Check",
+                  "procedure": "Confirm the images are displayed and compared manually.",
+                  "evidenceKind": "observation"
+                }
+              ],
+              "assumptionsToTest": [
+                "The webcam and laptop host are properly connected and functional.",
+                "The lamp is positioned correctly and provides adequate illumination.",
+                "The panel is stable and can be captured without movement.",
+                "The images are captured and displayed for manual comparison."
+              ],
+              "boundaries": [
+                "The panel must be illuminated under two lamp positions.",
+                "The webcam must capture the panel under both lamp positions.",
+                "The images must be displayed and compared manually.",
+                "All four components must be used in the workflow."
+              ]
+            },
+            "recipe": {
+              "id": "idea-bacc4a3c-26de-4b26-8553-6d59635ec3d5-1",
+              "title": "Tabletop Comparison Workflow",
+              "subtitle": "Propose a tabletop comparison workflow using only the supplied webcam, laptop host, lamp, and panel.",
+              "category": "fabrication",
+              "goalTerms": [
+                "Tabletop Comparison Workflow",
+                "Propose a tabletop comparison workflow using only "
+              ],
+              "minutes": 120,
+              "difficulty": "Moderate",
+              "visual": "stand",
+              "requirements": [
+                {
+                  "id": "role-1",
+                  "label": "webcam",
+                  "quantity": 1,
+                  "explanation": "Capture the panel's appearance under two lamp positions using the webcam and laptop host.",
+                  "alternatives": [
+                    {
+                      "capabilities": [
+                        "camera",
+                        "compute",
+                        "display",
+                        "light",
+                        "stable-base",
+                        "vertical-support",
+                        "clamp",
+                        "fastener"
+                      ],
+                      "kinds": ["material", "device", "tool"]
+                    }
+                  ]
+                },
+                {
+                  "id": "role-2",
+                  "label": "laptop",
+                  "quantity": 1,
+                  "explanation": "Host for the webcam and provide compute capabilities for image processing and comparison.",
+                  "alternatives": [
+                    {
+                      "capabilities": ["compute", "display", "network", "usb-power"],
+                      "kinds": ["material", "device", "tool"]
+                    }
+                  ]
+                },
+                {
+                  "id": "role-3",
+                  "label": "lamp",
+                  "quantity": 1,
+                  "explanation": "Illuminate the panel under two different positions for comparison.",
+                  "alternatives": [
+                    {
+                      "capabilities": ["light"],
+                      "kinds": ["material", "device", "tool"]
+                    }
+                  ]
+                },
+                {
+                  "id": "role-4",
+                  "label": "panel",
+                  "quantity": 1,
+                  "explanation": "Plywood offcut used for comparison, illuminated under two lamp positions.",
+                  "alternatives": [
+                    {
+                      "capabilities": ["flat-panel", "stable-base"],
+                      "kinds": ["material", "device", "tool"]
+                    }
+                  ]
+                }
+              ],
+              "steps": [
+                {
+                  "id": "step-1",
+                  "title": "Arrange and Compare",
+                  "instruction": "Arrange the webcam, laptop host, lamp, and panel in a linear configuration for comparison.",
+                  "requirements": ["role-1", "role-2", "role-3", "role-4"],
+                  "check": "Verify the physical arrangement of all four components."
+                },
+                {
+                  "id": "step-2",
+                  "title": "Capture Under Lamp Positions",
+                  "instruction": "Capture the panel's appearance under two lamp positions using the webcam and laptop host.",
+                  "requirements": ["role-1"],
+                  "check": "Confirm the webcam captures the panel under both lamp positions."
+                },
+                {
+                  "id": "step-3",
+                  "title": "Illuminate Panel",
+                  "instruction": "Illuminate the panel under both lamp positions using the lamp.",
+                  "requirements": ["role-1"],
+                  "check": "Verify the panel is illuminated under both lamp positions."
+                },
+                {
+                  "id": "step-4",
+                  "title": "Display and Compare",
+                  "instruction": "Display the captured images and compare them manually.",
+                  "requirements": ["role-1"],
+                  "check": "Confirm the images are displayed and compared manually."
+                }
+              ],
+              "checks": [
+                {
+                  "id": "check-1",
+                  "label": "Panel Illumination Check",
+                  "procedure": "Verify the panel is illuminated under both lamp positions.",
+                  "evidenceKind": "observation"
+                },
+                {
+                  "id": "check-2",
+                  "label": "Image Capture Check",
+                  "procedure": "Confirm the webcam captures the panel under both lamp positions.",
+                  "evidenceKind": "capture"
+                },
+                {
+                  "id": "check-3",
+                  "label": "Physical Arrangement Check",
+                  "procedure": "Verify the physical arrangement of all four components.",
+                  "evidenceKind": "observation"
+                },
+                {
+                  "id": "check-4",
+                  "label": "Image Comparison Check",
+                  "procedure": "Confirm the images are displayed and compared manually.",
+                  "evidenceKind": "observation"
+                }
+              ],
+              "boundaries": [
+                "The panel must be illuminated under two lamp positions.",
+                "The webcam must capture the panel under both lamp positions.",
+                "The images must be displayed and compared manually.",
+                "All four components must be used in the workflow.",
+                "AI-generated draft. Dimensions, attachment geometry, compatibility, scene interpretation, and successful physical trials remain unverified."
+              ],
+              "source": "generated",
+              "reviewed": false,
+              "ai": {
+                "goal": "Propose a tabletop comparison workflow using only the supplied webcam, laptop host, lamp, and panel: illuminate the panel, use the webcam with its laptop host to capture its appearance under two lamp positions, and compare the captures manually. Declare all four supplied parts as roles, including the compute host. Do not assume mounts, fastening, sample objects, optical accuracy, or a successful test. Represent any additional required resource explicitly rather than silently introducing it.",
+                "model": "scrapmind-qwen3-16k:eval",
+                "mode": "local",
+                "operationId": "bacc4a3c-26de-4b26-8553-6d59635ec3d5",
+                "inventoryFingerprint": "[{\"id\":\"lamp\",\"name\":\"Desk lamp\",\"kind\":\"device\",\"quantity\":1,\"available\":true,\"capabilities\":[\"light\"],\"testedCapabilities\":[],\"evidence\":\"declared\",\"notes\":\"Demo declaration. Position externally; keep ventilation clear.\"},{\"id\":\"laptop\",\"name\":\"Laptop\",\"kind\":\"device\",\"quantity\":1,\"available\":true,\"capabilities\":[\"compute\",\"display\",\"network\",\"usb-power\"],\"testedCapabilities\":[],\"evidence\":\"declared\",\"notes\":\"Demo declaration. Runs the workbench and camera tools in a browser.\"},{\"id\":\"panel\",\"name\":\"Plywood offcut\",\"kind\":\"material\",\"quantity\":1,\"available\":true,\"capabilities\":[\"flat-panel\",\"stable-base\"],\"testedCapabilities\":[],\"dimensions\":{\"length\":320,\"width\":240,\"height\":12},\"evidence\":\"declared\",\"notes\":\"Demo measurements in mm. Inspect and measure your own material.\"},{\"id\":\"webcam\",\"name\":\"USB webcam\",\"kind\":\"device\",\"quantity\":1,\"available\":true,\"capabilities\":[\"camera\"],\"testedCapabilities\":[],\"evidence\":\"declared\",\"notes\":\"Demo declaration. Test with the Camera Lab before accepting this capability.\"}]",
+                "reasoning": "The goal is to illuminate the panel, use the webcam with its laptop host to capture its appearance under two lamp positions, and compare the captures manually. All four supplied parts must be declared as roles, including the compute host. The workflow must be represented with steps and checks, ensuring all materials are used and no additional resources are assumed.",
+                "newUse": "A tabletop comparison workflow using the webcam, laptop host, lamp, and panel to illuminate and compare the panel's appearance under two lamp positions.",
+                "assumptionsToTest": [
+                  "The webcam and laptop host are properly connected and functional.",
+                  "The lamp is positioned correctly and provides adequate illumination.",
+                  "The panel is stable and can be captured without movement.",
+                  "The images are captured and displayed for manual comparison."
+                ],
+                "resourceReview": {
+                  "model": "scrapmind-qwen3-16k:eval",
+                  "status": "not-completed",
+                  "issues": [],
+                  "boundary": "An AI resource critique can miss errors. It is not physical validation or a proof of useful performance. The owner must review the procedure and test its assumptions."
+                }
+              }
+            },
+            "plan": {
+              "recipe": {
+                "id": "idea-bacc4a3c-26de-4b26-8553-6d59635ec3d5-1",
+                "title": "Tabletop Comparison Workflow",
+                "subtitle": "Propose a tabletop comparison workflow using only the supplied webcam, laptop host, lamp, and panel.",
+                "category": "fabrication",
+                "goalTerms": [
+                  "Tabletop Comparison Workflow",
+                  "Propose a tabletop comparison workflow using only "
+                ],
+                "minutes": 120,
+                "difficulty": "Moderate",
+                "visual": "stand",
+                "requirements": [
+                  {
+                    "id": "role-1",
+                    "label": "webcam",
+                    "quantity": 1,
+                    "explanation": "Capture the panel's appearance under two lamp positions using the webcam and laptop host.",
+                    "alternatives": [
+                      {
+                        "capabilities": [
+                          "camera",
+                          "compute",
+                          "display",
+                          "light",
+                          "stable-base",
+                          "vertical-support",
+                          "clamp",
+                          "fastener"
+                        ],
+                        "kinds": ["material", "device", "tool"]
+                      }
+                    ]
+                  },
+                  {
+                    "id": "role-2",
+                    "label": "laptop",
+                    "quantity": 1,
+                    "explanation": "Host for the webcam and provide compute capabilities for image processing and comparison.",
+                    "alternatives": [
+                      {
+                        "capabilities": ["compute", "display", "network", "usb-power"],
+                        "kinds": ["material", "device", "tool"]
+                      }
+                    ]
+                  },
+                  {
+                    "id": "role-3",
+                    "label": "lamp",
+                    "quantity": 1,
+                    "explanation": "Illuminate the panel under two different positions for comparison.",
+                    "alternatives": [
+                      {
+                        "capabilities": ["light"],
+                        "kinds": ["material", "device", "tool"]
+                      }
+                    ]
+                  },
+                  {
+                    "id": "role-4",
+                    "label": "panel",
+                    "quantity": 1,
+                    "explanation": "Plywood offcut used for comparison, illuminated under two lamp positions.",
+                    "alternatives": [
+                      {
+                        "capabilities": ["flat-panel", "stable-base"],
+                        "kinds": ["material", "device", "tool"]
+                      }
+                    ]
+                  }
+                ],
+                "steps": [
+                  {
+                    "id": "step-1",
+                    "title": "Arrange and Compare",
+                    "instruction": "Arrange the webcam, laptop host, lamp, and panel in a linear configuration for comparison.",
+                    "requirements": ["role-1", "role-2", "role-3", "role-4"],
+                    "check": "Verify the physical arrangement of all four components."
+                  },
+                  {
+                    "id": "step-2",
+                    "title": "Capture Under Lamp Positions",
+                    "instruction": "Capture the panel's appearance under two lamp positions using the webcam and laptop host.",
+                    "requirements": ["role-1"],
+                    "check": "Confirm the webcam captures the panel under both lamp positions."
+                  },
+                  {
+                    "id": "step-3",
+                    "title": "Illuminate Panel",
+                    "instruction": "Illuminate the panel under both lamp positions using the lamp.",
+                    "requirements": ["role-1"],
+                    "check": "Verify the panel is illuminated under both lamp positions."
+                  },
+                  {
+                    "id": "step-4",
+                    "title": "Display and Compare",
+                    "instruction": "Display the captured images and compare them manually.",
+                    "requirements": ["role-1"],
+                    "check": "Confirm the images are displayed and compared manually."
+                  }
+                ],
+                "checks": [
+                  {
+                    "id": "check-1",
+                    "label": "Panel Illumination Check",
+                    "procedure": "Verify the panel is illuminated under both lamp positions.",
+                    "evidenceKind": "observation"
+                  },
+                  {
+                    "id": "check-2",
+                    "label": "Image Capture Check",
+                    "procedure": "Confirm the webcam captures the panel under both lamp positions.",
+                    "evidenceKind": "capture"
+                  },
+                  {
+                    "id": "check-3",
+                    "label": "Physical Arrangement Check",
+                    "procedure": "Verify the physical arrangement of all four components.",
+                    "evidenceKind": "observation"
+                  },
+                  {
+                    "id": "check-4",
+                    "label": "Image Comparison Check",
+                    "procedure": "Confirm the images are displayed and compared manually.",
+                    "evidenceKind": "observation"
+                  }
+                ],
+                "boundaries": [
+                  "The panel must be illuminated under two lamp positions.",
+                  "The webcam must capture the panel under both lamp positions.",
+                  "The images must be displayed and compared manually.",
+                  "All four components must be used in the workflow.",
+                  "AI-generated draft. Dimensions, attachment geometry, compatibility, scene interpretation, and successful physical trials remain unverified."
+                ],
+                "source": "generated",
+                "reviewed": false,
+                "ai": {
+                  "goal": "Propose a tabletop comparison workflow using only the supplied webcam, laptop host, lamp, and panel: illuminate the panel, use the webcam with its laptop host to capture its appearance under two lamp positions, and compare the captures manually. Declare all four supplied parts as roles, including the compute host. Do not assume mounts, fastening, sample objects, optical accuracy, or a successful test. Represent any additional required resource explicitly rather than silently introducing it.",
+                  "model": "scrapmind-qwen3-16k:eval",
+                  "mode": "local",
+                  "operationId": "bacc4a3c-26de-4b26-8553-6d59635ec3d5",
+                  "inventoryFingerprint": "[{\"id\":\"lamp\",\"name\":\"Desk lamp\",\"kind\":\"device\",\"quantity\":1,\"available\":true,\"capabilities\":[\"light\"],\"testedCapabilities\":[],\"evidence\":\"declared\",\"notes\":\"Demo declaration. Position externally; keep ventilation clear.\"},{\"id\":\"laptop\",\"name\":\"Laptop\",\"kind\":\"device\",\"quantity\":1,\"available\":true,\"capabilities\":[\"compute\",\"display\",\"network\",\"usb-power\"],\"testedCapabilities\":[],\"evidence\":\"declared\",\"notes\":\"Demo declaration. Runs the workbench and camera tools in a browser.\"},{\"id\":\"panel\",\"name\":\"Plywood offcut\",\"kind\":\"material\",\"quantity\":1,\"available\":true,\"capabilities\":[\"flat-panel\",\"stable-base\"],\"testedCapabilities\":[],\"dimensions\":{\"length\":320,\"width\":240,\"height\":12},\"evidence\":\"declared\",\"notes\":\"Demo measurements in mm. Inspect and measure your own material.\"},{\"id\":\"webcam\",\"name\":\"USB webcam\",\"kind\":\"device\",\"quantity\":1,\"available\":true,\"capabilities\":[\"camera\"],\"testedCapabilities\":[],\"evidence\":\"declared\",\"notes\":\"Demo declaration. Test with the Camera Lab before accepting this capability.\"}]",
+                  "reasoning": "The goal is to illuminate the panel, use the webcam with its laptop host to capture its appearance under two lamp positions, and compare the captures manually. All four supplied parts must be declared as roles, including the compute host. The workflow must be represented with steps and checks, ensuring all materials are used and no additional resources are assumed.",
+                  "newUse": "A tabletop comparison workflow using the webcam, laptop host, lamp, and panel to illuminate and compare the panel's appearance under two lamp positions.",
+                  "assumptionsToTest": [
+                    "The webcam and laptop host are properly connected and functional.",
+                    "The lamp is positioned correctly and provides adequate illumination.",
+                    "The panel is stable and can be captured without movement.",
+                    "The images are captured and displayed for manual comparison."
+                  ],
+                  "resourceReview": {
+                    "model": "scrapmind-qwen3-16k:eval",
+                    "status": "not-completed",
+                    "issues": [],
+                    "boundary": "An AI resource critique can miss errors. It is not physical validation or a proof of useful performance. The owner must review the procedure and test its assumptions."
+                  }
+                }
+              },
+              "allocations": [
+                {
+                  "requirementId": "role-2",
+                  "itemId": "laptop",
+                  "quantity": 1,
+                  "matchedCapabilities": ["compute", "display", "network", "usb-power"]
+                },
+                {
+                  "requirementId": "role-3",
+                  "itemId": "lamp",
+                  "quantity": 1,
+                  "matchedCapabilities": ["light"]
+                },
+                {
+                  "requirementId": "role-4",
+                  "itemId": "panel",
+                  "quantity": 1,
+                  "matchedCapabilities": ["flat-panel", "stable-base"]
+                }
+              ],
+              "missing": [
+                {
+                  "requirement": {
+                    "id": "role-1",
+                    "label": "webcam",
+                    "quantity": 1,
+                    "explanation": "Capture the panel's appearance under two lamp positions using the webcam and laptop host.",
+                    "alternatives": [
+                      {
+                        "capabilities": [
+                          "camera",
+                          "compute",
+                          "display",
+                          "light",
+                          "stable-base",
+                          "vertical-support",
+                          "clamp",
+                          "fastener"
+                        ],
+                        "kinds": ["material", "device", "tool"]
+                      }
+                    ]
+                  },
+                  "quantity": 1
+                }
+              ],
+              "status": "blocked",
+              "coveredUnits": 3,
+              "totalUnits": 4,
+              "relevance": 8,
+              "evidence": "declared",
+              "untestedCapabilities": [
+                {
+                  "itemId": "laptop",
+                  "capability": "compute"
+                },
+                {
+                  "itemId": "laptop",
+                  "capability": "display"
+                },
+                {
+                  "itemId": "laptop",
+                  "capability": "network"
+                },
+                {
+                  "itemId": "laptop",
+                  "capability": "usb-power"
+                },
+                {
+                  "itemId": "lamp",
+                  "capability": "light"
+                },
+                {
+                  "itemId": "panel",
+                  "capability": "flat-panel"
+                },
+                {
+                  "itemId": "panel",
+                  "capability": "stable-base"
+                }
+              ],
+              "inventoryFingerprint": "[{\"id\":\"lamp\",\"name\":\"Desk lamp\",\"kind\":\"device\",\"quantity\":1,\"available\":true,\"capabilities\":[\"light\"],\"testedCapabilities\":[],\"evidence\":\"declared\",\"notes\":\"Demo declaration. Position externally; keep ventilation clear.\"},{\"id\":\"laptop\",\"name\":\"Laptop\",\"kind\":\"device\",\"quantity\":1,\"available\":true,\"capabilities\":[\"compute\",\"display\",\"network\",\"usb-power\"],\"testedCapabilities\":[],\"evidence\":\"declared\",\"notes\":\"Demo declaration. Runs the workbench and camera tools in a browser.\"},{\"id\":\"panel\",\"name\":\"Plywood offcut\",\"kind\":\"material\",\"quantity\":1,\"available\":true,\"capabilities\":[\"flat-panel\",\"stable-base\"],\"testedCapabilities\":[],\"dimensions\":{\"length\":320,\"width\":240,\"height\":12},\"evidence\":\"declared\",\"notes\":\"Demo measurements in mm. Inspect and measure your own material.\"},{\"id\":\"webcam\",\"name\":\"USB webcam\",\"kind\":\"device\",\"quantity\":1,\"available\":true,\"capabilities\":[\"camera\"],\"testedCapabilities\":[],\"evidence\":\"declared\",\"notes\":\"Demo declaration. Test with the Camera Lab before accepting this capability.\"}]",
+              "recipeFingerprint": "{\"id\":\"idea-bacc4a3c-26de-4b26-8553-6d59635ec3d5-1\",\"title\":\"Tabletop Comparison Workflow\",\"subtitle\":\"Propose a tabletop comparison workflow using only the supplied webcam, laptop host, lamp, and panel.\",\"category\":\"fabrication\",\"goalTerms\":[\"Tabletop Comparison Workflow\",\"Propose a tabletop comparison workflow using only \"],\"minutes\":120,\"difficulty\":\"Moderate\",\"visual\":\"stand\",\"requirements\":[{\"id\":\"role-1\",\"label\":\"webcam\",\"quantity\":1,\"explanation\":\"Capture the panel's appearance under two lamp positions using the webcam and laptop host.\",\"alternatives\":[{\"capabilities\":[\"camera\",\"compute\",\"display\",\"light\",\"stable-base\",\"vertical-support\",\"clamp\",\"fastener\"],\"kinds\":[\"material\",\"device\",\"tool\"]}]},{\"id\":\"role-2\",\"label\":\"laptop\",\"quantity\":1,\"explanation\":\"Host for the webcam and provide compute capabilities for image processing and comparison.\",\"alternatives\":[{\"capabilities\":[\"compute\",\"display\",\"network\",\"usb-power\"],\"kinds\":[\"material\",\"device\",\"tool\"]}]},{\"id\":\"role-3\",\"label\":\"lamp\",\"quantity\":1,\"explanation\":\"Illuminate the panel under two different positions for comparison.\",\"alternatives\":[{\"capabilities\":[\"light\"],\"kinds\":[\"material\",\"device\",\"tool\"]}]},{\"id\":\"role-4\",\"label\":\"panel\",\"quantity\":1,\"explanation\":\"Plywood offcut used for comparison, illuminated under two lamp positions.\",\"alternatives\":[{\"capabilities\":[\"flat-panel\",\"stable-base\"],\"kinds\":[\"material\",\"device\",\"tool\"]}]}],\"steps\":[{\"id\":\"step-1\",\"title\":\"Arrange and Compare\",\"instruction\":\"Arrange the webcam, laptop host, lamp, and panel in a linear configuration for comparison.\",\"requirements\":[\"role-1\",\"role-2\",\"role-3\",\"role-4\"],\"check\":\"Verify the physical arrangement of all four components.\"},{\"id\":\"step-2\",\"title\":\"Capture Under Lamp Positions\",\"instruction\":\"Capture the panel's appearance under two lamp positions using the webcam and laptop host.\",\"requirements\":[\"role-1\"],\"check\":\"Confirm the webcam captures the panel under both lamp positions.\"},{\"id\":\"step-3\",\"title\":\"Illuminate Panel\",\"instruction\":\"Illuminate the panel under both lamp positions using the lamp.\",\"requirements\":[\"role-1\"],\"check\":\"Verify the panel is illuminated under both lamp positions.\"},{\"id\":\"step-4\",\"title\":\"Display and Compare\",\"instruction\":\"Display the captured images and compare them manually.\",\"requirements\":[\"role-1\"],\"check\":\"Confirm the images are displayed and compared manually.\"}],\"checks\":[{\"id\":\"check-1\",\"label\":\"Panel Illumination Check\",\"procedure\":\"Verify the panel is illuminated under both lamp positions.\",\"evidenceKind\":\"observation\"},{\"id\":\"check-2\",\"label\":\"Image Capture Check\",\"procedure\":\"Confirm the webcam captures the panel under both lamp positions.\",\"evidenceKind\":\"capture\"},{\"id\":\"check-3\",\"label\":\"Physical Arrangement Check\",\"procedure\":\"Verify the physical arrangement of all four components.\",\"evidenceKind\":\"observation\"},{\"id\":\"check-4\",\"label\":\"Image Comparison Check\",\"procedure\":\"Confirm the images are displayed and compared manually.\",\"evidenceKind\":\"observation\"}],\"boundaries\":[\"The panel must be illuminated under two lamp positions.\",\"The webcam must capture the panel under both lamp positions.\",\"The images must be displayed and compared manually.\",\"All four components must be used in the workflow.\",\"AI-generated draft. Dimensions, attachment geometry, compatibility, scene interpretation, and successful physical trials remain unverified.\"],\"source\":\"generated\",\"reviewed\":false,\"ai\":{\"goal\":\"Propose a tabletop comparison workflow using only the supplied webcam, laptop host, lamp, and panel: illuminate the panel, use the webcam with its laptop host to capture its appearance under two lamp positions, and compare the captures manually. Declare all four supplied parts as roles, including the compute host. Do not assume mounts, fastening, sample objects, optical accuracy, or a successful test. Represent any additional required resource explicitly rather than silently introducing it.\",\"model\":\"scrapmind-qwen3-16k:eval\",\"mode\":\"local\",\"operationId\":\"bacc4a3c-26de-4b26-8553-6d59635ec3d5\",\"inventoryFingerprint\":\"[{\\\"id\\\":\\\"lamp\\\",\\\"name\\\":\\\"Desk lamp\\\",\\\"kind\\\":\\\"device\\\",\\\"quantity\\\":1,\\\"available\\\":true,\\\"capabilities\\\":[\\\"light\\\"],\\\"testedCapabilities\\\":[],\\\"evidence\\\":\\\"declared\\\",\\\"notes\\\":\\\"Demo declaration. Position externally; keep ventilation clear.\\\"},{\\\"id\\\":\\\"laptop\\\",\\\"name\\\":\\\"Laptop\\\",\\\"kind\\\":\\\"device\\\",\\\"quantity\\\":1,\\\"available\\\":true,\\\"capabilities\\\":[\\\"compute\\\",\\\"display\\\",\\\"network\\\",\\\"usb-power\\\"],\\\"testedCapabilities\\\":[],\\\"evidence\\\":\\\"declared\\\",\\\"notes\\\":\\\"Demo declaration. Runs the workbench and camera tools in a browser.\\\"},{\\\"id\\\":\\\"panel\\\",\\\"name\\\":\\\"Plywood offcut\\\",\\\"kind\\\":\\\"material\\\",\\\"quantity\\\":1,\\\"available\\\":true,\\\"capabilities\\\":[\\\"flat-panel\\\",\\\"stable-base\\\"],\\\"testedCapabilities\\\":[],\\\"dimensions\\\":{\\\"length\\\":320,\\\"width\\\":240,\\\"height\\\":12},\\\"evidence\\\":\\\"declared\\\",\\\"notes\\\":\\\"Demo measurements in mm. Inspect and measure your own material.\\\"},{\\\"id\\\":\\\"webcam\\\",\\\"name\\\":\\\"USB webcam\\\",\\\"kind\\\":\\\"device\\\",\\\"quantity\\\":1,\\\"available\\\":true,\\\"capabilities\\\":[\\\"camera\\\"],\\\"testedCapabilities\\\":[],\\\"evidence\\\":\\\"declared\\\",\\\"notes\\\":\\\"Demo declaration. Test with the Camera Lab before accepting this capability.\\\"}]\",\"reasoning\":\"The goal is to illuminate the panel, use the webcam with its laptop host to capture its appearance under two lamp positions, and compare the captures manually. All four supplied parts must be declared as roles, including the compute host. The workflow must be represented with steps and checks, ensuring all materials are used and no additional resources are assumed.\",\"newUse\":\"A tabletop comparison workflow using the webcam, laptop host, lamp, and panel to illuminate and compare the panel's appearance under two lamp positions.\",\"assumptionsToTest\":[\"The webcam and laptop host are properly connected and functional.\",\"The lamp is positioned correctly and provides adequate illumination.\",\"The panel is stable and can be captured without movement.\",\"The images are captured and displayed for manual comparison.\"],\"resourceReview\":{\"model\":\"scrapmind-qwen3-16k:eval\",\"status\":\"not-completed\",\"issues\":[],\"boundary\":\"An AI resource critique can miss errors. It is not physical validation or a proof of useful performance. The owner must review the procedure and test its assumptions.\"}}}"
+            },
+            "inventoryFit": 0.75,
+            "resourceReview": {
+              "model": "scrapmind-qwen3-16k:eval",
+              "status": "not-completed",
+              "issues": [],
+              "boundary": "An AI resource critique can miss errors. It is not physical validation or a proof of useful performance. The owner must review the procedure and test its assumptions."
+            },
+            "physicalReview": "pending",
+            "novelty": "model-claim-unverified"
+          }
+        ],
+        "model": "scrapmind-qwen3-16k:eval",
+        "mode": "local",
+        "attempts": 1,
+        "calls": 2,
+        "repairAttempted": false,
+        "repairApplied": false,
+        "reviewed": false,
+        "ranking": "resource-review-then-declared-inventory-coverage",
+        "boundary": "AI-generated drafts. Resource contracts, allocation, and model critique do not verify physical geometry, compatibility, hidden properties, useful performance, or research novelty."
+      },
+      "assessments": [
+        {
+          "contract": "fail",
+          "problems": [
+            "Required compare action is absent.",
+            "The procedure requires units outside the available declared inventory.",
+            "Required camera capability has no allocated declared role."
+          ],
+          "signals": [],
+          "coverage": {
+            "coveredUnits": 3,
+            "totalUnits": 4
+          },
+          "allocations": [
+            {
+              "requirementId": "role-2",
+              "itemId": "laptop",
+              "quantity": 1,
+              "matchedCapabilities": ["compute", "display", "network", "usb-power"]
+            },
+            {
+              "requirementId": "role-3",
+              "itemId": "lamp",
+              "quantity": 1,
+              "matchedCapabilities": ["light"]
+            },
+            {
+              "requirementId": "role-4",
+              "itemId": "panel",
+              "quantity": 1,
+              "matchedCapabilities": ["flat-panel", "stable-base"]
+            }
+          ],
+          "missing": [
+            {
+              "requirement": {
+                "id": "role-1",
+                "label": "webcam",
+                "quantity": 1,
+                "explanation": "Capture the panel's appearance under two lamp positions using the webcam and laptop host.",
+                "alternatives": [
+                  {
+                    "capabilities": [
+                      "camera",
+                      "compute",
+                      "display",
+                      "light",
+                      "stable-base",
+                      "vertical-support",
+                      "clamp",
+                      "fastener"
+                    ],
+                    "kinds": ["material", "device", "tool"]
+                  }
+                ]
+              },
+              "quantity": 1
+            }
+          ],
+          "removalChallenge": {
+            "removedItemIds": ["webcam"],
+            "allocations": [
+              {
+                "requirementId": "role-2",
+                "itemId": "laptop",
+                "quantity": 1,
+                "matchedCapabilities": ["compute", "display", "network", "usb-power"]
+              },
+              {
+                "requirementId": "role-3",
+                "itemId": "lamp",
+                "quantity": 1,
+                "matchedCapabilities": ["light"]
+              },
+              {
+                "requirementId": "role-4",
+                "itemId": "panel",
+                "quantity": 1,
+                "matchedCapabilities": ["flat-panel", "stable-base"]
+              }
+            ],
+            "missing": [
+              {
+                "requirement": {
+                  "id": "role-1",
+                  "label": "webcam",
+                  "quantity": 1,
+                  "explanation": "Capture the panel's appearance under two lamp positions using the webcam and laptop host.",
+                  "alternatives": [
+                    {
+                      "capabilities": [
+                        "camera",
+                        "compute",
+                        "display",
+                        "light",
+                        "stable-base",
+                        "vertical-support",
+                        "clamp",
+                        "fastener"
+                      ],
+                      "kinds": ["material", "device", "tool"]
+                    }
+                  ]
+                },
+                "quantity": 1
+              }
+            ],
+            "status": "blocked",
+            "changes": []
+          },
+          "humanReview": "pending",
+          "physicalValidation": "not-performed"
+        }
+      ]
+    },
+    {
+      "case": {
+        "id": "missing-camera",
+        "label": "Honest missing camera, no imaginary capture",
+        "goal": "Capture an image of the supplied illuminated panel. There is no available camera. Propose an explicitly blocked configuration that declares the missing camera role and a capture action instead of implying the lamp or panel can take pictures. Do not claim any capture happened.",
+        "inventory": [
+          {
+            "id": "lamp",
+            "name": "Desk lamp",
+            "kind": "device",
+            "quantity": 1,
+            "available": true,
+            "capabilities": ["light"],
+            "testedCapabilities": [],
+            "evidence": "declared",
+            "notes": "Demo declaration. Position externally; keep ventilation clear."
+          },
+          {
+            "id": "panel",
+            "name": "Plywood offcut",
+            "kind": "material",
+            "quantity": 1,
+            "available": true,
+            "capabilities": ["flat-panel", "stable-base"],
+            "testedCapabilities": [],
+            "dimensions": {
+              "length": 320,
+              "width": 240,
+              "height": 12
+            },
+            "evidence": "declared",
+            "notes": "Demo measurements in mm. Inspect and measure your own material."
+          }
+        ],
+        "count": 1,
+        "requiredActions": ["capture"],
+        "requiredAllocatedCapabilities": [],
+        "resourcePolicy": "missing-allowed",
+        "requiredMissingCapabilities": ["camera"],
+        "removeItemIds": []
+      },
+      "outcome": "failed",
+      "requests": 2,
+      "elapsedMs": 29669,
+      "error": "The model operation failed; no validated portfolio was returned.",
+      "failureKind": "invalid-concepts"
+    },
+    {
+      "case": {
+        "id": "single-phone",
+        "label": "One multifunction device cannot be counted twice",
+        "goal": "Use exactly one supplied smartphone to capture a scene and display the captured image on that same phone. These are sequential actions. Combine camera and display functions in one physical role rather than requiring two phones. The scene is unspecified; do not add objects, mounts, tools, hidden functions, accuracy claims, or successful tests.",
+        "inventory": [
+          {
+            "id": "phone",
+            "name": "Old smartphone",
+            "kind": "device",
+            "quantity": 1,
+            "available": true,
+            "capabilities": ["camera", "compute", "display", "network"],
+            "testedCapabilities": [],
+            "evidence": "declared",
+            "notes": "Demo declaration. Confirm camera access and power before using your own phone."
+          }
+        ],
+        "count": 1,
+        "requiredActions": ["capture", "display"],
+        "requiredAllocatedCapabilities": [],
+        "resourcePolicy": "declared-only",
+        "requiredMissingCapabilities": [],
+        "removeItemIds": ["phone"]
+      },
+      "outcome": "generated",
+      "requests": 2,
+      "elapsedMs": 23670,
+      "portfolio": {
+        "operationId": "192b318d-4a4d-4c33-b929-e7aec010fe25",
+        "goal": "Use exactly one supplied smartphone to capture a scene and display the captured image on that same phone. These are sequential actions. Combine camera and display functions in one physical role rather than requiring two phones. The scene is unspecified; do not add objects, mounts, tools, hidden functions, accuracy claims, or successful tests.",
+        "proposals": [
+          {
+            "concept": {
+              "title": "Smartphone Scene Capture and Display",
+              "purpose": "Capture a scene using the smartphone's camera and display the image on the same device in a single physical role.",
+              "reasoning": "The goal is to combine the camera and display functions into one physical role, using the supplied smartphone. This requires arranging the camera and display components, ensuring they are compatible and properly aligned, and verifying that the smartphone can perform both functions.",
+              "newUse": "A smartphone with integrated camera and display capabilities, used to capture and display a scene in a single physical role.",
+              "category": "fabrication",
+              "minutes": 120,
+              "difficulty": "Moderate",
+              "visual": "stand",
+              "roles": [
+                {
+                  "label": "Camera and Display Integration",
+                  "explanation": "Integrate the smartphone's camera and display into a single physical role, ensuring both functions are operational and aligned for scene capture and display.",
+                  "quantity": 1,
+                  "capabilities": ["camera", "display", "compute", "network"],
+                  "kinds": ["material", "device"]
+                }
+              ],
+              "steps": [
+                {
+                  "title": "Arrange Camera and Display Components",
+                  "instruction": "Position the smartphone so that its camera and display are aligned and ready for use.",
+                  "action": "arrange",
+                  "targetRole": 0,
+                  "roles": [0],
+                  "check": "Verify that the camera and display are properly aligned and ready for use."
+                },
+                {
+                  "title": "Capture Scene",
+                  "instruction": "Use the smartphone's camera to capture a scene and ensure the display is active for the image.",
+                  "action": "capture",
+                  "targetRole": 0,
+                  "roles": [0],
+                  "check": "Confirm that the camera has captured a scene and the display is active."
+                },
+                {
+                  "title": "Display Captured Image",
+                  "instruction": "Use the smartphone's display to show the captured image, ensuring the camera and display are working together.",
+                  "action": "display",
+                  "targetRole": 0,
+                  "roles": [0],
+                  "check": "Verify that the captured image is displayed on the smartphone's screen."
+                }
+              ],
+              "checks": [
+                {
+                  "label": "Camera and Display Alignment",
+                  "procedure": "Check that the smartphone's camera and display are properly aligned and ready for use.",
+                  "evidenceKind": "observation"
+                },
+                {
+                  "label": "Image Capture and Display",
+                  "procedure": "Confirm that the smartphone's camera has captured a scene and the display is active for the image.",
+                  "evidenceKind": "measurement"
+                },
+                {
+                  "label": "Integration Verification",
+                  "procedure": "Verify that the camera and display are integrated into a single physical role and functioning correctly.",
+                  "evidenceKind": "capture"
+                }
+              ],
+              "assumptionsToTest": [
+                "The smartphone has access to both camera and display functions.",
+                "The smartphone's camera and display are compatible and can be integrated into a single role.",
+                "The smartphone can perform both capture and display actions sequentially."
+              ],
+              "boundaries": [
+                "The smartphone must be used in a stand or similar support to ensure stability.",
+                "The smartphone must be used in a lighted environment to ensure proper display and capture."
+              ]
+            },
+            "recipe": {
+              "id": "idea-192b318d-4a4d-4c33-b929-e7aec010fe25-1",
+              "title": "Smartphone Scene Capture and Display",
+              "subtitle": "Capture a scene using the smartphone's camera and display the image on the same device in a single physical role.",
+              "category": "fabrication",
+              "goalTerms": [
+                "Smartphone Scene Capture and Display",
+                "Capture a scene using the smartphone's camera and "
+              ],
+              "minutes": 120,
+              "difficulty": "Moderate",
+              "visual": "stand",
+              "requirements": [
+                {
+                  "id": "role-1",
+                  "label": "Camera and Display Integration",
+                  "quantity": 1,
+                  "explanation": "Integrate the smartphone's camera and display into a single physical role, ensuring both functions are operational and aligned for scene capture and display.",
+                  "alternatives": [
+                    {
+                      "capabilities": ["camera", "display", "compute", "network"],
+                      "kinds": ["material", "device"]
+                    }
+                  ]
+                }
+              ],
+              "steps": [
+                {
+                  "id": "step-1",
+                  "title": "Arrange Camera and Display Components",
+                  "instruction": "Position the smartphone so that its camera and display are aligned and ready for use.",
+                  "requirements": ["role-1"],
+                  "check": "Verify that the camera and display are properly aligned and ready for use."
+                },
+                {
+                  "id": "step-2",
+                  "title": "Capture Scene",
+                  "instruction": "Use the smartphone's camera to capture a scene and ensure the display is active for the image.",
+                  "requirements": ["role-1"],
+                  "check": "Confirm that the camera has captured a scene and the display is active."
+                },
+                {
+                  "id": "step-3",
+                  "title": "Display Captured Image",
+                  "instruction": "Use the smartphone's display to show the captured image, ensuring the camera and display are working together.",
+                  "requirements": ["role-1"],
+                  "check": "Verify that the captured image is displayed on the smartphone's screen."
+                }
+              ],
+              "checks": [
+                {
+                  "id": "check-1",
+                  "label": "Camera and Display Alignment",
+                  "procedure": "Check that the smartphone's camera and display are properly aligned and ready for use.",
+                  "evidenceKind": "observation"
+                },
+                {
+                  "id": "check-2",
+                  "label": "Image Capture and Display",
+                  "procedure": "Confirm that the smartphone's camera has captured a scene and the display is active for the image.",
+                  "evidenceKind": "measurement"
+                },
+                {
+                  "id": "check-3",
+                  "label": "Integration Verification",
+                  "procedure": "Verify that the camera and display are integrated into a single physical role and functioning correctly.",
+                  "evidenceKind": "capture"
+                }
+              ],
+              "boundaries": [
+                "The smartphone must be used in a stand or similar support to ensure stability.",
+                "The smartphone must be used in a lighted environment to ensure proper display and capture.",
+                "AI-generated draft. Dimensions, attachment geometry, compatibility, scene interpretation, and successful physical trials remain unverified."
+              ],
+              "source": "generated",
+              "reviewed": false,
+              "ai": {
+                "goal": "Use exactly one supplied smartphone to capture a scene and display the captured image on that same phone. These are sequential actions. Combine camera and display functions in one physical role rather than requiring two phones. The scene is unspecified; do not add objects, mounts, tools, hidden functions, accuracy claims, or successful tests.",
+                "model": "scrapmind-qwen3-16k:eval",
+                "mode": "local",
+                "operationId": "192b318d-4a4d-4c33-b929-e7aec010fe25",
+                "inventoryFingerprint": "[{\"id\":\"phone\",\"name\":\"Old smartphone\",\"kind\":\"device\",\"quantity\":1,\"available\":true,\"capabilities\":[\"camera\",\"compute\",\"display\",\"network\"],\"testedCapabilities\":[],\"evidence\":\"declared\",\"notes\":\"Demo declaration. Confirm camera access and power before using your own phone.\"}]",
+                "reasoning": "The goal is to combine the camera and display functions into one physical role, using the supplied smartphone. This requires arranging the camera and display components, ensuring they are compatible and properly aligned, and verifying that the smartphone can perform both functions.",
+                "newUse": "A smartphone with integrated camera and display capabilities, used to capture and display a scene in a single physical role.",
+                "assumptionsToTest": [
+                  "The smartphone has access to both camera and display functions.",
+                  "The smartphone's camera and display are compatible and can be integrated into a single role.",
+                  "The smartphone can perform both capture and display actions sequentially."
+                ],
+                "resourceReview": {
+                  "model": "scrapmind-qwen3-16k:eval",
+                  "status": "not-completed",
+                  "issues": [],
+                  "boundary": "An AI resource critique can miss errors. It is not physical validation or a proof of useful performance. The owner must review the procedure and test its assumptions."
+                }
+              }
+            },
+            "plan": {
+              "recipe": {
+                "id": "idea-192b318d-4a4d-4c33-b929-e7aec010fe25-1",
+                "title": "Smartphone Scene Capture and Display",
+                "subtitle": "Capture a scene using the smartphone's camera and display the image on the same device in a single physical role.",
+                "category": "fabrication",
+                "goalTerms": [
+                  "Smartphone Scene Capture and Display",
+                  "Capture a scene using the smartphone's camera and "
+                ],
+                "minutes": 120,
+                "difficulty": "Moderate",
+                "visual": "stand",
+                "requirements": [
+                  {
+                    "id": "role-1",
+                    "label": "Camera and Display Integration",
+                    "quantity": 1,
+                    "explanation": "Integrate the smartphone's camera and display into a single physical role, ensuring both functions are operational and aligned for scene capture and display.",
+                    "alternatives": [
+                      {
+                        "capabilities": ["camera", "display", "compute", "network"],
+                        "kinds": ["material", "device"]
+                      }
+                    ]
+                  }
+                ],
+                "steps": [
+                  {
+                    "id": "step-1",
+                    "title": "Arrange Camera and Display Components",
+                    "instruction": "Position the smartphone so that its camera and display are aligned and ready for use.",
+                    "requirements": ["role-1"],
+                    "check": "Verify that the camera and display are properly aligned and ready for use."
+                  },
+                  {
+                    "id": "step-2",
+                    "title": "Capture Scene",
+                    "instruction": "Use the smartphone's camera to capture a scene and ensure the display is active for the image.",
+                    "requirements": ["role-1"],
+                    "check": "Confirm that the camera has captured a scene and the display is active."
+                  },
+                  {
+                    "id": "step-3",
+                    "title": "Display Captured Image",
+                    "instruction": "Use the smartphone's display to show the captured image, ensuring the camera and display are working together.",
+                    "requirements": ["role-1"],
+                    "check": "Verify that the captured image is displayed on the smartphone's screen."
+                  }
+                ],
+                "checks": [
+                  {
+                    "id": "check-1",
+                    "label": "Camera and Display Alignment",
+                    "procedure": "Check that the smartphone's camera and display are properly aligned and ready for use.",
+                    "evidenceKind": "observation"
+                  },
+                  {
+                    "id": "check-2",
+                    "label": "Image Capture and Display",
+                    "procedure": "Confirm that the smartphone's camera has captured a scene and the display is active for the image.",
+                    "evidenceKind": "measurement"
+                  },
+                  {
+                    "id": "check-3",
+                    "label": "Integration Verification",
+                    "procedure": "Verify that the camera and display are integrated into a single physical role and functioning correctly.",
+                    "evidenceKind": "capture"
+                  }
+                ],
+                "boundaries": [
+                  "The smartphone must be used in a stand or similar support to ensure stability.",
+                  "The smartphone must be used in a lighted environment to ensure proper display and capture.",
+                  "AI-generated draft. Dimensions, attachment geometry, compatibility, scene interpretation, and successful physical trials remain unverified."
+                ],
+                "source": "generated",
+                "reviewed": false,
+                "ai": {
+                  "goal": "Use exactly one supplied smartphone to capture a scene and display the captured image on that same phone. These are sequential actions. Combine camera and display functions in one physical role rather than requiring two phones. The scene is unspecified; do not add objects, mounts, tools, hidden functions, accuracy claims, or successful tests.",
+                  "model": "scrapmind-qwen3-16k:eval",
+                  "mode": "local",
+                  "operationId": "192b318d-4a4d-4c33-b929-e7aec010fe25",
+                  "inventoryFingerprint": "[{\"id\":\"phone\",\"name\":\"Old smartphone\",\"kind\":\"device\",\"quantity\":1,\"available\":true,\"capabilities\":[\"camera\",\"compute\",\"display\",\"network\"],\"testedCapabilities\":[],\"evidence\":\"declared\",\"notes\":\"Demo declaration. Confirm camera access and power before using your own phone.\"}]",
+                  "reasoning": "The goal is to combine the camera and display functions into one physical role, using the supplied smartphone. This requires arranging the camera and display components, ensuring they are compatible and properly aligned, and verifying that the smartphone can perform both functions.",
+                  "newUse": "A smartphone with integrated camera and display capabilities, used to capture and display a scene in a single physical role.",
+                  "assumptionsToTest": [
+                    "The smartphone has access to both camera and display functions.",
+                    "The smartphone's camera and display are compatible and can be integrated into a single role.",
+                    "The smartphone can perform both capture and display actions sequentially."
+                  ],
+                  "resourceReview": {
+                    "model": "scrapmind-qwen3-16k:eval",
+                    "status": "not-completed",
+                    "issues": [],
+                    "boundary": "An AI resource critique can miss errors. It is not physical validation or a proof of useful performance. The owner must review the procedure and test its assumptions."
+                  }
+                }
+              },
+              "allocations": [
+                {
+                  "requirementId": "role-1",
+                  "itemId": "phone",
+                  "quantity": 1,
+                  "matchedCapabilities": ["camera", "display", "compute", "network"]
+                }
+              ],
+              "missing": [],
+              "status": "draft",
+              "coveredUnits": 1,
+              "totalUnits": 1,
+              "relevance": 12,
+              "evidence": "declared",
+              "untestedCapabilities": [
+                {
+                  "itemId": "phone",
+                  "capability": "camera"
+                },
+                {
+                  "itemId": "phone",
+                  "capability": "display"
+                },
+                {
+                  "itemId": "phone",
+                  "capability": "compute"
+                },
+                {
+                  "itemId": "phone",
+                  "capability": "network"
+                }
+              ],
+              "inventoryFingerprint": "[{\"id\":\"phone\",\"name\":\"Old smartphone\",\"kind\":\"device\",\"quantity\":1,\"available\":true,\"capabilities\":[\"camera\",\"compute\",\"display\",\"network\"],\"testedCapabilities\":[],\"evidence\":\"declared\",\"notes\":\"Demo declaration. Confirm camera access and power before using your own phone.\"}]",
+              "recipeFingerprint": "{\"id\":\"idea-192b318d-4a4d-4c33-b929-e7aec010fe25-1\",\"title\":\"Smartphone Scene Capture and Display\",\"subtitle\":\"Capture a scene using the smartphone's camera and display the image on the same device in a single physical role.\",\"category\":\"fabrication\",\"goalTerms\":[\"Smartphone Scene Capture and Display\",\"Capture a scene using the smartphone's camera and \"],\"minutes\":120,\"difficulty\":\"Moderate\",\"visual\":\"stand\",\"requirements\":[{\"id\":\"role-1\",\"label\":\"Camera and Display Integration\",\"quantity\":1,\"explanation\":\"Integrate the smartphone's camera and display into a single physical role, ensuring both functions are operational and aligned for scene capture and display.\",\"alternatives\":[{\"capabilities\":[\"camera\",\"display\",\"compute\",\"network\"],\"kinds\":[\"material\",\"device\"]}]}],\"steps\":[{\"id\":\"step-1\",\"title\":\"Arrange Camera and Display Components\",\"instruction\":\"Position the smartphone so that its camera and display are aligned and ready for use.\",\"requirements\":[\"role-1\"],\"check\":\"Verify that the camera and display are properly aligned and ready for use.\"},{\"id\":\"step-2\",\"title\":\"Capture Scene\",\"instruction\":\"Use the smartphone's camera to capture a scene and ensure the display is active for the image.\",\"requirements\":[\"role-1\"],\"check\":\"Confirm that the camera has captured a scene and the display is active.\"},{\"id\":\"step-3\",\"title\":\"Display Captured Image\",\"instruction\":\"Use the smartphone's display to show the captured image, ensuring the camera and display are working together.\",\"requirements\":[\"role-1\"],\"check\":\"Verify that the captured image is displayed on the smartphone's screen.\"}],\"checks\":[{\"id\":\"check-1\",\"label\":\"Camera and Display Alignment\",\"procedure\":\"Check that the smartphone's camera and display are properly aligned and ready for use.\",\"evidenceKind\":\"observation\"},{\"id\":\"check-2\",\"label\":\"Image Capture and Display\",\"procedure\":\"Confirm that the smartphone's camera has captured a scene and the display is active for the image.\",\"evidenceKind\":\"measurement\"},{\"id\":\"check-3\",\"label\":\"Integration Verification\",\"procedure\":\"Verify that the camera and display are integrated into a single physical role and functioning correctly.\",\"evidenceKind\":\"capture\"}],\"boundaries\":[\"The smartphone must be used in a stand or similar support to ensure stability.\",\"The smartphone must be used in a lighted environment to ensure proper display and capture.\",\"AI-generated draft. Dimensions, attachment geometry, compatibility, scene interpretation, and successful physical trials remain unverified.\"],\"source\":\"generated\",\"reviewed\":false,\"ai\":{\"goal\":\"Use exactly one supplied smartphone to capture a scene and display the captured image on that same phone. These are sequential actions. Combine camera and display functions in one physical role rather than requiring two phones. The scene is unspecified; do not add objects, mounts, tools, hidden functions, accuracy claims, or successful tests.\",\"model\":\"scrapmind-qwen3-16k:eval\",\"mode\":\"local\",\"operationId\":\"192b318d-4a4d-4c33-b929-e7aec010fe25\",\"inventoryFingerprint\":\"[{\\\"id\\\":\\\"phone\\\",\\\"name\\\":\\\"Old smartphone\\\",\\\"kind\\\":\\\"device\\\",\\\"quantity\\\":1,\\\"available\\\":true,\\\"capabilities\\\":[\\\"camera\\\",\\\"compute\\\",\\\"display\\\",\\\"network\\\"],\\\"testedCapabilities\\\":[],\\\"evidence\\\":\\\"declared\\\",\\\"notes\\\":\\\"Demo declaration. Confirm camera access and power before using your own phone.\\\"}]\",\"reasoning\":\"The goal is to combine the camera and display functions into one physical role, using the supplied smartphone. This requires arranging the camera and display components, ensuring they are compatible and properly aligned, and verifying that the smartphone can perform both functions.\",\"newUse\":\"A smartphone with integrated camera and display capabilities, used to capture and display a scene in a single physical role.\",\"assumptionsToTest\":[\"The smartphone has access to both camera and display functions.\",\"The smartphone's camera and display are compatible and can be integrated into a single role.\",\"The smartphone can perform both capture and display actions sequentially.\"],\"resourceReview\":{\"model\":\"scrapmind-qwen3-16k:eval\",\"status\":\"not-completed\",\"issues\":[],\"boundary\":\"An AI resource critique can miss errors. It is not physical validation or a proof of useful performance. The owner must review the procedure and test its assumptions.\"}}}"
+            },
+            "inventoryFit": 1,
+            "resourceReview": {
+              "model": "scrapmind-qwen3-16k:eval",
+              "status": "not-completed",
+              "issues": [],
+              "boundary": "An AI resource critique can miss errors. It is not physical validation or a proof of useful performance. The owner must review the procedure and test its assumptions."
+            },
+            "physicalReview": "pending",
+            "novelty": "model-claim-unverified"
+          }
+        ],
+        "model": "scrapmind-qwen3-16k:eval",
+        "mode": "local",
+        "attempts": 1,
+        "calls": 2,
+        "repairAttempted": false,
+        "repairApplied": false,
+        "reviewed": false,
+        "ranking": "resource-review-then-declared-inventory-coverage",
+        "boundary": "AI-generated drafts. Resource contracts, allocation, and model critique do not verify physical geometry, compatibility, hidden properties, useful performance, or research novelty."
+      },
+      "assessments": [
+        {
+          "contract": "pass",
+          "problems": [],
+          "signals": [],
+          "coverage": {
+            "coveredUnits": 1,
+            "totalUnits": 1
+          },
+          "allocations": [
+            {
+              "requirementId": "role-1",
+              "itemId": "phone",
+              "quantity": 1,
+              "matchedCapabilities": ["camera", "display", "compute", "network"]
+            }
+          ],
+          "missing": [],
+          "removalChallenge": {
+            "removedItemIds": ["phone"],
+            "allocations": [],
+            "missing": [
+              {
+                "requirement": {
+                  "id": "role-1",
+                  "label": "Camera and Display Integration",
+                  "quantity": 1,
+                  "explanation": "Integrate the smartphone's camera and display into a single physical role, ensuring both functions are operational and aligned for scene capture and display.",
+                  "alternatives": [
+                    {
+                      "capabilities": ["camera", "display", "compute", "network"],
+                      "kinds": ["material", "device"]
+                    }
+                  ]
+                },
+                "quantity": 1
+              }
+            ],
+            "status": "blocked",
+            "changes": [
+              "Camera and Display Integration: no available substitute. Build is blocked."
+            ]
+          },
+          "humanReview": "pending",
+          "physicalValidation": "not-performed"
+        }
+      ]
+    }
+  ],
+  "boundary": "Contract checks and model critiques do not establish instruction completeness, usefulness, physical feasibility, recognition accuracy, or research novelty. Every generated proposal still requires independent human review and physical validation. Synthetic protocol runs are not model benchmarks."
+}

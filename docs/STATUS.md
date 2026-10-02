@@ -1,10 +1,10 @@
 # Engineering status
 
-Date: 2026-10-02. Release: 0.1.0-alpha.6.
+Date: 2026-10-02. Release: 0.1.0-alpha.7.
 
 ## Executed software validation
 
-103 core/API/model-protocol/persistence/evaluation tests pass. The emitted CLI was also run through local initialization, readable procedures, inventory substitution, stale-build reporting, bundle audit, and restoration. An additional emitted-CLI smoke run exercised empty initialization, a synthetic HTTP vision response, owner review, declared inventory, photo checksums, bundle audit, and restoration. These smoke runs used public demo data or synthetic fixtures; no live vision inference or physical trial occurred.
+107 core/API/model-protocol/persistence/evaluation tests pass. The emitted CLI was also run through local initialization, readable procedures, inventory substitution, stale-build reporting, bundle audit, and restoration. An additional emitted-CLI smoke run exercised empty initialization, a synthetic HTTP vision response, owner review, declared inventory, photo checksums, bundle audit, and restoration. These smoke runs used public demo data or synthetic fixtures; no live vision inference or physical trial occurred.
 
 - Strict TypeScript checking and emitted ESM build.
 - Starter allocation and missing-resource checks.
@@ -27,6 +27,8 @@ Date: 2026-10-02. Release: 0.1.0-alpha.6.
 - AI portfolio protocol with action-target contracts, capture-evidence checks, schema repair, critique, semantic repair, and fresh review of changed text. Success cases use synthetic responses.
 - Conservative prose signals remain visible when a model critic reports none; malformed critiques are recorded as incomplete. Model response bytes are bounded before JSON parsing. Reasoning token-field compatibility and separate critic routing are covered by synthetic protocol tests.
 - Saved CLI build workflow, image imports, recorded owner claims, full evidence export/import, checksum audits, missing-image reports, recipe and inventory invalidation, private file permissions, exclusive outputs, symlink rejection, and concurrent-write refusal.
+- Explicit reasoning effort is validated before inference, omitted by default, independent of token-field compatibility, and retained as requested configuration in evaluation metadata. Synthetic protocol tests cover generation and critic routing.
+- Required support hardware hidden in checks, assumptions, or boundaries remains a software issue despite a clean model critic. Explicit support roles and negated hardware mentions are covered by regression tests.
 - Reasoning and physical assumptions survive workspace round trips. Saving AI drafts refuses an inventory revision changed during inference.
 - Photo-input protocol, canonical base64/MIME/size checks, bounded schema repair, uncertain candidates, valid existing-item references, and disabled vision behavior. Synthetic model responses supply protocol success cases.
 - Owner photo review rejects unconfirmed, duplicate, unknown, stale, tested, or synthetic accepted declarations. Explicit replacements use owner counts and clear previous tested claims. Source photos are required for acceptance and retained in bundles; scan images cannot become build captures.
@@ -47,12 +49,14 @@ Portfolio exploration exposed a webcam used as a projector, undeclared parts, an
 
 The live evaluation command was exercised against the installed `llama3.2:3b`: four initial development cases were rejected; a diagnostic exposed manual lamp positioning labeled as hardware rotation. After adding role-action repair guidance and correcting the capture case's missing host, a revised four-case run returned one draft, which still failed the required-illumination-action contract despite a clean model critique. Reports retain exact case snapshots and measured timings. This is not dependable generation or a controlled aggregate A/B result; see [the recorded evaluations](../evaluations/README.md).
 
+An explicitly downloaded `qwen3:1.7b` text model was evaluated with default effort and with `reasoning_effort: none`. A named variant reused its weights with a 16384-token context; the server reported that allocation. The four-case 16k run returned two drafts, with incomplete critiques for both. One passed the v1 software contract while requiring an undeclared stand in its boundaries. Reapplying v2 to the retained outputs produces zero contract passes out of two proposals, without new inference. Exact reports, model digests, the variant Modelfile, and the separate rescore are public. These are small exploratory runs with uncontrolled sampling/configuration differences, not evidence that context or reasoning settings improve invention quality.
+
 ## Not demonstrated
 
 - Physical assembly success, mounting compatibility, stability ratings, electrical suitability, or measured optical quality.
 - Capture from an actual physical camera, phone pairing, dimensioned fabrication, or a finished visual workbench.
 - Arbitrary object recognition, general invention intelligence, learned physical planning, or research novelty.
-- Live vision-model recognition accuracy. Both installed local models report completion capabilities without vision; no images were sent to them and no vision model was downloaded.
+- Live vision-model recognition accuracy. The recorded Llama and Qwen text models and evaluation variant report no vision capability; no images were sent to them and no vision model was downloaded.
 
 ## Next concrete work
 

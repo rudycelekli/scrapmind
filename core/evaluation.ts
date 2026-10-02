@@ -192,7 +192,7 @@ export async function evaluateIdeas(
   return {
     format: 'scrapmind-ai-evaluation' as const,
     version: 1 as const,
-    procedure: 'inventory-idea-contracts-v1' as const,
+    procedure: 'inventory-idea-contracts-v2' as const,
     id: crypto.randomUUID(),
     provenance,
     startedAt,
@@ -202,6 +202,7 @@ export async function evaluateIdeas(
       reviewModel: config.reviewModel ?? config.model,
       mode: providerMode(config),
       profile: config.profile ?? 'compatible',
+      reasoningEffort: config.reasoningEffort ?? 'provider-default',
       format: config.format ?? 'json_schema',
       maxOutputTokens: config.maxOutputTokens ?? (config.profile === 'reasoning' ? 16384 : 8192),
     },

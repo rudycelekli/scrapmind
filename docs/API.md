@@ -54,7 +54,7 @@ The default installation returns HTTP 503 without contacting a model. Invalid re
 
 Each explicit operation makes at most five model calls, with a 240-second operation timeout and 90 seconds per call. Failed critique is reported as `not-completed`, never clean. The response contains `calls`, generation `attempts`, `repairAttempted`, and `repairApplied`. The API returns proposals; it does not persist them. The saved CLI workbench checks inventory revision before storing its results.
 
-Provider configuration supports `SCRAPMIND_AI_REVIEW_MODEL`, `SCRAPMIND_AI_PROFILE`, and `SCRAPMIND_AI_MAX_OUTPUT_TOKENS` in addition to the existing settings. See [AI configuration and limits](AI.md).
+Provider configuration supports `SCRAPMIND_AI_REVIEW_MODEL`, `SCRAPMIND_AI_PROFILE`, `SCRAPMIND_AI_REASONING_EFFORT`, and `SCRAPMIND_AI_MAX_OUTPUT_TOKENS` in addition to the existing settings. Status reports configured effort or `provider-default`; that is configuration, not a measured capability. See [AI configuration and limits](AI.md).
 
 The API is a local development interface, not a public multi-user service. Authentication, multi-user storage, remote deployment, and device pairing are separate roadmap work.
 

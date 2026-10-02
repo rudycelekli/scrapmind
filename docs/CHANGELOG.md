@@ -1,5 +1,13 @@
 # Changes
 
+## 0.1.0-alpha.7 — Explicit reasoning controls and hidden-support review
+
+Model operations accept an optional validated reasoning-effort setting, independently of token-field compatibility. Default requests omit it. Generation, critique, legacy invention, and vision use the same explicit setting; status and evaluation artifacts expose requested configuration without credentials. Supported effort values depend on the chosen provider/model.
+
+Live Qwen3 exploration revealed a phone draft whose software pass concealed a required stand in its boundaries. Conservative resource review now inspects checks, assumptions, boundaries, purpose, and proposed new use, and flags required support hardware without a declared support/attachment role. These signals survive a clean model critique. Evaluation procedure v2 distinguishes the revised assessment; original reports remain unchanged.
+
+Validation: 107 tests, strict TypeScript, emitted ESM, and formatting. Three new live text-model records, sanitized model digests/configuration, a reproducible 16k variant Modelfile, and a separate zero-inference rescore are retained. The revised rescore rejects both generated drafts from that run. No dependable invention, vision recognition, physical success, or finished visual interface is established. See [recorded results](../evaluations/README.md).
+
 ## 0.1.0-alpha.6 — Live AI evaluation and action-aware repair guidance
 
 The explicit evaluation command runs declared inventory challenges against configured generation/critic models and retains inputs, failures, returned drafts, independent software contracts, removal plans, timings, attempted request counts, and pending human/physical review. Reports separate required actions, allocated capabilities, expected missing resources, text signals, and incomplete critiques. Existing output files are refused before inference; Ctrl+C retains partial results. Injected responses cannot be labeled live benchmarks.

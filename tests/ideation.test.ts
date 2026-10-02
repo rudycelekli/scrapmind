@@ -307,16 +307,62 @@ it('supports reasoning-compatible token parameters and a separately configured c
       ...config,
       profile: 'reasoning',
       maxOutputTokens: 20000,
+      reasoningEffort: 'high',
       reviewModel: 'synthetic-review-model',
     },
     sequence([{ concepts: [conceptFixture()] }, { issues: [] }], (body, index) => {
       expect(body.max_completion_tokens).toBe(20000);
+      expect(body.reasoning_effort).toBe('high');
       expect(body.temperature).toBeUndefined();
       expect(body.max_tokens).toBeUndefined();
       expect(body.model).toBe(index === 0 ? config.model : 'synthetic-review-model');
     }),
   );
   expect(result.proposals[0].recipe.ai?.resourceReview.model).toBe('synthetic-review-model');
+});
+
+it('retains an undeclared required stand hidden in boundaries despite a clean critic', async () => {
+  const concept = conceptFixture();
+  concept.roles.forEach((role) => {
+    role.capabilities = role.capabilities.filter((capability) => capability !== 'stable-base');
+  });
+  concept.boundaries = ['The phone must be used in a stand or similar support.'];
+  const signals = resourceSignals([concept]);
+  expect(
+    signals.some((issue) => issue.kind === 'undeclared-resource' && issue.stepIndex === null),
+  ).toBe(true);
+  const result = await ideate(
+    request(),
+    config,
+    sequence([{ concepts: [concept] }, { issues: [] }, { concepts: [concept] }, { issues: [] }]),
+  );
+  expect(result.proposals[0].resourceReview.status).toBe('issues-found');
+  expect(
+    result.proposals[0].resourceReview.issues.some((issue) => issue.kind === 'undeclared-resource'),
+  ).toBe(true);
+  concept.boundaries = ['Do not use a stand or a mount.'];
+  expect(resourceSignals([concept]).some((issue) => issue.kind === 'undeclared-resource')).toBe(
+    false,
+  );
+});
+
+it('does not treat an explicitly declared missing support role as invented hardware', () => {
+  const concept = conceptFixture();
+  concept.boundaries = ['The camera must be positioned in a tripod mount.'];
+  expect(resourceSignals([concept]).some((issue) => issue.kind === 'undeclared-resource')).toBe(
+    true,
+  );
+  concept.roles.push({
+    label: 'Missing tripod',
+    explanation: 'An explicitly needed support.',
+    quantity: 1,
+    capabilities: ['vertical-support'],
+    kinds: ['material'],
+  });
+  concept.steps[0].roles.push(3);
+  expect(resourceSignals([concept]).some((issue) => issue.kind === 'undeclared-resource')).toBe(
+    false,
+  );
 });
 
 it('makes at most five calls across schema repair, critique, semantic repair and fresh critique', async () => {

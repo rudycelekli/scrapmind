@@ -1,0 +1,353 @@
+{
+  "format": "scrapmind-retained-output-rescore",
+  "version": 1,
+  "recordedAt": "2026-10-02T23:34:41.543Z",
+  "sourceReport": "evaluations/results/2026-10-02-qwen3-16k-effort-none.json",
+  "sourceReportId": "37b0c095-71d6-4a03-9446-871aecfa3586",
+  "sourceProcedure": "inventory-idea-contracts-v1",
+  "revisedProcedure": "inventory-idea-contracts-v2",
+  "provenance": "software-rescore-of-retained-model-output",
+  "newModelRequests": 0,
+  "summary": {
+    "generatedProposals": 2,
+    "contractPasses": 0,
+    "contractFailures": 2
+  },
+  "results": [
+    {
+      "caseId": "camera-light-panel",
+      "originalAssessments": [
+        {
+          "contract": "fail",
+          "problems": [
+            "Required compare action is absent.",
+            "The procedure requires units outside the available declared inventory.",
+            "Required camera capability has no allocated declared role."
+          ],
+          "signals": [],
+          "coverage": {
+            "coveredUnits": 3,
+            "totalUnits": 4
+          },
+          "allocations": [
+            {
+              "requirementId": "role-2",
+              "itemId": "laptop",
+              "quantity": 1,
+              "matchedCapabilities": ["compute", "display", "network", "usb-power"]
+            },
+            {
+              "requirementId": "role-3",
+              "itemId": "lamp",
+              "quantity": 1,
+              "matchedCapabilities": ["light"]
+            },
+            {
+              "requirementId": "role-4",
+              "itemId": "panel",
+              "quantity": 1,
+              "matchedCapabilities": ["flat-panel", "stable-base"]
+            }
+          ],
+          "missing": [
+            {
+              "requirement": {
+                "id": "role-1",
+                "label": "webcam",
+                "quantity": 1,
+                "explanation": "Capture the panel's appearance under two lamp positions using the webcam and laptop host.",
+                "alternatives": [
+                  {
+                    "capabilities": [
+                      "camera",
+                      "compute",
+                      "display",
+                      "light",
+                      "stable-base",
+                      "vertical-support",
+                      "clamp",
+                      "fastener"
+                    ],
+                    "kinds": ["material", "device", "tool"]
+                  }
+                ]
+              },
+              "quantity": 1
+            }
+          ],
+          "removalChallenge": {
+            "removedItemIds": ["webcam"],
+            "allocations": [
+              {
+                "requirementId": "role-2",
+                "itemId": "laptop",
+                "quantity": 1,
+                "matchedCapabilities": ["compute", "display", "network", "usb-power"]
+              },
+              {
+                "requirementId": "role-3",
+                "itemId": "lamp",
+                "quantity": 1,
+                "matchedCapabilities": ["light"]
+              },
+              {
+                "requirementId": "role-4",
+                "itemId": "panel",
+                "quantity": 1,
+                "matchedCapabilities": ["flat-panel", "stable-base"]
+              }
+            ],
+            "missing": [
+              {
+                "requirement": {
+                  "id": "role-1",
+                  "label": "webcam",
+                  "quantity": 1,
+                  "explanation": "Capture the panel's appearance under two lamp positions using the webcam and laptop host.",
+                  "alternatives": [
+                    {
+                      "capabilities": [
+                        "camera",
+                        "compute",
+                        "display",
+                        "light",
+                        "stable-base",
+                        "vertical-support",
+                        "clamp",
+                        "fastener"
+                      ],
+                      "kinds": ["material", "device", "tool"]
+                    }
+                  ]
+                },
+                "quantity": 1
+              }
+            ],
+            "status": "blocked",
+            "changes": []
+          },
+          "humanReview": "pending",
+          "physicalValidation": "not-performed"
+        }
+      ],
+      "revisedAssessments": [
+        {
+          "contract": "fail",
+          "problems": [
+            "Required compare action is absent.",
+            "The procedure requires units outside the available declared inventory.",
+            "Required camera capability has no allocated declared role."
+          ],
+          "signals": [],
+          "coverage": {
+            "coveredUnits": 3,
+            "totalUnits": 4
+          },
+          "allocations": [
+            {
+              "requirementId": "role-2",
+              "itemId": "laptop",
+              "quantity": 1,
+              "matchedCapabilities": ["compute", "display", "network", "usb-power"]
+            },
+            {
+              "requirementId": "role-3",
+              "itemId": "lamp",
+              "quantity": 1,
+              "matchedCapabilities": ["light"]
+            },
+            {
+              "requirementId": "role-4",
+              "itemId": "panel",
+              "quantity": 1,
+              "matchedCapabilities": ["flat-panel", "stable-base"]
+            }
+          ],
+          "missing": [
+            {
+              "requirement": {
+                "id": "role-1",
+                "label": "webcam",
+                "quantity": 1,
+                "explanation": "Capture the panel's appearance under two lamp positions using the webcam and laptop host.",
+                "alternatives": [
+                  {
+                    "capabilities": [
+                      "camera",
+                      "compute",
+                      "display",
+                      "light",
+                      "stable-base",
+                      "vertical-support",
+                      "clamp",
+                      "fastener"
+                    ],
+                    "kinds": ["material", "device", "tool"]
+                  }
+                ]
+              },
+              "quantity": 1
+            }
+          ],
+          "removalChallenge": {
+            "removedItemIds": ["webcam"],
+            "allocations": [
+              {
+                "requirementId": "role-2",
+                "itemId": "laptop",
+                "quantity": 1,
+                "matchedCapabilities": ["compute", "display", "network", "usb-power"]
+              },
+              {
+                "requirementId": "role-3",
+                "itemId": "lamp",
+                "quantity": 1,
+                "matchedCapabilities": ["light"]
+              },
+              {
+                "requirementId": "role-4",
+                "itemId": "panel",
+                "quantity": 1,
+                "matchedCapabilities": ["flat-panel", "stable-base"]
+              }
+            ],
+            "missing": [
+              {
+                "requirement": {
+                  "id": "role-1",
+                  "label": "webcam",
+                  "quantity": 1,
+                  "explanation": "Capture the panel's appearance under two lamp positions using the webcam and laptop host.",
+                  "alternatives": [
+                    {
+                      "capabilities": [
+                        "camera",
+                        "compute",
+                        "display",
+                        "light",
+                        "stable-base",
+                        "vertical-support",
+                        "clamp",
+                        "fastener"
+                      ],
+                      "kinds": ["material", "device", "tool"]
+                    }
+                  ]
+                },
+                "quantity": 1
+              }
+            ],
+            "status": "blocked",
+            "changes": []
+          },
+          "humanReview": "pending",
+          "physicalValidation": "not-performed"
+        }
+      ]
+    },
+    {
+      "caseId": "single-phone",
+      "originalAssessments": [
+        {
+          "contract": "pass",
+          "problems": [],
+          "signals": [],
+          "coverage": {
+            "coveredUnits": 1,
+            "totalUnits": 1
+          },
+          "allocations": [
+            {
+              "requirementId": "role-1",
+              "itemId": "phone",
+              "quantity": 1,
+              "matchedCapabilities": ["camera", "display", "compute", "network"]
+            }
+          ],
+          "missing": [],
+          "removalChallenge": {
+            "removedItemIds": ["phone"],
+            "allocations": [],
+            "missing": [
+              {
+                "requirement": {
+                  "id": "role-1",
+                  "label": "Camera and Display Integration",
+                  "quantity": 1,
+                  "explanation": "Integrate the smartphone's camera and display into a single physical role, ensuring both functions are operational and aligned for scene capture and display.",
+                  "alternatives": [
+                    {
+                      "capabilities": ["camera", "display", "compute", "network"],
+                      "kinds": ["material", "device"]
+                    }
+                  ]
+                },
+                "quantity": 1
+              }
+            ],
+            "status": "blocked",
+            "changes": [
+              "Camera and Display Integration: no available substitute. Build is blocked."
+            ]
+          },
+          "humanReview": "pending",
+          "physicalValidation": "not-performed"
+        }
+      ],
+      "revisedAssessments": [
+        {
+          "contract": "fail",
+          "problems": ["Conservative instruction-resource text signals remain unresolved."],
+          "signals": [
+            {
+              "kind": "undeclared-resource",
+              "detail": "Software text rule: the proposal requires a stand, tripod, mount, or holder, but no physical role declares support or attachment capabilities. Inspect the omitted hardware; requirements in assumptions, checks, and boundaries still need explicit roles.",
+              "stepIndex": null
+            }
+          ],
+          "coverage": {
+            "coveredUnits": 1,
+            "totalUnits": 1
+          },
+          "allocations": [
+            {
+              "requirementId": "role-1",
+              "itemId": "phone",
+              "quantity": 1,
+              "matchedCapabilities": ["camera", "display", "compute", "network"]
+            }
+          ],
+          "missing": [],
+          "removalChallenge": {
+            "removedItemIds": ["phone"],
+            "allocations": [],
+            "missing": [
+              {
+                "requirement": {
+                  "id": "role-1",
+                  "label": "Camera and Display Integration",
+                  "quantity": 1,
+                  "explanation": "Integrate the smartphone's camera and display into a single physical role, ensuring both functions are operational and aligned for scene capture and display.",
+                  "alternatives": [
+                    {
+                      "capabilities": ["camera", "display", "compute", "network"],
+                      "kinds": ["material", "device"]
+                    }
+                  ]
+                },
+                "quantity": 1
+              }
+            ],
+            "status": "blocked",
+            "changes": [
+              "Camera and Display Integration: no available substitute. Build is blocked."
+            ]
+          },
+          "humanReview": "pending",
+          "physicalValidation": "not-performed"
+        }
+      ]
+    }
+  ],
+  "boundary": "This reapplies revised deterministic checks to the original retained model output and exact case snapshots. It is not a fresh model run, independent human review, physical trial, or usefulness/novelty score. The original live report remains unchanged. English resource signals are conservative and incomplete; they may produce false positives."
+}

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { validateProvider } from '../core/model.js';
+import { validateProvider, reasoningEffortSchema } from '../core/model.js';
 import type { ProviderConfig } from '../core/inventor.js';
 
 /** Read owner configuration only; this never contacts a provider or reveals its key. */
@@ -19,6 +19,9 @@ export function configuredProvider(
     apiKey: env.SCRAPMIND_AI_KEY,
     format: z.enum(['json_schema', 'json_object']).parse(env.SCRAPMIND_AI_FORMAT ?? 'json_schema'),
     profile: z.enum(['compatible', 'reasoning']).parse(env.SCRAPMIND_AI_PROFILE ?? 'compatible'),
+    ...(env.SCRAPMIND_AI_REASONING_EFFORT !== undefined
+      ? { reasoningEffort: reasoningEffortSchema.parse(env.SCRAPMIND_AI_REASONING_EFFORT) }
+      : {}),
     ...(env.SCRAPMIND_AI_MAX_OUTPUT_TOKENS
       ? {
           maxOutputTokens: z.coerce
