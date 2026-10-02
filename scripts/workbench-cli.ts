@@ -14,6 +14,10 @@ import {
   recordWorkbenchCheck,
   attachWorkbenchImage,
   saveWorkbenchIdeas,
+  saveWorkbenchScan,
+  workbenchScan,
+  inventoryReviewTemplate,
+  reviewWorkbenchScan,
 } from '../core/workbench.js';
 import { reportWorkbench, renderWorkbenchReport } from '../core/report.js';
 import { ideate } from '../core/ideation.js';
@@ -31,6 +35,14 @@ import {
   writeNewOutput,
 } from './disk-workspace.js';
 import { configuredProvider } from './provider-config.js';
+import {
+  scanInventory,
+  photoDataUrl,
+  inventoryReviewSchema,
+  MAX_INVENTORY_PHOTO_BYTES,
+  type InventoryScan,
+} from '../core/inventory-scan.js';
+import { workspaceArtifacts } from '../core/workspace.js';
 
 const specifications: Record<string, { values: string[]; flags: string[] }> = {
   init: { values: ['inventory', 'name'], flags: [] },
@@ -45,6 +57,10 @@ const specifications: Record<string, { values: string[]; flags: string[] }> = {
   image: { values: ['build', 'device', 'file'], flags: [] },
   check: { values: ['build', 'check', 'outcome', 'note', 'artifact'], flags: [] },
   ideate: { values: ['goal', 'count'], flags: ['json'] },
+  scan: { values: ['photo'], flags: ['json'] },
+  'scan-show': { values: ['scan'], flags: ['json'] },
+  'scan-template': { values: ['scan', 'output'], flags: [] },
+  'scan-review': { values: ['file'], flags: [] },
   report: { values: ['output'], flags: ['json'] },
   bundle: { values: ['output'], flags: [] },
   import: { values: ['bundle'], flags: [] },
@@ -52,12 +68,16 @@ const specifications: Record<string, { values: string[]; flags: string[] }> = {
 };
 export const help = `SCRAPMIND saved workbench
 Usage: npm run workbench -- COMMAND [--workspace .scrapmind] [options]
-init --inventory path.json --name "My workbench"
+init [--inventory path.json] --name "My workbench"
 plan [--goal "..."] [--json]
 inventory --file path.json
 availability --item ID --available true|false
 recipe --file recipe.json [--replace]
 ideate --goal "..." [--count 1|2|3] [--json]  (explicit configured model operation)
+scan --photo path.png|jpg [--json]  (explicit configured vision operation)
+scan-show --scan ID [--json]
+scan-template --scan ID [--output new-review.json]
+scan-review --file owner-review.json
 review --recipe ID --acknowledge-review [--acknowledge-resource-issues]
 start --recipe ID [--id ID]
 show --build ID [--json]
@@ -117,6 +137,41 @@ function planText(plan: Plan, inventory: InventoryItem[], detailed = false): str
   return lines.join('\n');
 }
 
+function scanText(scan: InventoryScan): string {
+  const lines = [
+    `Photo suggestions — ${scan.scene}`,
+    `Scan: ${scan.id}`,
+    scan.summary,
+    `Vision model: ${scan.model}; ${scan.attempts} call(s). Suggestions remain unverified.`,
+  ];
+  for (const proposal of scan.proposals) {
+    const resolution = scan.resolutions.find((entry) => entry.proposalId === proposal.id);
+    lines.push(
+      '',
+      `${proposal.id}: ${proposal.label}; suggested kind ${proposal.kind ?? 'unknown'}; count estimate ${proposal.countEstimate}; ${resolution?.action ?? 'pending owner review'}`,
+      `Visible features claimed by model: ${proposal.visibleFeatures}`,
+    );
+    if (proposal.possibleExistingItemIds.length)
+      lines.push(
+        `Possible existing matches: ${proposal.possibleExistingItemIds.join(', ')}. Check identity and avoid counting the same unit twice.`,
+      );
+    for (const suggestion of proposal.capabilitySuggestions)
+      lines.push(
+        `Possible ${suggestion.capability}: ${suggestion.why}`,
+        `  Owner inspection: ${suggestion.ownerCheck}`,
+      );
+    for (const uncertainty of proposal.uncertainties) lines.push(`Unknown: ${uncertainty}`);
+  }
+  lines.push(
+    '',
+    'Questions for the owner:',
+    ...scan.questionsForOwner.map((question) => `  ${question}`),
+    '',
+    scan.boundary,
+  );
+  return lines.join('\n');
+}
+
 function parseArgs(command: string, args: string[]) {
   const specification = specifications[command];
   if (!specification) throw new Error(`Unknown workbench command: ${command}. Use --help.`);
@@ -163,7 +218,10 @@ export async function runWorkbench(
   const printText = (value: string) => output(value.replace(/[\x00-\x08\x0b-\x1f\x7f-\x9f]/g, ' '));
   const readJson = async (path: string) => JSON.parse(await readText(path));
   if (command === 'init') {
-    const workspace = createWorkbench(required('name'), await readJson(required('inventory')));
+    const workspace = createWorkbench(
+      required('name'),
+      optional('inventory') ? await readJson(required('inventory')) : [],
+    );
     await createDiskWorkbench(root, workspace);
     print({
       workspace: resolve(root),
@@ -227,6 +285,42 @@ export async function runWorkbench(
       );
     return;
   }
+  if (command === 'scan') {
+    const workspace = await loadDiskWorkbench(root);
+    if ((workspace.inventoryScans ?? []).length >= 100)
+      throw new Error('The workspace cannot fit another photo observation. Use a new workspace.');
+    const config = configuredProvider();
+    if (!config?.visionModel)
+      throw new Error('Configure SCRAPMIND_AI_VISION_MODEL. Nothing was sent to a provider.');
+    const bytes = await readBounded(required('photo'), MAX_INVENTORY_PHOTO_BYTES);
+    const { mimeType } = inspectImage(bytes);
+    const blob = new Blob([bytes], { type: mimeType });
+    const result = await scanInventory(
+      { inventory: workspace.inventory, image: await photoDataUrl(blob) },
+      config,
+    );
+    await mutateDiskWorkbench(root, async (current) => ({
+      workspace: await saveWorkbenchScan(current, result),
+      images: [result.image],
+    }));
+    if (flags.has('json')) print(result.scan);
+    else printText(scanText(result.scan));
+    return;
+  }
+  if (command === 'scan-show' || command === 'scan-template') {
+    const workspace = await loadDiskWorkbench(root);
+    if (command === 'scan-show') {
+      const scan = workbenchScan(workspace, required('scan'));
+      if (flags.has('json')) print(scan);
+      else printText(scanText(scan));
+    } else {
+      const template = inventoryReviewTemplate(workspace, required('scan'));
+      if (optional('output'))
+        await writeNewOutput(required('output'), JSON.stringify(template, null, 2));
+      else print(template);
+    }
+    return;
+  }
   if (['plan', 'show', 'report', 'bundle'].includes(command)) {
     const workspace = await loadDiskWorkbench(root);
     if (command === 'plan') {
@@ -261,10 +355,7 @@ export async function runWorkbench(
       else output(content.replace(/[\x00-\x08\x0b-\x1f\x7f-\x9f]/g, ' '));
       return;
     }
-    const artifacts = [
-      ...workspace.builds.flatMap((build) => build.artifacts),
-      ...workspace.deviceTrials.flatMap((trial) => (trial.artifact ? [trial.artifact] : [])),
-    ];
+    const artifacts = workspaceArtifacts(workspace);
     const json = await exportEvidenceBundle(workspace, async (id) => {
       const artifact = artifacts.find((entry) => entry.id === id);
       return artifact ? loadDiskImage(root, artifact) : undefined;
@@ -274,13 +365,21 @@ export async function runWorkbench(
     return;
   }
   // Parse input files before taking a write lock.
-  const input = ['inventory', 'recipe'].includes(command)
+  const input = ['inventory', 'recipe', 'scan-review'].includes(command)
     ? await readJson(required('file'))
     : undefined;
   const bytes = command === 'image' ? await readBounded(required('file'), 20_000_000) : undefined;
   let attachedId: string | undefined;
   let newBuildId: string | undefined;
   const workspace = await mutateDiskWorkbench(root, async (current) => {
+    if (command === 'scan-review') {
+      const parsed = inventoryReviewSchema.parse(input);
+      const scan = workbenchScan(current, parsed.scanId);
+      const image = parsed.decisions.some((decision) => decision.action !== 'reject')
+        ? await loadDiskImage(root, scan.artifact)
+        : undefined;
+      return { workspace: await reviewWorkbenchScan(current, input, image?.blob) };
+    }
     if (command === 'inventory') return { workspace: updateWorkbenchInventory(current, input) };
     if (command === 'availability') {
       const available = required('available');

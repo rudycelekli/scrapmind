@@ -5,6 +5,7 @@ import {
   importWorkspace,
   exportWorkspace,
   workspaceSchema,
+  workspaceArtifacts,
   type Workspace,
 } from '../core/workspace.js';
 import { verifyImageArtifact, imageArtifactSchema, type ImageArtifact } from '../core/evidence.js';
@@ -138,10 +139,7 @@ export async function createDiskWorkbench(
   const text = exportWorkspace(workspace);
   const byId = new Map(images.map((image) => [image.artifact.id, image]));
   if (byId.size !== images.length) throw new Error('Image IDs must be unique.');
-  const referenced = [
-    ...workspace.builds.flatMap((build) => build.artifacts),
-    ...workspace.deviceTrials.flatMap((trial) => (trial.artifact ? [trial.artifact] : [])),
-  ];
+  const referenced = workspaceArtifacts(workspace);
   if (
     referenced.length !== images.length ||
     images.some(
@@ -217,10 +215,7 @@ export async function mutateDiskWorkbench(
     await requireLock();
     await directory(join(root, 'images'));
     await directory(join(root, 'history'));
-    const referenced = [
-      ...workspace.builds.flatMap((build) => build.artifacts),
-      ...workspace.deviceTrials.flatMap((trial) => (trial.artifact ? [trial.artifact] : [])),
-    ];
+    const referenced = workspaceArtifacts(workspace);
     for (const image of result.images ?? []) {
       if (
         !referenced.some((artifact) => JSON.stringify(artifact) === JSON.stringify(image.artifact))

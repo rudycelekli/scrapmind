@@ -30,6 +30,7 @@ export function configuredProvider(
         }
       : {}),
     ...(env.SCRAPMIND_AI_REVIEW_MODEL ? { reviewModel: env.SCRAPMIND_AI_REVIEW_MODEL } : {}),
+    ...(env.SCRAPMIND_AI_VISION_MODEL ? { visionModel: env.SCRAPMIND_AI_VISION_MODEL } : {}),
   };
   validateProvider(config);
   return config;

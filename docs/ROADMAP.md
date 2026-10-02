@@ -16,6 +16,7 @@
 - Saved CLI workbench, exclusive writes, previous ledgers, retained photo files, readable build procedures, and auditable reports.
 - AI portfolios with resource-action contracts, allocation, conservative text signals, model critique, bounded repair, and retained reasoning/assumptions.
 - Reasoning-model request compatibility and configurable critic models; evaluation quality remains open.
+- Explicit vision-model inventory suggestions, retained source photos, owner declarations, and portable review decisions. Recognition accuracy remains untested with real workshop images.
 
 ## Next: a usable visual workbench
 
@@ -32,7 +33,7 @@ Design context is awaiting the user's product interview choices. The first inter
 
 - Complete and record actual physical starter builds with measured inventories.
 - Compare instruction-only baselines against adaptive support.
-- Add camera-assisted inventory suggestions that require confirmation.
+- Evaluate photo suggestions on real workshop images, including counts, occlusion, unknown objects, and duplicate inventory identity.
 - Expand device capability tests and validate physical capture quality with actual cameras.
 - Add dimensioned plans for bounded fabrication families.
 - Add secure, permissioned phone camera pairing with explicit connection limits.

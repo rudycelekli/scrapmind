@@ -77,6 +77,8 @@ The engine generates up to three ideas, checks action capabilities and conserved
 
 Reasoning-model compatibility and a separately configured critic are supported. No background inference, model downloads, or automatic upgrades occur. See [the AI engine and actual evaluation limits](docs/AI.md).
 
+You can also start an empty workbench and request **photo inventory suggestions** from an explicitly configured vision model. Objects, counts, and functions remain tentative until owner review; accepted entries are declared, never automatically measured or tested. Source photos and decisions survive portable exports. The protocol and review flow are tested with synthetic responses; real recognition accuracy is not established. See [the photo workflow](docs/INVENTORY-PHOTOS.md).
+
 You can also import your own [recipe](examples/document-scanner.json), or use the legacy `npm run invent` command for a simpler single-recipe schema/repair request:
 
 ```sh

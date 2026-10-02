@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import type { CapturedImage } from './camera.js';
 import { verifyImageArtifact } from './evidence.js';
-import { workspaceSchema, type Workspace } from './workspace.js';
+import { workspaceSchema, workspaceArtifacts, type Workspace } from './workspace.js';
 
 const MAX_BUNDLE_IMAGE_BYTES = 20_000_000;
 const MAX_BUNDLE_BYTES = 35_000_000;
@@ -28,10 +28,7 @@ const bundleSchema = z
   .strict();
 
 function artifactsFor(workspace: Workspace) {
-  const artifacts = [
-    ...workspace.builds.flatMap((build) => build.artifacts),
-    ...workspace.deviceTrials.flatMap((trial) => (trial.artifact ? [trial.artifact] : [])),
-  ];
+  const artifacts = workspaceArtifacts(workspace);
   if (artifacts.length > 1000) throw new Error('Evidence bundle is limited to 1000 images.');
   if (new Set(artifacts.map((artifact) => artifact.id)).size !== artifacts.length)
     throw new Error('Evidence bundle requires globally unique artifact IDs.');

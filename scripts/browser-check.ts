@@ -82,6 +82,32 @@ try {
         await lib.verifyImageArtifact(original.artifact, original.blob),
         'Capture checksum failed',
       );
+      // Protocol simulation only: no vision model identifies objects in this synthetic camera image.
+      const photoObservation = await lib.scanInventory(
+        {
+          inventory: lib.demoInventory(),
+          image: await lib.photoDataUrl(original.blob),
+          context: 'synthetic-test',
+        },
+        {
+          baseUrl: 'http://127.0.0.1:1/v1',
+          model: 'synthetic-text',
+          visionModel: 'synthetic-vision',
+        },
+        async (_url, init) => {
+          const request = JSON.parse(init!.body as string);
+          check(request.model === 'synthetic-vision', 'Photo input used the wrong model');
+          return new Response(
+            JSON.stringify({
+              choices: [{ message: { content: JSON.stringify(lib.photoObservationFixture()) } }],
+            }),
+          );
+        },
+      );
+      check(
+        photoObservation.scan.artifact.sha256 === original.artifact.sha256,
+        'Photo observation changed the original pixels',
+      );
       const width = original.artifact.width,
         height = original.artifact.height;
       const corrected = await lib.correctPerspective(
@@ -198,6 +224,7 @@ try {
       await stored.put(original);
       await stored.put(corrected);
       await stored.put(probe.image!);
+      await stored.put(photoObservation.image);
       await rejects(() => stored.put(original), /immutable/);
       stored.close();
       const reopened = await lib.ImageStore.open('scrapmind-browser-test');
@@ -208,19 +235,57 @@ try {
       );
       session = await lib.attachImage(session, plan, original.artifact, original.blob);
       session = await lib.attachImage(session, plan, corrected.artifact, corrected.blob);
-      const workspace = {
-        format: 'scrapmind-workspace' as const,
-        version: 1 as const,
-        name: 'Synthetic browser check',
-        inventory: lib.demoInventory(),
-        recipes: [],
-        builds: [session],
-        deviceTrials: [probe.trial],
-        exportedAt: new Date().toISOString(),
-      };
+      const workspace = await lib.saveWorkbenchScan(
+        {
+          format: 'scrapmind-workspace' as const,
+          version: 1 as const,
+          name: 'Synthetic browser check',
+          inventory: lib.demoInventory(),
+          recipes: [],
+          builds: [session],
+          deviceTrials: [probe.trial],
+          exportedAt: new Date().toISOString(),
+        },
+        photoObservation,
+      );
+      await rejects(
+        () =>
+          lib.reviewWorkbenchScan(
+            workspace,
+            {
+              format: 'scrapmind-inventory-review',
+              version: 1,
+              scanId: photoObservation.scan.id,
+              inventoryFingerprint: lib.inventoryFingerprint(workspace.inventory),
+              confirmedPhysicalInventory: true,
+              decisions: [
+                {
+                  proposalId: 'proposal-1',
+                  action: 'add',
+                  ownerNote: 'Synthetic policy test, not a physical inspection.',
+                  item: {
+                    id: 'synthetic-clamp',
+                    name: 'Synthetic clamp assertion',
+                    kind: 'tool',
+                    quantity: 1,
+                    available: true,
+                    capabilities: ['clamp'],
+                    notes: '',
+                  },
+                },
+              ],
+            },
+            photoObservation.image.blob,
+          ),
+        /synthetic scan/,
+      );
       const bundleJson = await lib.exportEvidenceBundle(workspace, (id) => reopened.get(id));
       const restoredBundle = await lib.importEvidenceBundle(bundleJson);
-      check(restoredBundle.images.length === 3, 'Bundle lost image evidence');
+      check(restoredBundle.images.length === 4, 'Bundle lost image evidence');
+      check(
+        restoredBundle.workspace.inventoryScans?.[0].context === 'synthetic-test',
+        'Bundle lost photo observation context',
+      );
       check(
         restoredBundle.workspace.deviceTrials[0].context === 'synthetic-test',
         'Bundle lost the trial context',
@@ -320,12 +385,15 @@ try {
         actualIntervalsMs: sequenceSummary.intervalsMs,
         deviceTrial: probe.trial.outcome,
         deviceTrialContext: probe.trial.context,
+        inventoryPhotoContext: photoObservation.scan.context,
+        inventoryPhotoProposals: photoObservation.scan.proposals.length,
+        visionResponseSource: 'synthetic-protocol-fixture',
         provenance: 'synthetic-browser-camera',
       };
     });
     assert.deepEqual(errors, []);
     console.log(
-      'PASS: synthetic Chromium capture, timed sequences, device trials, correction, local evidence, denial and cleanup.',
+      'PASS: synthetic Chromium capture, timed sequences, device trials, photo inventory protocol, correction, local evidence, denial and cleanup.',
     );
     console.log(JSON.stringify(result));
   } finally {

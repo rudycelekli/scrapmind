@@ -4,6 +4,9 @@ import { createApi } from '../scripts/api.js';
 import { demoInventory } from '../core/fixtures.js';
 import type { ProviderConfig } from '../core/inventor.js';
 import { conceptFixture } from './ideation-fixture.js';
+import { photoObservationFixture } from './inventory-scan-fixture.js';
+import { photoDataUrl } from '../core/inventory-scan.js';
+import { pngBlob } from './image-fixture.js';
 const servers: Server[] = [];
 afterEach(async () => {
   await Promise.all(
@@ -84,7 +87,10 @@ it('serves AI portfolios and serializes model operations across both invention r
       JSON.stringify({ choices: [{ message: { content: JSON.stringify(value) } }] }),
     );
   };
-  const url = await start({ baseUrl: 'http://localhost/v1', model: 'synthetic-test' }, fetcher);
+  const url = await start(
+    { baseUrl: 'http://localhost/v1', model: 'synthetic-test', visionModel: 'synthetic-vision' },
+    fetcher,
+  );
   const headers = { 'Content-Type': 'application/json', 'X-Scrapmind-Request': '1' };
   const request = fetch(`${url}/api/ideate`, {
     method: 'POST',
@@ -97,6 +103,9 @@ it('serves AI portfolios and serializes model operations across both invention r
       429,
     );
     expect((await fetch(`${url}/api/ideate`, { method: 'POST', headers, body: '{}' })).status).toBe(
+      429,
+    );
+    expect((await fetch(`${url}/api/scan`, { method: 'POST', headers, body: '{}' })).status).toBe(
       429,
     );
   } finally {
@@ -129,4 +138,57 @@ it('rejects malformed data and requests without the explicit API header', async 
       })
     ).status,
   ).toBe(400);
+});
+
+it('keeps photo inference disabled until configured and returns observations without echoing image bytes', async () => {
+  let calls = 0;
+  const fetcher: typeof fetch = async (_url, init) => {
+    calls++;
+    const body = JSON.parse(init!.body as string);
+    expect(body.model).toBe('synthetic-vision');
+    expect(body.messages[1].content[1].image_url.url).toContain('data:image/png;base64,');
+    return new Response(
+      JSON.stringify({
+        choices: [{ message: { content: JSON.stringify(photoObservationFixture()) } }],
+      }),
+    );
+  };
+  const headers = { 'Content-Type': 'application/json', 'X-Scrapmind-Request': '1' };
+  const input = JSON.stringify({
+    inventory: demoInventory(),
+    image: await photoDataUrl(pngBlob()),
+  });
+  const textOnly = await start(
+    { baseUrl: 'http://localhost/v1', model: 'synthetic-text' },
+    fetcher,
+  );
+  expect(
+    (await fetch(`${textOnly}/api/scan`, { method: 'POST', headers, body: input })).status,
+  ).toBe(503);
+  expect(calls).toBe(0);
+  const url = await start(
+    { baseUrl: 'http://localhost/v1', model: 'synthetic-text', visionModel: 'synthetic-vision' },
+    fetcher,
+  );
+  const status = await (await fetch(`${url}/api/status`)).json();
+  expect(status.model.vision).toMatchObject({ configured: true, name: 'synthetic-vision' });
+  const response = await fetch(`${url}/api/scan`, { method: 'POST', headers, body: input });
+  expect(response.status).toBe(200);
+  const scan = await response.json();
+  expect(scan.proposals).toHaveLength(2);
+  expect(scan.resolutions).toEqual([]);
+  expect(scan.artifact.source).toBe('imported-image');
+  expect(scan.image).toBeUndefined();
+  expect(JSON.stringify(scan)).not.toContain('data:image/');
+  expect(calls).toBe(1);
+  expect(
+    (
+      await fetch(`${url}/api/scan`, {
+        method: 'POST',
+        headers: { ...headers, Origin: 'https://unrelated.example' },
+        body: input,
+      })
+    ).status,
+  ).toBe(403);
+  expect(calls).toBe(1);
 });

@@ -22,12 +22,14 @@ it('reads explicit generation and review settings without contacting a provider'
       SCRAPMIND_AI_BASE_URL: 'http://localhost/v1',
       SCRAPMIND_AI_MODEL: 'generator',
       SCRAPMIND_AI_REVIEW_MODEL: 'critic',
+      SCRAPMIND_AI_VISION_MODEL: 'vision',
       SCRAPMIND_AI_PROFILE: 'reasoning',
       SCRAPMIND_AI_MAX_OUTPUT_TOKENS: '20000',
     }),
   ).toMatchObject({
     model: 'generator',
     reviewModel: 'critic',
+    visionModel: 'vision',
     profile: 'reasoning',
     maxOutputTokens: 20000,
   });

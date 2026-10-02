@@ -1,10 +1,10 @@
 # Engineering status
 
-Date: 2026-10-02. Release: 0.1.0-alpha.4.
+Date: 2026-10-02. Release: 0.1.0-alpha.5.
 
 ## Executed software validation
 
-81 core/API/model-protocol/persistence tests pass. The emitted CLI was also run through local initialization, readable procedures, inventory substitution, stale-build reporting, bundle audit, and restoration. Its smoke inventory was public demo data and no physical trial occurred.
+93 core/API/model-protocol/persistence tests pass. The emitted CLI was also run through local initialization, readable procedures, inventory substitution, stale-build reporting, bundle audit, and restoration. An additional emitted-CLI smoke run exercised empty initialization, a synthetic HTTP vision response, owner review, declared inventory, photo checksums, bundle audit, and restoration. These smoke runs used public demo data or synthetic fixtures; no live vision inference or physical trial occurred.
 
 - Strict TypeScript checking and emitted ESM build.
 - Starter allocation and missing-resource checks.
@@ -28,6 +28,10 @@ Date: 2026-10-02. Release: 0.1.0-alpha.4.
 - Conservative prose signals remain visible when a model critic reports none; malformed critiques are recorded as incomplete. Model response bytes are bounded before JSON parsing. Reasoning token-field compatibility and separate critic routing are covered by synthetic protocol tests.
 - Saved CLI build workflow, image imports, recorded owner claims, full evidence export/import, checksum audits, missing-image reports, recipe and inventory invalidation, private file permissions, exclusive outputs, symlink rejection, and concurrent-write refusal.
 - Reasoning and physical assumptions survive workspace round trips. Saving AI drafts refuses an inventory revision changed during inference.
+- Photo-input protocol, canonical base64/MIME/size checks, bounded schema repair, uncertain candidates, valid existing-item references, and disabled vision behavior. Synthetic model responses supply protocol success cases.
+- Owner photo review rejects unconfirmed, duplicate, unknown, stale, tested, or synthetic accepted declarations. Explicit replacements use owner counts and clear previous tested claims. Source photos are required for acceptance and retained in bundles; scan images cannot become build captures.
+- A local HTTP vision fixture executes empty-workbench initialization, scan, owner review, declared inventory, report, photo bundle audit, and restore. These use synthetic images and responses, not real object recognition.
+- Actual Chromium execution of photo-data-URL conversion, scan protocol simulation, IndexedDB storage, four-image bundle restoration, and refusal to apply a synthetic scan to owner inventory. The camera and model response remain explicitly synthetic.
 
 The repository's CI runs checks on Node.js 22 and 24, plus a Chromium camera job. A successful workflow is evidence for software correctness under its tests, not physical performance. The browser library exists; a designed camera interface is still pending.
 
@@ -44,6 +48,7 @@ Portfolio exploration exposed a webcam used as a projector, undeclared parts, an
 - Physical assembly success, mounting compatibility, stability ratings, electrical suitability, or measured optical quality.
 - Capture from an actual physical camera, phone pairing, dimensioned fabrication, or a finished visual workbench.
 - Arbitrary object recognition, general invention intelligence, learned physical planning, or research novelty.
+- Live vision-model recognition accuracy. Both installed local models report completion capabilities without vision; no images were sent to them and no vision model was downloaded.
 
 ## Next concrete work
 

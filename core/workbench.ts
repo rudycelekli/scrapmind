@@ -13,6 +13,13 @@ import { inventorySchema, inventoryFingerprint, type Plan, type Recipe } from '.
 import { workspaceSchema, type Workspace } from './workspace.js';
 import type { CapturedImage } from './camera.js';
 import type { IdeationResult } from './ideation.js';
+import {
+  inventoryScanSchema,
+  inventoryReviewSchema,
+  type InventoryScan,
+} from './inventory-scan.js';
+import { itemSchema } from './schema.js';
+import { imageArtifactSchema, verifyImageArtifact } from './evidence.js';
 
 export function createWorkbench(name: string, inventory: unknown): Workspace {
   return workspaceSchema.parse({
@@ -180,4 +187,139 @@ export async function attachWorkbenchImage(
 ): Promise<Workspace> {
   const { session, plan } = workbenchBuild(workspace, buildId);
   return replaceBuild(workspace, await attachImage(session, plan, image.artifact, image.blob));
+}
+
+export function workbenchScan(workspace: Workspace, scanId: string): InventoryScan {
+  workspace = workspaceSchema.parse(workspace);
+  const scan = (workspace.inventoryScans ?? []).find((entry) => entry.id === scanId);
+  if (!scan) throw new Error(`Unknown inventory scan: ${scanId}`);
+  return scan;
+}
+
+export async function saveWorkbenchScan(
+  workspace: Workspace,
+  result: { scan: InventoryScan; image: CapturedImage },
+): Promise<Workspace> {
+  workspace = workspaceSchema.parse(workspace);
+  const scan = inventoryScanSchema.parse(result.scan);
+  if ((workspace.inventoryScans ?? []).some((entry) => entry.id === scan.id))
+    throw new Error('Inventory scan IDs are immutable.');
+  if (scan.resolutions.length) throw new Error('New photo suggestions must be unreviewed.');
+  if (scan.inputInventoryFingerprint !== inventoryFingerprint(workspace.inventory))
+    throw new Error(
+      'Inventory changed while the vision model was working. Re-run photo suggestions with the current inventory.',
+    );
+  if (
+    JSON.stringify(imageArtifactSchema.parse(result.image.artifact)) !==
+      JSON.stringify(scan.artifact) ||
+    !(await verifyImageArtifact(scan.artifact, result.image.blob))
+  )
+    throw new Error('The scan photo is missing, changed, or bound to a different observation.');
+  return workspaceSchema.parse({
+    ...workspace,
+    inventoryScans: [...(workspace.inventoryScans ?? []), scan],
+  });
+}
+
+/** Intentionally invalid until the owner chooses actions, item IDs, and confirms the declarations. */
+export function inventoryReviewTemplate(workspace: Workspace, scanId: string) {
+  const scan = workbenchScan(workspace, scanId);
+  return {
+    format: 'scrapmind-inventory-review',
+    version: 1,
+    scanId,
+    inventoryFingerprint: inventoryFingerprint(workspace.inventory),
+    confirmedPhysicalInventory: false,
+    decisions: scan.proposals
+      .filter(
+        (proposal) => !scan.resolutions.some((resolution) => resolution.proposalId === proposal.id),
+      )
+      .map((proposal) => ({
+        proposalId: proposal.id,
+        action: 'pending',
+        ownerNote: '',
+        item: {
+          id: '',
+          name: proposal.label,
+          kind: proposal.kind,
+          quantity: proposal.countEstimate,
+          available: true,
+          capabilities: proposal.capabilitySuggestions.map((entry) => entry.capability),
+          notes: '',
+        },
+      })),
+  };
+}
+
+/** Explicit owner declarations; no automatic photo identification, quantity merge, or tested status. */
+export async function reviewWorkbenchScan(
+  workspace: Workspace,
+  input: unknown,
+  photo?: Blob,
+): Promise<Workspace> {
+  workspace = workspaceSchema.parse(workspace);
+  const review = inventoryReviewSchema.parse(input);
+  if (review.inventoryFingerprint !== inventoryFingerprint(workspace.inventory))
+    throw new Error(
+      'Inventory changed during your photo review. Regenerate the review template against the current inventory.',
+    );
+  const scan = workbenchScan(workspace, review.scanId);
+  const accepts = review.decisions.some((decision) => decision.action !== 'reject');
+  if (accepts) {
+    if (scan.context !== 'owner-photo')
+      throw new Error('A declared synthetic scan cannot establish owner inventory.');
+    if (!photo || !(await verifyImageArtifact(scan.artifact, photo)))
+      throw new Error(
+        'Restore the matching scan photo before accepting its inventory suggestions.',
+      );
+  }
+  let inventory = [...workspace.inventory];
+  const resolutions = [...scan.resolutions];
+  for (const decision of review.decisions) {
+    if (!scan.proposals.some((proposal) => proposal.id === decision.proposalId))
+      throw new Error('Unknown photo proposal.');
+    if (resolutions.some((resolution) => resolution.proposalId === decision.proposalId))
+      throw new Error('This photo proposal was already resolved.');
+    const recordedAt = new Date().toISOString();
+    if (decision.action === 'reject') {
+      resolutions.push({
+        proposalId: decision.proposalId,
+        action: 'rejected',
+        ownerNote: decision.ownerNote,
+        recordedAt,
+      });
+      continue;
+    }
+    const item = itemSchema.parse({
+      ...decision.item,
+      evidence: 'declared',
+      testedCapabilities: [],
+    });
+    const existing = inventory.findIndex((entry) => entry.id === item.id);
+    if (decision.action === 'add') {
+      if (existing >= 0)
+        throw new Error(
+          'Item ID exists. Use an explicit replacement after checking the physical count; quantities are not merged.',
+        );
+      inventory.push(item);
+    } else {
+      if (existing < 0)
+        throw new Error('An explicit replacement requires an existing inventory item ID.');
+      inventory[existing] = item;
+    }
+    resolutions.push({
+      proposalId: decision.proposalId,
+      action: decision.action === 'add' ? 'added' : 'replaced',
+      item,
+      ownerNote: decision.ownerNote,
+      recordedAt,
+    });
+  }
+  return workspaceSchema.parse({
+    ...workspace,
+    inventory: inventorySchema.parse(inventory),
+    inventoryScans: (workspace.inventoryScans ?? []).map((entry) =>
+      entry.id === scan.id ? { ...entry, resolutions } : entry,
+    ),
+  });
 }

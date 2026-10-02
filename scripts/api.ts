@@ -7,6 +7,7 @@ import { recipeSchema } from '../core/recipe-schema.js';
 import { recipes } from '../core/recipes.js';
 import { ideate } from '../core/ideation.js';
 import { validateProvider } from '../core/model.js';
+import { scanInventory } from '../core/inventory-scan.js';
 
 function respond(response: ServerResponse, status: number, value: unknown) {
   response.writeHead(status, {
@@ -43,7 +44,7 @@ export function createApi(config?: ProviderConfig, fetcher: typeof fetch = fetch
     const path = request.url?.split('?')[0];
     if (request.method === 'GET' && path === '/api/status')
       return respond(response, 200, {
-        version: '0.1.0-alpha.4',
+        version: '0.1.0-alpha.5',
         model: config
           ? {
               enabled: true,
@@ -51,13 +52,16 @@ export function createApi(config?: ProviderConfig, fetcher: typeof fetch = fetch
               name: config.model,
               reviewModel: config.reviewModel ?? config.model,
               profile: config.profile ?? 'compatible',
+              vision: config.visionModel
+                ? { configured: true, name: config.visionModel }
+                : { configured: false },
             }
           : { enabled: false },
       });
     if (request.method === 'GET' && path === '/api/recipes') return respond(response, 200, recipes);
     if (
       request.method !== 'POST' ||
-      !['/api/plan', '/api/invent', '/api/ideate'].includes(path ?? '')
+      !['/api/plan', '/api/invent', '/api/ideate', '/api/scan'].includes(path ?? '')
     )
       return respond(response, 404, { error: 'Unknown API route.' });
     if (
@@ -70,6 +74,10 @@ export function createApi(config?: ProviderConfig, fetcher: typeof fetch = fetch
     if (path !== '/api/plan' && !config)
       return respond(response, 503, {
         error: 'No model configured. Nothing was sent to a provider.',
+      });
+    if (path === '/api/scan' && !config?.visionModel)
+      return respond(response, 503, {
+        error: 'No vision model configured. Nothing was sent to a provider.',
       });
     if (path !== '/api/plan' && inventing)
       return respond(response, 429, {
@@ -101,9 +109,11 @@ export function createApi(config?: ProviderConfig, fetcher: typeof fetch = fetch
         respond(
           response,
           200,
-          path === '/api/ideate'
-            ? await ideate(input, config!, fetcher)
-            : await invent(input, config!, fetcher),
+          path === '/api/scan'
+            ? (await scanInventory(input, config!, fetcher)).scan
+            : path === '/api/ideate'
+              ? await ideate(input, config!, fetcher)
+              : await invent(input, config!, fetcher),
         );
       } finally {
         inventing = false;

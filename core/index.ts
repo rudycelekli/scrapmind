@@ -15,3 +15,4 @@ export * from './device-trial.js';
 export * from './workbench.js';
 export * from './report.js';
 export * from './ideation.js';
+export * from './inventory-scan.js';

@@ -1,6 +1,6 @@
 {
   "name": "scrapmind",
-  "version": "0.1.0-alpha.4",
+  "version": "0.1.0-alpha.5",
   "private": true,
   "description": "Turn the materials and devices you already own into useful things. Inventory-constrained plans, guided builds, and evidence-based Device Alchemy.",
   "type": "module",

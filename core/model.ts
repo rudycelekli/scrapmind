@@ -18,6 +18,7 @@ export function validateProvider(config: ProviderConfig): void {
   z.enum(['compatible', 'reasoning']).optional().parse(config.profile);
   z.number().int().min(1024).max(32768).optional().parse(config.maxOutputTokens);
   z.string().trim().min(1).max(200).optional().parse(config.reviewModel);
+  z.string().trim().min(1).max(200).optional().parse(config.visionModel);
 }
 
 /** Reasoning profile avoids optional sampling controls and uses the newer token limit field. */

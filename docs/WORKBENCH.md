@@ -17,6 +17,8 @@ The example inventory is declared **demo data**. Replace it with your actual mat
 
 The default directory is `.scrapmind/`, ignored by this repository. `--workspace path` chooses another directory. Do not commit private inventories, images, exported bundles, or reports; exports may contain the entire inventory and stored prose. Initialization and bundle import refuse an existing destination directory.
 
+Omit `--inventory` to start empty. With an explicitly configured vision model, `scan --photo path.png|jpg` saves tentative object/function suggestions for owner review. Use `scan-show`, `scan-template`, and `scan-review` to inspect and declare the actual items. Accepted entries remain untested; source photos and decisions are portable. See [the photo-first workflow](INVENTORY-PHOTOS.md).
+
 ## Invent with the AI engine
 
 ```sh

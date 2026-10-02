@@ -23,6 +23,7 @@ export interface ProviderConfig {
   profile?: 'compatible' | 'reasoning';
   maxOutputTokens?: number;
   reviewModel?: string;
+  visionModel?: string;
 }
 const proposalSchema = z.object({ recipe: recipeSchema }).strict();
 const jsonSchema = z.toJSONSchema(proposalSchema, { unrepresentable: 'any' });

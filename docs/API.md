@@ -2,13 +2,14 @@
 
 Start with `npm run serve`. Default address: `http://127.0.0.1:4317`. Set `SCRAPMIND_PORT` to use another port.
 
-| Route          | Method | Purpose                                                                   |
-| -------------- | ------ | ------------------------------------------------------------------------- |
-| `/api/status`  | GET    | Version and configured model availability; never includes a key           |
-| `/api/recipes` | GET    | Starter recipe catalog                                                    |
-| `/api/plan`    | POST   | Validate inventory and return constrained plans                           |
-| `/api/invent`  | POST   | Explicitly request and validate a model proposal                          |
-| `/api/ideate`  | POST   | Generate, allocate, critique, and attempt repair of up to three AI drafts |
+| Route          | Method | Purpose                                                                       |
+| -------------- | ------ | ----------------------------------------------------------------------------- |
+| `/api/status`  | GET    | Version and configured model availability; never includes a key               |
+| `/api/recipes` | GET    | Starter recipe catalog                                                        |
+| `/api/plan`    | POST   | Validate inventory and return constrained plans                               |
+| `/api/invent`  | POST   | Explicitly request and validate a model proposal                              |
+| `/api/ideate`  | POST   | Generate, allocate, critique, and attempt repair of up to three AI drafts     |
+| `/api/scan`    | POST   | Explicitly request photo inventory suggestions from a configured vision model |
 
 POST requests require `Content-Type: application/json` and `X-Scrapmind-Request: 1`. Requests from unrelated browser origins are rejected. The server stores no inventory. The invention route requires explicit environment configuration and accepts at most one active inference request.
 
@@ -56,3 +57,18 @@ Each explicit operation makes at most five model calls, with a 240-second operat
 Provider configuration supports `SCRAPMIND_AI_REVIEW_MODEL`, `SCRAPMIND_AI_PROFILE`, and `SCRAPMIND_AI_MAX_OUTPUT_TOKENS` in addition to the existing settings. See [AI configuration and limits](AI.md).
 
 The API is a local development interface, not a public multi-user service. Authentication, multi-user storage, remote deployment, and device pairing are separate roadmap work.
+
+## Inventory photo observations
+
+```json
+{
+  "inventory": [],
+  "image": "data:image/png;base64,..."
+}
+```
+
+`image` must contain actual supported PNG/JPEG bytes, bounded to 6 MB and 24 megapixels. Placeholder data above is not valid input. This operation requires `SCRAPMIND_AI_VISION_MODEL`; otherwise it returns HTTP 503 without contacting a provider. Vision, portfolio, and legacy invention operations share the single active-model slot. Normal Host, Origin, JSON-header, and 9 MB request-body restrictions apply.
+
+The response is a scan record with tentative object/count/function suggestions, optional approximate normalized regions, uncertainties, possible existing-item IDs, and a checksum-bound source-photo record. Image bytes and data URLs are not echoed. The API stores neither images nor inventory. The caller retains the source bytes; the CLI stores them locally only after validating the scan and input revision. Existing-item suggestions never update counts automatically.
+
+Each operation makes at most two model calls, with one syntax/schema repair, a 180-second operation timeout, and 90 seconds per call. Successful protocol validation does not establish recognition accuracy, dimensions, working capabilities, or physical compatibility. Owner declarations are applied through the saved workbench, not this read-only API. See [photo review and evidence rules](INVENTORY-PHOTOS.md).

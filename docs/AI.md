@@ -61,6 +61,8 @@ If a completion reaches its token limit, use fewer ideas or an explicitly config
 
 A separately configured critic is still another model opinion, not independent physical validation. The legacy `invent` command and `/api/invent` retain the simpler one-recipe schema/repair protocol; use `workbench ideate` or `/api/ideate` for the portfolio and resource-critique flow.
 
+Photo-assisted inventory is a separate explicit operation requiring `SCRAPMIND_AI_VISION_MODEL`. It proposes observations for owner review, retains the source image, and cannot establish measured dimensions or tested capabilities. See [the photo workflow](INVENTORY-PHOTOS.md).
+
 ## Actual model exploration
 
 The preinstalled local `llama3.2:3b` was exercised using only the public demo inventory. A schema-valid shadow-comparison proposal confused a webcam with a projector, used undeclared lamps and rulers, and mismatched step roles. Adding action-target contracts caused the next trial to be rejected after two attempts.

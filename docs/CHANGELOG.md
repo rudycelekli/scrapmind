@@ -1,5 +1,13 @@
 # Changes
 
+## 0.1.0-alpha.5 — Photo inventory suggestions and owner review
+
+An explicitly configured vision model can propose objects, approximate counts, image regions, possible functions, and existing-inventory matches from a selected photo. Uncertain kinds and empty capability suggestions are retained. Software validates input bytes, proposal bounds, and references; one syntax/schema repair is allowed. Photos never establish measured dimensions, hidden properties, tested capabilities, or compatibility.
+
+The workbench can start empty and retain scan observations, original photos, and owner resolutions. Accepted inventory requires explicit owner declarations and matching source bytes. Existing quantities are not merged automatically; replacement clears previous tested claims. Inventory changes during review reject stale decision files, and new declarations invalidate old builds. Photo evidence participates in global image-ID checks, reports, storage, and portable bundles.
+
+Validation: 93 tests, strict TypeScript, emitted ESM, and actual Chromium execution with a synthetic camera and synthetic vision response. A local HTTP fixture exercises scan through owner review, inventory, report, bundle audit, and restoration. No installed local model reports vision capability, so recognition accuracy and physical workshop results remain unevaluated. The visual workbench is still pending. See [photo workflow and limits](INVENTORY-PHOTOS.md).
+
 ## 0.1.0-alpha.4 — AI portfolios and a saved workbench
 
 The portfolio engine proposes up to three ideas with reasoning, physical roles, action-capability contracts, allocations, and explicit assumptions. Conservative text signals and a configurable model critic expose resource issues; one semantic repair is rechecked and critiqued. Drafts retain model provenance and review state. Generated plans require owner review, and unresolved/incomplete resource review requires a separate acknowledgement. Inference stays explicit and bounded to five calls per operation. Reasoning-model token parameters and a separate critic model are configurable.

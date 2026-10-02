@@ -4,6 +4,7 @@ import { buildStatus } from './build.js';
 import { deviceTrialIsCurrent } from './device-trial.js';
 import { verifyImageArtifact, type ImageArtifact } from './evidence.js';
 import type { CapturedImage } from './camera.js';
+import { inventoryFingerprint } from './schema.js';
 
 export type EvidenceLoader = (artifact: ImageArtifact) => Promise<CapturedImage | undefined>;
 export async function reportWorkbench(workspace: Workspace, load?: EvidenceLoader) {
@@ -69,6 +70,24 @@ export async function reportWorkbench(workspace: Workspace, load?: EvidenceLoade
       note: trial.note,
     });
   }
+  const inventoryScans = [];
+  for (const scan of workspace.inventoryScans ?? []) {
+    inventoryScans.push({
+      id: scan.id,
+      context: scan.context,
+      scene: scan.scene,
+      model: scan.model,
+      mode: scan.mode,
+      summary: scan.summary,
+      proposals: scan.proposals.length,
+      pending: scan.proposals.length - scan.resolutions.length,
+      resolutions: scan.resolutions,
+      inputContextCurrent:
+        scan.inputInventoryFingerprint === inventoryFingerprint(workspace.inventory),
+      image: await imageStatus(scan.artifact),
+      boundary: scan.boundary,
+    });
+  }
   return {
     format: 'scrapmind-build-report' as const,
     version: 1 as const,
@@ -77,6 +96,7 @@ export async function reportWorkbench(workspace: Workspace, load?: EvidenceLoade
     inventoryItems: workspace.inventory.length,
     builds,
     deviceTrials,
+    inventoryScans,
     boundary:
       'Results are owner-reported. Verified image checksums establish matching bytes, not scene authenticity, hardware identity, optical quality, mounting fit, or independent physical success.',
   };
@@ -139,6 +159,19 @@ export function renderWorkbenchReport(report: WorkbenchReport): string {
       lines.push(
         `- ${markdown(trial.id)} / ${markdown(trial.itemId)}: ${trial.outcome}; ${trial.context}; ${trial.current ? 'current' : 'stale or removed'}; image ${trial.image?.checksum ?? 'none'}. ${markdown(trial.note)}`,
       );
+  }
+  if (report.inventoryScans.length) {
+    lines.push('', '## Inventory photo observations', '');
+    for (const scan of report.inventoryScans) {
+      lines.push(
+        `- ${markdown(scan.id)}: ${scan.scene}; ${scan.context}; ${scan.proposals} suggestions, ${scan.pending} pending; photo checksum ${scan.image.checksum}. ${markdown(scan.summary)}`,
+      );
+      for (const resolution of scan.resolutions)
+        lines.push(
+          `  - ${markdown(resolution.proposalId)}: ${resolution.action}${resolution.item ? ` as ${markdown(resolution.item.id)}; capabilities owner-declared` : ''}. ${markdown(resolution.ownerNote)}`,
+        );
+      lines.push('', markdown(scan.boundary), '');
+    }
   }
   return lines.join('\n') + '\n';
 }
