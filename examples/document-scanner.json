@@ -1,0 +1,135 @@
+{
+  "id": "document-scanner",
+  "title": "Document scanner",
+  "subtitle": "An old camera, a few parts, a useful new instrument.",
+  "category": "alchemy",
+  "goalTerms": ["scan", "scanner", "document", "documents", "paper", "digitize", "page"],
+  "minutes": 15,
+  "difficulty": "Easy",
+  "visual": "scanner",
+  "requirements": [
+    {
+      "id": "camera",
+      "label": "Image source",
+      "explanation": "A working camera becomes the image sensor.",
+      "alternatives": [
+        {
+          "capabilities": ["camera"],
+          "kinds": ["device"]
+        }
+      ],
+      "quantity": 1
+    },
+    {
+      "id": "host",
+      "label": "Browser host",
+      "explanation": "Runs the capture and image tools. A separate phone camera needs a supported connection or its own browser session.",
+      "alternatives": [
+        {
+          "capabilities": ["compute", "display"],
+          "kinds": ["device"]
+        }
+      ],
+      "quantity": 1
+    },
+    {
+      "id": "support",
+      "label": "Vertical support",
+      "explanation": "Holds the image source above the work area. Shape, mounting geometry, and stability require inspection.",
+      "alternatives": [
+        {
+          "capabilities": ["vertical-support"]
+        }
+      ],
+      "quantity": 1
+    },
+    {
+      "id": "grip",
+      "label": "Camera grip",
+      "explanation": "Positions the camera. Test the grip with the actual device before releasing it.",
+      "alternatives": [
+        {
+          "capabilities": ["clamp"]
+        }
+      ],
+      "quantity": 1
+    },
+    {
+      "id": "base",
+      "label": "Flat work surface",
+      "explanation": "A declared surface at least 220 × 160 mm; larger documents may require a larger surface.",
+      "alternatives": [
+        {
+          "capabilities": ["flat-panel"],
+          "minDimensions": {
+            "length": 220,
+            "width": 160
+          }
+        }
+      ],
+      "quantity": 1
+    }
+  ],
+  "steps": [
+    {
+      "id": "inspect",
+      "title": "Check the parts",
+      "instruction": "Inspect the support and grip. Confirm the actual camera can attach without blocking its lens or controls. Stop if the geometry does not fit.",
+      "requirements": ["camera", "support", "grip"],
+      "check": "The device fits the intended mounting position."
+    },
+    {
+      "id": "surface",
+      "title": "Prepare the work area",
+      "instruction": "Place the flat work surface on a stable table. Put the intended subject on it and confirm its footprint fits.",
+      "requirements": ["base"],
+      "check": "The subject fits without hanging off the work surface."
+    },
+    {
+      "id": "mount",
+      "title": "Position the camera",
+      "instruction": "Position the camera above the subject using the support and grip. Keep the device held until you have confirmed the mounting method is stable.",
+      "requirements": ["camera", "support", "grip"],
+      "check": "The camera faces the subject and remains in position."
+    },
+    {
+      "id": "connect",
+      "title": "Connect the image source",
+      "instruction": "Connect the webcam to its host or use the old phone’s existing camera app. SCRAPMIND Camera Lab is planned; use existing capture software in this alpha. Remote phone pairing is a separate capability.",
+      "requirements": ["camera", "host"],
+      "check": "Your existing camera software shows a real live preview."
+    },
+    {
+      "id": "capture",
+      "title": "Make the first scan",
+      "instruction": "Use your existing camera software to capture a page. Crop and straighten in an image tool if needed, then inspect the smallest text. The integrated SCRAPMIND capture interface is planned.",
+      "requirements": ["camera", "host"],
+      "check": "The saved image contains readable text and the full page."
+    }
+  ],
+  "checks": [
+    {
+      "id": "frame",
+      "label": "The work area fits in the frame",
+      "procedure": "Capture a sample with all four corners of the intended subject visible.",
+      "evidenceKind": "capture"
+    },
+    {
+      "id": "stability",
+      "label": "The mount stays in position",
+      "procedure": "With the actual device secured, observe the frame for 30 seconds. Record any drift or movement. This is a local observation, not load certification.",
+      "evidenceKind": "observation"
+    },
+    {
+      "id": "readability",
+      "label": "Small text is readable",
+      "procedure": "Inspect the exported image at full resolution. Read a sample of the smallest text and record the result.",
+      "evidenceKind": "capture"
+    }
+  ],
+  "boundaries": [
+    "Part matching establishes a candidate configuration, not mechanical compatibility.",
+    "Camera quality, mounting fit, lighting, and document size must be checked with the actual parts.",
+    "No automatic OCR or remote phone discovery is claimed."
+  ]
+}

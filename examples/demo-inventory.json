@@ -1,0 +1,144 @@
+[
+  {
+    "id": "phone",
+    "name": "Old smartphone",
+    "kind": "device",
+    "quantity": 1,
+    "available": true,
+    "capabilities": ["camera", "compute", "display", "network"],
+    "testedCapabilities": [],
+    "evidence": "declared",
+    "notes": "Demo declaration. Confirm camera access and power before using your own phone."
+  },
+  {
+    "id": "laptop",
+    "name": "Laptop",
+    "kind": "device",
+    "quantity": 1,
+    "available": true,
+    "capabilities": ["compute", "display", "network", "usb-power"],
+    "testedCapabilities": [],
+    "evidence": "declared",
+    "notes": "Demo declaration. Runs the workbench and camera tools in a browser."
+  },
+  {
+    "id": "webcam",
+    "name": "USB webcam",
+    "kind": "device",
+    "quantity": 1,
+    "available": true,
+    "capabilities": ["camera"],
+    "testedCapabilities": [],
+    "evidence": "declared",
+    "notes": "Demo declaration. Test with the Camera Lab before accepting this capability."
+  },
+  {
+    "id": "lamp",
+    "name": "Desk lamp",
+    "kind": "device",
+    "quantity": 1,
+    "available": true,
+    "capabilities": ["light"],
+    "testedCapabilities": [],
+    "evidence": "declared",
+    "notes": "Demo declaration. Position externally; keep ventilation clear."
+  },
+  {
+    "id": "panel",
+    "name": "Plywood offcut",
+    "kind": "material",
+    "quantity": 2,
+    "available": true,
+    "capabilities": ["flat-panel", "stable-base"],
+    "testedCapabilities": [],
+    "dimensions": {
+      "length": 320,
+      "width": 240,
+      "height": 12
+    },
+    "evidence": "declared",
+    "notes": "Demo measurements in mm. Inspect and measure your own material."
+  },
+  {
+    "id": "clamp",
+    "name": "Spring clamp",
+    "kind": "tool",
+    "quantity": 2,
+    "available": true,
+    "capabilities": ["clamp"],
+    "testedCapabilities": [],
+    "evidence": "declared",
+    "notes": "Demo declaration. Grip and load capacity need a physical check."
+  },
+  {
+    "id": "arm",
+    "name": "Adjustable desk arm",
+    "kind": "material",
+    "quantity": 1,
+    "available": true,
+    "capabilities": ["vertical-support", "clamp"],
+    "testedCapabilities": [],
+    "evidence": "declared",
+    "notes": "Demo declaration. No rated load is assumed."
+  },
+  {
+    "id": "boxes",
+    "name": "Rigid cardboard box",
+    "kind": "material",
+    "quantity": 2,
+    "available": true,
+    "capabilities": ["vertical-support", "stable-base", "flat-panel"],
+    "testedCapabilities": [],
+    "dimensions": {
+      "length": 300,
+      "width": 250,
+      "height": 280
+    },
+    "evidence": "declared",
+    "notes": "Demo declaration. A box is an alternative support, subject to stability checks."
+  },
+  {
+    "id": "tape",
+    "name": "Painter’s tape",
+    "kind": "material",
+    "quantity": 1,
+    "available": true,
+    "capabilities": ["adhesive"],
+    "testedCapabilities": [],
+    "evidence": "declared",
+    "notes": "Temporary positioning only. Not a structural fastening claim."
+  },
+  {
+    "id": "cloth",
+    "name": "White fabric",
+    "kind": "material",
+    "quantity": 1,
+    "available": true,
+    "capabilities": ["diffuser", "soft-grip"],
+    "testedCapabilities": [],
+    "evidence": "declared",
+    "notes": "Keep away from hot lamps. Demo declaration."
+  },
+  {
+    "id": "ruler",
+    "name": "Steel ruler",
+    "kind": "tool",
+    "quantity": 1,
+    "available": true,
+    "capabilities": ["measure"],
+    "testedCapabilities": [],
+    "evidence": "declared",
+    "notes": "For explicit measurement. Dimensions cannot be inferred precisely from an uncalibrated photo."
+  },
+  {
+    "id": "turntable",
+    "name": "Lazy Susan",
+    "kind": "material",
+    "quantity": 1,
+    "available": true,
+    "capabilities": ["rotation", "stable-base"],
+    "testedCapabilities": [],
+    "evidence": "declared",
+    "notes": "Demo declaration. Check smooth motion and balance with the intended object."
+  }
+]
