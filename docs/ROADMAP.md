@@ -9,6 +9,8 @@
 - Optional local or remote model proposals, checked against inventory.
 - Offline workspace import/export and perspective-correction primitives.
 - Loopback API, CLI, runnable TypeScript library, tests and CI.
+- Browser camera capture, imported images, manual perspective correction, local image storage, and portable evidence bundles.
+- Captures tied to allocated devices and build revisions; checksum verification and original/derivative lineage.
 
 ## Next: a usable visual workbench
 
@@ -16,7 +18,7 @@
 - A clear assembly view linked to the actual allocated parts.
 - The remove-a-part challenge, explained as it replans.
 - Inline instructions, acceptance results, and portable build reports.
-- Camera Lab: real permissioned camera access, captures, manual crop corners, perspective correction, and timestamped sequences.
+- Camera Lab interface: integrate the working browser capture/correction library, device selection, manual crop corners, and timestamped sequences.
 - Accessible keyboard operation, reduced motion, responsive layouts, failure recovery.
 
 Design context is awaiting the user's product interview choices. The first interface should serve a real build workflow, not imply physical success through a polished rendering.
@@ -26,7 +28,7 @@ Design context is awaiting the user's product interview choices. The first inter
 - Complete and record actual physical starter builds with measured inventories.
 - Compare instruction-only baselines against adaptive support.
 - Add camera-assisted inventory suggestions that require confirmation.
-- Expand capability tests and attach captures to the correct build revision.
+- Expand device capability tests and validate physical capture quality with actual cameras.
 - Add dimensioned plans for bounded fabrication families.
 - Add secure, permissioned phone camera pairing with explicit connection limits.
 

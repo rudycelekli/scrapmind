@@ -1,6 +1,6 @@
 {
   "name": "scrapmind",
-  "version": "0.1.0-alpha.1",
+  "version": "0.1.0-alpha.2",
   "private": true,
   "description": "Turn the materials and devices you already own into useful things. Inventory-constrained plans, guided builds, and evidence-based Device Alchemy.",
   "type": "module",
@@ -13,6 +13,7 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:browser": "npm run build && node dist/scripts/browser-check.js",
     "demo": "tsx scripts/cli.ts demo",
     "plan": "tsx scripts/cli.ts plan",
     "check": "npm run typecheck && npm test && npm run build",
@@ -26,7 +27,9 @@
   },
   "devDependencies": {
     "@types/node": "^26.6.4",
+    "esbuild": "^0.28.2",
     "fast-check": "^4.10.2",
+    "playwright": "^1.63.0",
     "prettier": "^3.9.9",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2",

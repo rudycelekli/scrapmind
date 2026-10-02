@@ -14,6 +14,8 @@ Recipe limits: 10 requirement roles, 20 total units, four alternative rules per 
 
 Every step references at least one declared requirement ID and includes a check. Acceptance checks require a procedure and an evidence kind: observation, measurement, or capture. At least one boundary statement is required. Unique identifiers and valid references are checked on import.
 
+A capture check can specify `minArtifacts` (1–20). Passing it requires that many distinct original images attached to the current build and attributed to an allocated camera. Derivatives of the same original count once. Other check types cannot specify this field. See [the image evidence rules](CAMERA.md).
+
 Model proposals are stamped `source: generated` and `reviewed: false`. A complete allocation remains `draft` until the recipe has been reviewed. Review must check that the prose does not introduce undeclared parts or invented physical specifications. After that review, explicitly set `reviewed: true` in the recipe to allow a build session. This flag is a user statement, not independent certification.
 
 Recipe data never executes commands. Names and prose are not a permission channel. A syntactically valid recipe can still be physically incorrect; review the procedure and perform the defined checks with real parts.

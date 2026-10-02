@@ -70,6 +70,7 @@ export const recipeSchema = z
             label: z.string().trim().min(1).max(150),
             procedure: text,
             evidenceKind: z.enum(['observation', 'measurement', 'capture']),
+            minArtifacts: z.number().int().min(1).max(20).optional(),
           })
           .strict(),
       )
@@ -91,6 +92,14 @@ export const recipeSchema = z
         });
     }
     const ids = new Set(recipe.requirements.map((entry) => entry.id));
+    recipe.checks.forEach((check, index) => {
+      if (check.minArtifacts !== undefined && check.evidenceKind !== 'capture')
+        ctx.addIssue({
+          code: 'custom',
+          message: 'Only capture checks specify an image count',
+          path: ['checks', index, 'minArtifacts'],
+        });
+    });
     recipe.steps.forEach((step, stepIndex) =>
       step.requirements.forEach((id, referenceIndex) => {
         if (!ids.has(id))

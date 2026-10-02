@@ -4,7 +4,9 @@ import { demoInventory } from '../core/fixtures.js';
 import { describeReplan, discoverPlans, planRecipe } from '../core/planner.js';
 import { recipes } from '../core/recipes.js';
 import { inventoryFingerprint, parseInventory, type Recipe } from '../core/schema.js';
-import { buildIsStale, buildStatus, recordCheck, startBuild } from '../core/build.js';
+import { attachImage, buildIsStale, buildStatus, recordCheck, startBuild } from '../core/build.js';
+import { createImageArtifact } from '../core/evidence.js';
+import { pngBlob } from './image-fixture.js';
 
 describe('inventory-constrained planning', () => {
   it('labels an empty inventory as declared, with every role missing', () => {
@@ -231,9 +233,22 @@ describe('build verification', () => {
     expect(buildIsStale(session, changed)).toBe(true);
     expect(buildStatus(session, planRecipe(recipes[0], changed))).toBe('stale');
   });
-  it('requires all steps and checks, and preserves failures', () => {
+  it('requires all steps and checks, and preserves failures', async () => {
     const plan = planRecipe(recipes[0], demoInventory());
     let session = startBuild(plan, 'build');
+    const blob = pngBlob();
+    const artifact = await createImageArtifact(
+      blob,
+      {
+        id: 'unit-test-image',
+        buildId: session.id,
+        itemId: plan.allocations.find((entry) => entry.requirementId === 'camera')!.itemId,
+        inventoryFingerprint: plan.inventoryFingerprint,
+        recipeFingerprint: plan.recipeFingerprint,
+      },
+      'imported-image',
+    );
+    session = await attachImage(session, plan, artifact, blob);
     session.completedSteps = plan.recipe.steps.map((step) => step.id);
     expect(buildStatus(session, plan)).toBe('in-progress');
     for (const check of plan.recipe.checks)
@@ -242,6 +257,7 @@ describe('build verification', () => {
         outcome: 'passed',
         note: 'Observed in a user trial.',
         recordedAt: new Date().toISOString(),
+        artifactIds: check.evidenceKind === 'capture' ? [artifact.id] : [],
       });
     expect(buildStatus(session, plan)).toBe('reported-pass');
     session = recordCheck(session, plan, {

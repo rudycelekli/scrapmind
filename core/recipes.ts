@@ -19,7 +19,14 @@ const check = (
   label: string,
   procedure: string,
   evidenceKind: AcceptanceCheck['evidenceKind'] = 'observation',
-): AcceptanceCheck => ({ id, label, procedure, evidenceKind });
+  minArtifacts?: number,
+): AcceptanceCheck => ({
+  id,
+  label,
+  procedure,
+  evidenceKind,
+  ...(minArtifacts ? { minArtifacts } : {}),
+});
 const camera = requirement('camera', 'Image source', 'A working camera becomes the image sensor.', [
   { capabilities: ['camera'], kinds: ['device'] },
 ]);
@@ -306,6 +313,7 @@ export const recipes: Recipe[] = [
         'A before-and-after comparison exists',
         'Save both captures and describe the change in shadows and glare.',
         'capture',
+        2,
       ),
       check(
         'clearance',
@@ -354,6 +362,7 @@ export const recipes: Recipe[] = [
         'At least two timed captures exist',
         'Save the timestamped captures and record the observed interval.',
         'capture',
+        2,
       ),
     ],
     boundaries: [

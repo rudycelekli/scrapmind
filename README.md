@@ -4,7 +4,7 @@
 
 Materials, spare devices, useful new configurations. SCRAPMIND searches your inventory, assigns parts without double-booking them, explains substitutions, and gives you build steps with acceptance checks. **Device Alchemy** is its device-reuse workflow: a spare camera, a host, and suitable materials can become a candidate scanner, inspection station, or capture rig.
 
-**Status: early engineering alpha.** The planning core, CLI, local API, recipe extension contract, optional model-proposal adapter, and image-correction primitives work. The visual workbench is in development. This release does not recognize arbitrary scrap from photographs, establish mechanical compatibility, control remote devices, or demonstrate general invention intelligence. Matching parts is a candidate plan; a real build still needs inspection and a trial.
+**Status: early engineering alpha.** The planning core, CLI, local API, optional model proposals, and browser camera library work. Device Alchemy can capture images, correct perspective, store photos locally, and attach them to a build revision. The visual workbench and its camera controls are in development. This release does not recognize arbitrary scrap from photographs, establish mechanical compatibility, control remote devices, or demonstrate general invention intelligence. Matching parts is a candidate plan; a real build still needs inspection and a trial.
 
 ## Try the remove-a-part challenge
 
@@ -88,6 +88,12 @@ The API binds to loopback, disables cross-origin requests, and provides catalog,
 
 The TypeScript core is importable from `core/index.ts`. `npm run build` emits runnable ESM, declarations, and source maps in `dist/`. The emitted CLI can run with `node dist/scripts/cli.js demo`.
 
+## Device Alchemy camera library
+
+The browser component opens a camera on an explicit user action, captures PNG or JPEG images, imports local photos, and straightens a selected four-corner region. Captures stay local. The build ledger verifies image checksums and requires an allocated camera and matching build revision. A corrected image retains its original image as evidence.
+
+Photos can be saved in IndexedDB and exported with the workspace in a portable evidence bundle. A metadata-only workspace export is also available. See [camera usage and evidence rules](docs/CAMERA.md). These are developer-facing components awaiting the workbench, rather than a finished camera app.
+
 ## Evidence, not pretend confidence
 
 - **Declared:** the inventory owner says a capability exists.
@@ -95,7 +101,7 @@ The TypeScript core is importable from `core/index.ts`. `npm run build` emits ru
 - **Tested:** the required capability is included in the owner's tested-capability list.
 - **Reported pass:** all recipe steps and acceptance checks were completed in a recorded user trial.
 
-Those labels describe stored evidence claims. They are not independent certification, cryptographic attestation, or guarantees of physical success. The first alpha does not yet attach live camera evidence. Inventory changes and recipe changes invalidate old build results.
+Those labels describe stored evidence claims. They are not independent certification, cryptographic attestation, or guarantees of physical success. Passing capture checks require attached images; a checksum detects changed image bytes without establishing scene authenticity. Inventory changes and recipe changes invalidate old build results.
 
 ## Development
 
@@ -104,7 +110,7 @@ npm run check
 npm run format:check
 ```
 
-Tests cover quantity and availability invariants, constrained allocation, alternate supports, missing measurements, model output validation, stale-build rejection, workspace round trips, API boundaries, and perspective-correction mathematics. Property tests use a recorded seed. These are software tests, not evidence of a successful physical build.
+Tests cover quantity and availability invariants, constrained allocation, alternate supports, missing measurements, model output validation, stale-build rejection, workspace round trips, API boundaries, image evidence, and perspective-correction mathematics. Property tests use a recorded seed. Chromium tests also exercise capture, storage, image export, and permission cleanup with a **synthetic camera**. These are software tests, not evidence of a successful physical build.
 
 See [the roadmap](docs/ROADMAP.md), [engineering status](docs/STATUS.md), [contributing](CONTRIBUTING.md), and [the recipe contract](docs/RECIPES.md).
 

@@ -6,3 +6,7 @@ export * from './build.js';
 export * from './workspace.js';
 export * from './geometry.js';
 export * from './inventor.js';
+export * from './evidence.js';
+export * from './camera.js';
+export * from './image-store.js';
+export * from './evidence-bundle.js';
