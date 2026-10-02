@@ -31,6 +31,39 @@ function sequence(
 }
 const request = () => ({ inventory: demoInventory(), goal: 'compare tabletop shadows', count: 1 });
 
+it('guides a rejected physical action toward existing role capabilities without relaxing validation', async () => {
+  const invalid = conceptFixture();
+  invalid.steps[1].action = 'rotate';
+  let inspectedRepair = false;
+  const result = await ideate(
+    request(),
+    config,
+    sequence(
+      [{ concepts: [invalid] }, { concepts: [conceptFixture()] }, { issues: [] }],
+      (body, index) => {
+        if (index !== 1) return;
+        const messages = body.messages as { role: string; content: string }[];
+        const guidance = messages.at(-1)!.content;
+        const hints = JSON.parse(
+          guidance
+            .split('Role action guidance derived only from your declared roles: ')[1]
+            .split('. Correct the action/target')[0],
+        );
+        const lamp = hints[0].roles.find((role: { targetRole: number }) => role.targetRole === 1);
+        expect(lamp.declaredCapabilities).toEqual(['light']);
+        expect(lamp.allowedActions).toContain('illuminate');
+        expect(lamp.allowedActions).not.toContain('rotate');
+        expect(guidance).toContain('Do not add unsupported capabilities');
+        inspectedRepair = true;
+      },
+    ),
+  );
+  expect(inspectedRepair).toBe(true);
+  expect(result.attempts).toBe(2);
+  expect(result.proposals[0].concept.steps[1].action).toBe('illuminate');
+  expect(result.proposals[0].recipe.reviewed).toBe(false);
+});
+
 it('rejects invalid action targets, hidden references and unused roles before allocation', () => {
   const concept = conceptFixture();
   expect(() =>

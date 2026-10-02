@@ -17,6 +17,7 @@
 - AI portfolios with resource-action contracts, allocation, conservative text signals, model critique, bounded repair, and retained reasoning/assumptions.
 - Reasoning-model request compatibility and configurable critic models; evaluation quality remains open.
 - Explicit vision-model inventory suggestions, retained source photos, owner declarations, and portable review decisions. Recognition accuracy remains untested with real workshop images.
+- Reproducible live-model inventory challenges, retained failures/drafts, explicit contract metrics, removal challenges, cancellation, and a separate human-review rubric. General invention quality remains unproven.
 
 ## Next: a usable visual workbench
 

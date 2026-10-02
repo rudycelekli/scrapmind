@@ -1,10 +1,10 @@
 # Engineering status
 
-Date: 2026-10-02. Release: 0.1.0-alpha.5.
+Date: 2026-10-02. Release: 0.1.0-alpha.6.
 
 ## Executed software validation
 
-93 core/API/model-protocol/persistence tests pass. The emitted CLI was also run through local initialization, readable procedures, inventory substitution, stale-build reporting, bundle audit, and restoration. An additional emitted-CLI smoke run exercised empty initialization, a synthetic HTTP vision response, owner review, declared inventory, photo checksums, bundle audit, and restoration. These smoke runs used public demo data or synthetic fixtures; no live vision inference or physical trial occurred.
+103 core/API/model-protocol/persistence/evaluation tests pass. The emitted CLI was also run through local initialization, readable procedures, inventory substitution, stale-build reporting, bundle audit, and restoration. An additional emitted-CLI smoke run exercised empty initialization, a synthetic HTTP vision response, owner review, declared inventory, photo checksums, bundle audit, and restoration. These smoke runs used public demo data or synthetic fixtures; no live vision inference or physical trial occurred.
 
 - Strict TypeScript checking and emitted ESM build.
 - Starter allocation and missing-resource checks.
@@ -32,6 +32,8 @@ Date: 2026-10-02. Release: 0.1.0-alpha.5.
 - Owner photo review rejects unconfirmed, duplicate, unknown, stale, tested, or synthetic accepted declarations. Explicit replacements use owner counts and clear previous tested claims. Source photos are required for acceptance and retained in bundles; scan images cannot become build captures.
 - A local HTTP vision fixture executes empty-workbench initialization, scan, owner review, declared inventory, report, photo bundle audit, and restore. These use synthetic images and responses, not real object recognition.
 - Actual Chromium execution of photo-data-URL conversion, scan protocol simulation, IndexedDB storage, four-image bundle restoration, and refusal to apply a synthetic scan to owner inventory. The camera and model response remain explicitly synthetic.
+- Evaluation case validation, required actions and allocated capabilities, expected missing resources, one-phone quantity conservation, independent assessment, removal challenges, incomplete-critic accounting, failed generation, cancellation, bounded failure categories, private output reservation, and refusal to label injected responses as live benchmarks. Unit-test model responses remain synthetic.
+- The emitted evaluation entry point lists cases without inference. An actual child-process Ctrl+C smoke check aborts a synthetic hanging HTTP fixture, returns 130, and saves the cancelled case report. No model inference occurs in that smoke check.
 
 The repository's CI runs checks on Node.js 22 and 24, plus a Chromium camera job. A successful workflow is evidence for software correctness under its tests, not physical performance. The browser library exists; a designed camera interface is still pending.
 
@@ -42,6 +44,8 @@ The preinstalled `llama3.2:3b` model was exercised through a loopback Ollama end
 After tightening the contract to require nonempty step references, a subsequent trial failed role validation after two attempts and was rejected. This is not a successful physical plan or evidence of dependable model-based invention. The adapter's successful protocol cases are tested with explicit synthetic responses; robust generation needs stronger models and a broader evaluation set.
 
 Portfolio exploration exposed a webcam used as a projector, undeclared parts, and incorrect step roles. After adding action-target checks, a subsequent trial was rejected. A tightly constrained prompt produced a draft whose model critic reported no issues, but manual inspection found undeclared fastening and role metadata in human instructions. Those observations prompted software text signals, rejection of role-index prose, and required capture evidence. A later two-role no-fastening request was rejected because its fastening action lacked a suitable role. These are recorded model failures, not validated inventions; see [the AI evaluation account](AI.md).
+
+The live evaluation command was exercised against the installed `llama3.2:3b`: four initial development cases were rejected; a diagnostic exposed manual lamp positioning labeled as hardware rotation. After adding role-action repair guidance and correcting the capture case's missing host, a revised four-case run returned one draft, which still failed the required-illumination-action contract despite a clean model critique. Reports retain exact case snapshots and measured timings. This is not dependable generation or a controlled aggregate A/B result; see [the recorded evaluations](../evaluations/README.md).
 
 ## Not demonstrated
 

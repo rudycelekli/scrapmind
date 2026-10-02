@@ -160,6 +160,28 @@ export const conceptSchema = z
       });
   });
 export type InventionConcept = z.infer<typeof conceptSchema>;
+
+/** Repair guidance from declared roles, never guessed hardware capabilities. */
+function roleActionHints(raw: unknown) {
+  const parsed = z
+    .object({ concepts: z.array(z.object({ roles: conceptSchema.shape.roles })).max(3) })
+    .safeParse(raw);
+  if (!parsed.success) return [];
+  return parsed.data.concepts.map((concept, conceptIndex) => ({
+    conceptIndex,
+    roles: concept.roles.map((role, targetRole) => ({
+      targetRole,
+      label: role.label,
+      declaredCapabilities: role.capabilities,
+      allowedActions: Object.entries(actionCapabilities)
+        .filter(
+          ([, needed]) =>
+            !needed.length || needed.some((capability) => role.capabilities.includes(capability)),
+        )
+        .map(([action]) => action),
+    })),
+  }));
+}
 export const ideationRequestSchema = inventionRequestSchema
   .extend({
     count: z.number().int().min(1).max(3).default(3),
@@ -350,8 +372,10 @@ export async function ideate(
   }
   for (let attempt = 0; attempt < 2; attempt++) {
     const raw = await call(messages, jsonSchema, 'scrapmind_concepts', 0.3);
+    let parsed: unknown;
     try {
-      concepts = schema.parse(parseModelJson(raw)).concepts;
+      parsed = parseModelJson(raw);
+      concepts = schema.parse(parsed).concepts;
       break;
     } catch (error) {
       lastProblem = problem(error);
@@ -359,7 +383,7 @@ export async function ideate(
         { role: 'assistant', content: raw },
         {
           role: 'user',
-          content: `Validation failed: ${lastProblem}. Return the full corrected JSON with exactly ${request.count} concepts. Preserve the goal and uncertainties; do not loosen the resource contract.`,
+          content: `Validation failed: ${lastProblem}. Role action guidance derived only from your declared roles: ${JSON.stringify(roleActionHints(parsed))}. Correct the action/target and prose together. Manual repositioning is arrange; rotate requires a declared rotation mechanism. Illuminating with a light source is illuminate, and manually comparing appearances is compare. Do not add unsupported capabilities to make an action validate. Return the full corrected JSON with exactly ${request.count} concepts. Preserve the goal and uncertainties; do not loosen the resource contract.`,
         },
       );
     }

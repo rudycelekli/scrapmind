@@ -1,0 +1,77 @@
+{
+  "format": "scrapmind-ai-evaluation",
+  "version": 1,
+  "id": "052b23ed-bff9-4295-9035-c9ec442b92ae",
+  "provenance": "live-model",
+  "startedAt": "2026-10-02T22:45:16.362Z",
+  "finishedAt": "2026-10-02T22:45:44.949Z",
+  "provider": {
+    "model": "llama3.2:3b",
+    "reviewModel": "llama3.2:3b",
+    "mode": "local",
+    "profile": "compatible",
+    "format": "json_schema",
+    "maxOutputTokens": 8192
+  },
+  "summary": {
+    "selectedCases": 1,
+    "attemptedCases": 1,
+    "generatedCases": 0,
+    "failedCases": 1,
+    "cancelledCases": 0,
+    "generatedProposals": 0,
+    "contractPasses": 0,
+    "contractFailures": 0,
+    "pendingHumanReviews": 0,
+    "requests": 2
+  },
+  "results": [
+    {
+      "case": {
+        "id": "lamp-panel",
+        "label": "Two parts, no hidden fastening or camera",
+        "goal": "Use only the supplied desk lamp and flat panel to illuminate the panel and manually compare its appearance under two lamp positions. Use no objects, desk, mount, fastener, measuring tool, camera, or additional resource. Keep both supplied parts as explicit roles, and make manual positioning and comparison clear. Do not invent optical accuracy or successful tests.",
+        "inventory": [
+          {
+            "id": "lamp",
+            "name": "Desk lamp",
+            "kind": "device",
+            "quantity": 1,
+            "available": true,
+            "capabilities": ["light"],
+            "testedCapabilities": [],
+            "evidence": "declared",
+            "notes": "Demo declaration. Position externally; keep ventilation clear."
+          },
+          {
+            "id": "panel",
+            "name": "Plywood offcut",
+            "kind": "material",
+            "quantity": 1,
+            "available": true,
+            "capabilities": ["flat-panel", "stable-base"],
+            "testedCapabilities": [],
+            "dimensions": {
+              "length": 320,
+              "width": 240,
+              "height": 12
+            },
+            "evidence": "declared",
+            "notes": "Demo measurements in mm. Inspect and measure your own material."
+          }
+        ],
+        "count": 1,
+        "requiredActions": ["illuminate", "compare"],
+        "resourcePolicy": "declared-only",
+        "requiredMissingCapabilities": [],
+        "removeItemIds": ["lamp"]
+      },
+      "outcome": "failed",
+      "requests": 2,
+      "elapsedMs": 28584,
+      "error": "The model operation failed; no validated portfolio was returned.",
+      "failureKind": "invalid-concepts"
+    }
+  ],
+  "boundary": "Contract checks and model critiques do not establish instruction completeness, usefulness, physical feasibility, recognition accuracy, or research novelty. Every generated proposal still requires independent human review and physical validation. Synthetic protocol runs are not model benchmarks."
+}

@@ -1,0 +1,724 @@
+{
+  "format": "scrapmind-ai-evaluation",
+  "version": 1,
+  "procedure": "inventory-idea-contracts-v1",
+  "id": "1397091b-a34d-4392-8b1f-43b90dccb41e",
+  "provenance": "live-model",
+  "startedAt": "2026-10-02T22:54:22.740Z",
+  "finishedAt": "2026-10-02T22:56:25.325Z",
+  "provider": {
+    "model": "llama3.2:3b",
+    "reviewModel": "llama3.2:3b",
+    "mode": "local",
+    "profile": "compatible",
+    "format": "json_schema",
+    "maxOutputTokens": 8192
+  },
+  "summary": {
+    "selectedCases": 4,
+    "attemptedCases": 4,
+    "generatedCases": 1,
+    "failedCases": 3,
+    "cancelledCases": 0,
+    "generatedProposals": 1,
+    "contractPasses": 0,
+    "contractFailures": 1,
+    "pendingHumanReviews": 1,
+    "criticIssues": 0,
+    "incompleteCritiques": 0,
+    "requests": 9
+  },
+  "results": [
+    {
+      "case": {
+        "id": "lamp-panel",
+        "label": "Two parts, no hidden fastening or camera",
+        "goal": "Use only the supplied desk lamp and flat panel to illuminate the panel and manually compare its appearance under two lamp positions. Use no objects, desk, mount, fastener, measuring tool, camera, or additional resource. Keep both supplied parts as explicit roles, and make manual positioning and comparison clear. Do not invent optical accuracy or successful tests.",
+        "inventory": [
+          {
+            "id": "lamp",
+            "name": "Desk lamp",
+            "kind": "device",
+            "quantity": 1,
+            "available": true,
+            "capabilities": ["light"],
+            "testedCapabilities": [],
+            "evidence": "declared",
+            "notes": "Demo declaration. Position externally; keep ventilation clear."
+          },
+          {
+            "id": "panel",
+            "name": "Plywood offcut",
+            "kind": "material",
+            "quantity": 1,
+            "available": true,
+            "capabilities": ["flat-panel", "stable-base"],
+            "testedCapabilities": [],
+            "dimensions": {
+              "length": 320,
+              "width": 240,
+              "height": 12
+            },
+            "evidence": "declared",
+            "notes": "Demo measurements in mm. Inspect and measure your own material."
+          }
+        ],
+        "count": 1,
+        "requiredActions": ["illuminate", "compare"],
+        "requiredAllocatedCapabilities": [],
+        "resourcePolicy": "declared-only",
+        "requiredMissingCapabilities": [],
+        "removeItemIds": ["lamp"]
+      },
+      "outcome": "generated",
+      "requests": 3,
+      "elapsedMs": 30248,
+      "portfolio": {
+        "operationId": "ce3a8575-eb61-4cd3-ac98-a4c8b59d7cba",
+        "goal": "Use only the supplied desk lamp and flat panel to illuminate the panel and manually compare its appearance under two lamp positions. Use no objects, desk, mount, fastener, measuring tool, camera, or additional resource. Keep both supplied parts as explicit roles, and make manual positioning and comparison clear. Do not invent optical accuracy or successful tests.",
+        "proposals": [
+          {
+            "concept": {
+              "title": "Illumination Comparison",
+              "purpose": "Manually compare the appearance of a flat panel under two lamp positions using only the supplied desk lamp and flat panel.",
+              "reasoning": "This configuration allows for manual positioning and comparison of the panel's appearance, leveraging the capabilities of the desk lamp and flat panel. The manual process ensures that no external resources or tools are used, adhering to the specified constraints.",
+              "newUse": "Propose a simple setup for illumination comparison using only the supplied components.",
+              "category": "fabrication",
+              "minutes": 30,
+              "difficulty": "Easy",
+              "visual": "stand",
+              "roles": [
+                {
+                  "label": "lamp",
+                  "explanation": "The desk lamp is used to provide light for illumination comparison.",
+                  "quantity": 1,
+                  "capabilities": ["light"],
+                  "kinds": ["device"]
+                },
+                {
+                  "label": "panel",
+                  "explanation": "The flat panel serves as the subject for manual comparison of its appearance under different lighting conditions.",
+                  "quantity": 1,
+                  "capabilities": ["flat-panel", "stable-base"],
+                  "kinds": ["material"]
+                }
+              ],
+              "steps": [
+                {
+                  "title": "Position Lamp 1",
+                  "instruction": "Place the desk lamp on a stable surface, ensuring good ventilation around it.",
+                  "action": "arrange",
+                  "targetRole": 0,
+                  "roles": [0, 1],
+                  "check": "Ventilation check"
+                },
+                {
+                  "title": "Position Panel 1",
+                  "instruction": "Carefully place the flat panel under the light source of the lamp, adjusting its position as needed to achieve even illumination.",
+                  "action": "arrange",
+                  "targetRole": 1,
+                  "roles": [0, 1],
+                  "check": "Panel inspection for even illumination"
+                },
+                {
+                  "title": "Compare Appearance",
+                  "instruction": "Manually compare the appearance of the panel under the current lighting conditions, taking note of any differences or observations.",
+                  "action": "compare",
+                  "targetRole": 1,
+                  "roles": [0, 1],
+                  "check": "Visual observation and note-taking"
+                },
+                {
+                  "title": "Position Lamp 2",
+                  "instruction": "Move the desk lamp to a different position, adjusting its height and angle as needed to achieve a new lighting configuration.",
+                  "action": "arrange",
+                  "targetRole": 0,
+                  "roles": [0, 1],
+                  "check": "Lamp positioning check"
+                },
+                {
+                  "title": "Position Panel 2",
+                  "instruction": "Repeat the placement of the flat panel under the new light source, ensuring even illumination.",
+                  "action": "arrange",
+                  "targetRole": 1,
+                  "roles": [0, 1],
+                  "check": "Panel inspection for even illumination"
+                },
+                {
+                  "title": "Compare Appearance (Again)",
+                  "instruction": "Manually compare the appearance of the panel under the second lighting configuration, noting any differences or observations.",
+                  "action": "compare",
+                  "targetRole": 1,
+                  "roles": [0, 1],
+                  "check": "Visual observation and note-taking"
+                }
+              ],
+              "checks": [
+                {
+                  "label": "Ventilation Check",
+                  "procedure": "Check that there is good ventilation around the lamp.",
+                  "evidenceKind": "observation"
+                },
+                {
+                  "label": "Panel Inspection",
+                  "procedure": "Inspect the panel for even illumination under the current lighting conditions.",
+                  "evidenceKind": "observation"
+                },
+                {
+                  "label": "Lamp Positioning Check",
+                  "procedure": "Verify that the lamp is positioned correctly.",
+                  "evidenceKind": "observation"
+                },
+                {
+                  "label": "Visual Observation and Note-taking",
+                  "procedure": "Manually compare the appearance of the panel and take note of any observations or differences.",
+                  "evidenceKind": "observation"
+                }
+              ],
+              "assumptionsToTest": [
+                "Good ventilation around the lamp",
+                "Even illumination on the flat panel"
+              ],
+              "boundaries": [
+                "Lamp must be positioned manually",
+                "No external resources or tools used"
+              ]
+            },
+            "recipe": {
+              "id": "idea-ce3a8575-eb61-4cd3-ac98-a4c8b59d7cba-1",
+              "title": "Illumination Comparison",
+              "subtitle": "Manually compare the appearance of a flat panel under two lamp positions using only the supplied desk lamp and flat panel.",
+              "category": "fabrication",
+              "goalTerms": [
+                "Illumination Comparison",
+                "Manually compare the appearance of a flat panel un"
+              ],
+              "minutes": 30,
+              "difficulty": "Easy",
+              "visual": "stand",
+              "requirements": [
+                {
+                  "id": "role-1",
+                  "label": "lamp",
+                  "quantity": 1,
+                  "explanation": "The desk lamp is used to provide light for illumination comparison.",
+                  "alternatives": [
+                    {
+                      "capabilities": ["light"],
+                      "kinds": ["device"]
+                    }
+                  ]
+                },
+                {
+                  "id": "role-2",
+                  "label": "panel",
+                  "quantity": 1,
+                  "explanation": "The flat panel serves as the subject for manual comparison of its appearance under different lighting conditions.",
+                  "alternatives": [
+                    {
+                      "capabilities": ["flat-panel", "stable-base"],
+                      "kinds": ["material"]
+                    }
+                  ]
+                }
+              ],
+              "steps": [
+                {
+                  "id": "step-1",
+                  "title": "Position Lamp 1",
+                  "instruction": "Place the desk lamp on a stable surface, ensuring good ventilation around it.",
+                  "requirements": ["role-1", "role-2"],
+                  "check": "Ventilation check"
+                },
+                {
+                  "id": "step-2",
+                  "title": "Position Panel 1",
+                  "instruction": "Carefully place the flat panel under the light source of the lamp, adjusting its position as needed to achieve even illumination.",
+                  "requirements": ["role-1", "role-2"],
+                  "check": "Panel inspection for even illumination"
+                },
+                {
+                  "id": "step-3",
+                  "title": "Compare Appearance",
+                  "instruction": "Manually compare the appearance of the panel under the current lighting conditions, taking note of any differences or observations.",
+                  "requirements": ["role-1", "role-2"],
+                  "check": "Visual observation and note-taking"
+                },
+                {
+                  "id": "step-4",
+                  "title": "Position Lamp 2",
+                  "instruction": "Move the desk lamp to a different position, adjusting its height and angle as needed to achieve a new lighting configuration.",
+                  "requirements": ["role-1", "role-2"],
+                  "check": "Lamp positioning check"
+                },
+                {
+                  "id": "step-5",
+                  "title": "Position Panel 2",
+                  "instruction": "Repeat the placement of the flat panel under the new light source, ensuring even illumination.",
+                  "requirements": ["role-1", "role-2"],
+                  "check": "Panel inspection for even illumination"
+                },
+                {
+                  "id": "step-6",
+                  "title": "Compare Appearance (Again)",
+                  "instruction": "Manually compare the appearance of the panel under the second lighting configuration, noting any differences or observations.",
+                  "requirements": ["role-1", "role-2"],
+                  "check": "Visual observation and note-taking"
+                }
+              ],
+              "checks": [
+                {
+                  "id": "check-1",
+                  "label": "Ventilation Check",
+                  "procedure": "Check that there is good ventilation around the lamp.",
+                  "evidenceKind": "observation"
+                },
+                {
+                  "id": "check-2",
+                  "label": "Panel Inspection",
+                  "procedure": "Inspect the panel for even illumination under the current lighting conditions.",
+                  "evidenceKind": "observation"
+                },
+                {
+                  "id": "check-3",
+                  "label": "Lamp Positioning Check",
+                  "procedure": "Verify that the lamp is positioned correctly.",
+                  "evidenceKind": "observation"
+                },
+                {
+                  "id": "check-4",
+                  "label": "Visual Observation and Note-taking",
+                  "procedure": "Manually compare the appearance of the panel and take note of any observations or differences.",
+                  "evidenceKind": "observation"
+                }
+              ],
+              "boundaries": [
+                "Lamp must be positioned manually",
+                "No external resources or tools used",
+                "AI-generated draft. Dimensions, attachment geometry, compatibility, scene interpretation, and successful physical trials remain unverified."
+              ],
+              "source": "generated",
+              "reviewed": false,
+              "ai": {
+                "goal": "Use only the supplied desk lamp and flat panel to illuminate the panel and manually compare its appearance under two lamp positions. Use no objects, desk, mount, fastener, measuring tool, camera, or additional resource. Keep both supplied parts as explicit roles, and make manual positioning and comparison clear. Do not invent optical accuracy or successful tests.",
+                "model": "llama3.2:3b",
+                "mode": "local",
+                "operationId": "ce3a8575-eb61-4cd3-ac98-a4c8b59d7cba",
+                "inventoryFingerprint": "[{\"id\":\"lamp\",\"name\":\"Desk lamp\",\"kind\":\"device\",\"quantity\":1,\"available\":true,\"capabilities\":[\"light\"],\"testedCapabilities\":[],\"evidence\":\"declared\",\"notes\":\"Demo declaration. Position externally; keep ventilation clear.\"},{\"id\":\"panel\",\"name\":\"Plywood offcut\",\"kind\":\"material\",\"quantity\":1,\"available\":true,\"capabilities\":[\"flat-panel\",\"stable-base\"],\"testedCapabilities\":[],\"dimensions\":{\"length\":320,\"width\":240,\"height\":12},\"evidence\":\"declared\",\"notes\":\"Demo measurements in mm. Inspect and measure your own material.\"}]",
+                "reasoning": "This configuration allows for manual positioning and comparison of the panel's appearance, leveraging the capabilities of the desk lamp and flat panel. The manual process ensures that no external resources or tools are used, adhering to the specified constraints.",
+                "newUse": "Propose a simple setup for illumination comparison using only the supplied components.",
+                "assumptionsToTest": [
+                  "Good ventilation around the lamp",
+                  "Even illumination on the flat panel"
+                ],
+                "resourceReview": {
+                  "model": "llama3.2:3b",
+                  "status": "no-issues-reported",
+                  "issues": [],
+                  "boundary": "An AI resource critique can miss errors. It is not physical validation or a proof of useful performance. The owner must review the procedure and test its assumptions."
+                }
+              }
+            },
+            "plan": {
+              "recipe": {
+                "id": "idea-ce3a8575-eb61-4cd3-ac98-a4c8b59d7cba-1",
+                "title": "Illumination Comparison",
+                "subtitle": "Manually compare the appearance of a flat panel under two lamp positions using only the supplied desk lamp and flat panel.",
+                "category": "fabrication",
+                "goalTerms": [
+                  "Illumination Comparison",
+                  "Manually compare the appearance of a flat panel un"
+                ],
+                "minutes": 30,
+                "difficulty": "Easy",
+                "visual": "stand",
+                "requirements": [
+                  {
+                    "id": "role-1",
+                    "label": "lamp",
+                    "quantity": 1,
+                    "explanation": "The desk lamp is used to provide light for illumination comparison.",
+                    "alternatives": [
+                      {
+                        "capabilities": ["light"],
+                        "kinds": ["device"]
+                      }
+                    ]
+                  },
+                  {
+                    "id": "role-2",
+                    "label": "panel",
+                    "quantity": 1,
+                    "explanation": "The flat panel serves as the subject for manual comparison of its appearance under different lighting conditions.",
+                    "alternatives": [
+                      {
+                        "capabilities": ["flat-panel", "stable-base"],
+                        "kinds": ["material"]
+                      }
+                    ]
+                  }
+                ],
+                "steps": [
+                  {
+                    "id": "step-1",
+                    "title": "Position Lamp 1",
+                    "instruction": "Place the desk lamp on a stable surface, ensuring good ventilation around it.",
+                    "requirements": ["role-1", "role-2"],
+                    "check": "Ventilation check"
+                  },
+                  {
+                    "id": "step-2",
+                    "title": "Position Panel 1",
+                    "instruction": "Carefully place the flat panel under the light source of the lamp, adjusting its position as needed to achieve even illumination.",
+                    "requirements": ["role-1", "role-2"],
+                    "check": "Panel inspection for even illumination"
+                  },
+                  {
+                    "id": "step-3",
+                    "title": "Compare Appearance",
+                    "instruction": "Manually compare the appearance of the panel under the current lighting conditions, taking note of any differences or observations.",
+                    "requirements": ["role-1", "role-2"],
+                    "check": "Visual observation and note-taking"
+                  },
+                  {
+                    "id": "step-4",
+                    "title": "Position Lamp 2",
+                    "instruction": "Move the desk lamp to a different position, adjusting its height and angle as needed to achieve a new lighting configuration.",
+                    "requirements": ["role-1", "role-2"],
+                    "check": "Lamp positioning check"
+                  },
+                  {
+                    "id": "step-5",
+                    "title": "Position Panel 2",
+                    "instruction": "Repeat the placement of the flat panel under the new light source, ensuring even illumination.",
+                    "requirements": ["role-1", "role-2"],
+                    "check": "Panel inspection for even illumination"
+                  },
+                  {
+                    "id": "step-6",
+                    "title": "Compare Appearance (Again)",
+                    "instruction": "Manually compare the appearance of the panel under the second lighting configuration, noting any differences or observations.",
+                    "requirements": ["role-1", "role-2"],
+                    "check": "Visual observation and note-taking"
+                  }
+                ],
+                "checks": [
+                  {
+                    "id": "check-1",
+                    "label": "Ventilation Check",
+                    "procedure": "Check that there is good ventilation around the lamp.",
+                    "evidenceKind": "observation"
+                  },
+                  {
+                    "id": "check-2",
+                    "label": "Panel Inspection",
+                    "procedure": "Inspect the panel for even illumination under the current lighting conditions.",
+                    "evidenceKind": "observation"
+                  },
+                  {
+                    "id": "check-3",
+                    "label": "Lamp Positioning Check",
+                    "procedure": "Verify that the lamp is positioned correctly.",
+                    "evidenceKind": "observation"
+                  },
+                  {
+                    "id": "check-4",
+                    "label": "Visual Observation and Note-taking",
+                    "procedure": "Manually compare the appearance of the panel and take note of any observations or differences.",
+                    "evidenceKind": "observation"
+                  }
+                ],
+                "boundaries": [
+                  "Lamp must be positioned manually",
+                  "No external resources or tools used",
+                  "AI-generated draft. Dimensions, attachment geometry, compatibility, scene interpretation, and successful physical trials remain unverified."
+                ],
+                "source": "generated",
+                "reviewed": false,
+                "ai": {
+                  "goal": "Use only the supplied desk lamp and flat panel to illuminate the panel and manually compare its appearance under two lamp positions. Use no objects, desk, mount, fastener, measuring tool, camera, or additional resource. Keep both supplied parts as explicit roles, and make manual positioning and comparison clear. Do not invent optical accuracy or successful tests.",
+                  "model": "llama3.2:3b",
+                  "mode": "local",
+                  "operationId": "ce3a8575-eb61-4cd3-ac98-a4c8b59d7cba",
+                  "inventoryFingerprint": "[{\"id\":\"lamp\",\"name\":\"Desk lamp\",\"kind\":\"device\",\"quantity\":1,\"available\":true,\"capabilities\":[\"light\"],\"testedCapabilities\":[],\"evidence\":\"declared\",\"notes\":\"Demo declaration. Position externally; keep ventilation clear.\"},{\"id\":\"panel\",\"name\":\"Plywood offcut\",\"kind\":\"material\",\"quantity\":1,\"available\":true,\"capabilities\":[\"flat-panel\",\"stable-base\"],\"testedCapabilities\":[],\"dimensions\":{\"length\":320,\"width\":240,\"height\":12},\"evidence\":\"declared\",\"notes\":\"Demo measurements in mm. Inspect and measure your own material.\"}]",
+                  "reasoning": "This configuration allows for manual positioning and comparison of the panel's appearance, leveraging the capabilities of the desk lamp and flat panel. The manual process ensures that no external resources or tools are used, adhering to the specified constraints.",
+                  "newUse": "Propose a simple setup for illumination comparison using only the supplied components.",
+                  "assumptionsToTest": [
+                    "Good ventilation around the lamp",
+                    "Even illumination on the flat panel"
+                  ],
+                  "resourceReview": {
+                    "model": "llama3.2:3b",
+                    "status": "no-issues-reported",
+                    "issues": [],
+                    "boundary": "An AI resource critique can miss errors. It is not physical validation or a proof of useful performance. The owner must review the procedure and test its assumptions."
+                  }
+                }
+              },
+              "allocations": [
+                {
+                  "requirementId": "role-1",
+                  "itemId": "lamp",
+                  "quantity": 1,
+                  "matchedCapabilities": ["light"]
+                },
+                {
+                  "requirementId": "role-2",
+                  "itemId": "panel",
+                  "quantity": 1,
+                  "matchedCapabilities": ["flat-panel", "stable-base"]
+                }
+              ],
+              "missing": [],
+              "status": "draft",
+              "coveredUnits": 2,
+              "totalUnits": 2,
+              "relevance": 9,
+              "evidence": "declared",
+              "untestedCapabilities": [
+                {
+                  "itemId": "lamp",
+                  "capability": "light"
+                },
+                {
+                  "itemId": "panel",
+                  "capability": "flat-panel"
+                },
+                {
+                  "itemId": "panel",
+                  "capability": "stable-base"
+                }
+              ],
+              "inventoryFingerprint": "[{\"id\":\"lamp\",\"name\":\"Desk lamp\",\"kind\":\"device\",\"quantity\":1,\"available\":true,\"capabilities\":[\"light\"],\"testedCapabilities\":[],\"evidence\":\"declared\",\"notes\":\"Demo declaration. Position externally; keep ventilation clear.\"},{\"id\":\"panel\",\"name\":\"Plywood offcut\",\"kind\":\"material\",\"quantity\":1,\"available\":true,\"capabilities\":[\"flat-panel\",\"stable-base\"],\"testedCapabilities\":[],\"dimensions\":{\"length\":320,\"width\":240,\"height\":12},\"evidence\":\"declared\",\"notes\":\"Demo measurements in mm. Inspect and measure your own material.\"}]",
+              "recipeFingerprint": "{\"id\":\"idea-ce3a8575-eb61-4cd3-ac98-a4c8b59d7cba-1\",\"title\":\"Illumination Comparison\",\"subtitle\":\"Manually compare the appearance of a flat panel under two lamp positions using only the supplied desk lamp and flat panel.\",\"category\":\"fabrication\",\"goalTerms\":[\"Illumination Comparison\",\"Manually compare the appearance of a flat panel un\"],\"minutes\":30,\"difficulty\":\"Easy\",\"visual\":\"stand\",\"requirements\":[{\"id\":\"role-1\",\"label\":\"lamp\",\"quantity\":1,\"explanation\":\"The desk lamp is used to provide light for illumination comparison.\",\"alternatives\":[{\"capabilities\":[\"light\"],\"kinds\":[\"device\"]}]},{\"id\":\"role-2\",\"label\":\"panel\",\"quantity\":1,\"explanation\":\"The flat panel serves as the subject for manual comparison of its appearance under different lighting conditions.\",\"alternatives\":[{\"capabilities\":[\"flat-panel\",\"stable-base\"],\"kinds\":[\"material\"]}]}],\"steps\":[{\"id\":\"step-1\",\"title\":\"Position Lamp 1\",\"instruction\":\"Place the desk lamp on a stable surface, ensuring good ventilation around it.\",\"requirements\":[\"role-1\",\"role-2\"],\"check\":\"Ventilation check\"},{\"id\":\"step-2\",\"title\":\"Position Panel 1\",\"instruction\":\"Carefully place the flat panel under the light source of the lamp, adjusting its position as needed to achieve even illumination.\",\"requirements\":[\"role-1\",\"role-2\"],\"check\":\"Panel inspection for even illumination\"},{\"id\":\"step-3\",\"title\":\"Compare Appearance\",\"instruction\":\"Manually compare the appearance of the panel under the current lighting conditions, taking note of any differences or observations.\",\"requirements\":[\"role-1\",\"role-2\"],\"check\":\"Visual observation and note-taking\"},{\"id\":\"step-4\",\"title\":\"Position Lamp 2\",\"instruction\":\"Move the desk lamp to a different position, adjusting its height and angle as needed to achieve a new lighting configuration.\",\"requirements\":[\"role-1\",\"role-2\"],\"check\":\"Lamp positioning check\"},{\"id\":\"step-5\",\"title\":\"Position Panel 2\",\"instruction\":\"Repeat the placement of the flat panel under the new light source, ensuring even illumination.\",\"requirements\":[\"role-1\",\"role-2\"],\"check\":\"Panel inspection for even illumination\"},{\"id\":\"step-6\",\"title\":\"Compare Appearance (Again)\",\"instruction\":\"Manually compare the appearance of the panel under the second lighting configuration, noting any differences or observations.\",\"requirements\":[\"role-1\",\"role-2\"],\"check\":\"Visual observation and note-taking\"}],\"checks\":[{\"id\":\"check-1\",\"label\":\"Ventilation Check\",\"procedure\":\"Check that there is good ventilation around the lamp.\",\"evidenceKind\":\"observation\"},{\"id\":\"check-2\",\"label\":\"Panel Inspection\",\"procedure\":\"Inspect the panel for even illumination under the current lighting conditions.\",\"evidenceKind\":\"observation\"},{\"id\":\"check-3\",\"label\":\"Lamp Positioning Check\",\"procedure\":\"Verify that the lamp is positioned correctly.\",\"evidenceKind\":\"observation\"},{\"id\":\"check-4\",\"label\":\"Visual Observation and Note-taking\",\"procedure\":\"Manually compare the appearance of the panel and take note of any observations or differences.\",\"evidenceKind\":\"observation\"}],\"boundaries\":[\"Lamp must be positioned manually\",\"No external resources or tools used\",\"AI-generated draft. Dimensions, attachment geometry, compatibility, scene interpretation, and successful physical trials remain unverified.\"],\"source\":\"generated\",\"reviewed\":false,\"ai\":{\"goal\":\"Use only the supplied desk lamp and flat panel to illuminate the panel and manually compare its appearance under two lamp positions. Use no objects, desk, mount, fastener, measuring tool, camera, or additional resource. Keep both supplied parts as explicit roles, and make manual positioning and comparison clear. Do not invent optical accuracy or successful tests.\",\"model\":\"llama3.2:3b\",\"mode\":\"local\",\"operationId\":\"ce3a8575-eb61-4cd3-ac98-a4c8b59d7cba\",\"inventoryFingerprint\":\"[{\\\"id\\\":\\\"lamp\\\",\\\"name\\\":\\\"Desk lamp\\\",\\\"kind\\\":\\\"device\\\",\\\"quantity\\\":1,\\\"available\\\":true,\\\"capabilities\\\":[\\\"light\\\"],\\\"testedCapabilities\\\":[],\\\"evidence\\\":\\\"declared\\\",\\\"notes\\\":\\\"Demo declaration. Position externally; keep ventilation clear.\\\"},{\\\"id\\\":\\\"panel\\\",\\\"name\\\":\\\"Plywood offcut\\\",\\\"kind\\\":\\\"material\\\",\\\"quantity\\\":1,\\\"available\\\":true,\\\"capabilities\\\":[\\\"flat-panel\\\",\\\"stable-base\\\"],\\\"testedCapabilities\\\":[],\\\"dimensions\\\":{\\\"length\\\":320,\\\"width\\\":240,\\\"height\\\":12},\\\"evidence\\\":\\\"declared\\\",\\\"notes\\\":\\\"Demo measurements in mm. Inspect and measure your own material.\\\"}]\",\"reasoning\":\"This configuration allows for manual positioning and comparison of the panel's appearance, leveraging the capabilities of the desk lamp and flat panel. The manual process ensures that no external resources or tools are used, adhering to the specified constraints.\",\"newUse\":\"Propose a simple setup for illumination comparison using only the supplied components.\",\"assumptionsToTest\":[\"Good ventilation around the lamp\",\"Even illumination on the flat panel\"],\"resourceReview\":{\"model\":\"llama3.2:3b\",\"status\":\"no-issues-reported\",\"issues\":[],\"boundary\":\"An AI resource critique can miss errors. It is not physical validation or a proof of useful performance. The owner must review the procedure and test its assumptions.\"}}}"
+            },
+            "inventoryFit": 1,
+            "resourceReview": {
+              "model": "llama3.2:3b",
+              "status": "no-issues-reported",
+              "issues": [],
+              "boundary": "An AI resource critique can miss errors. It is not physical validation or a proof of useful performance. The owner must review the procedure and test its assumptions."
+            },
+            "physicalReview": "pending",
+            "novelty": "model-claim-unverified"
+          }
+        ],
+        "model": "llama3.2:3b",
+        "mode": "local",
+        "attempts": 2,
+        "calls": 3,
+        "repairAttempted": false,
+        "repairApplied": false,
+        "reviewed": false,
+        "ranking": "resource-review-then-declared-inventory-coverage",
+        "boundary": "AI-generated drafts. Resource contracts, allocation, and model critique do not verify physical geometry, compatibility, hidden properties, useful performance, or research novelty."
+      },
+      "assessments": [
+        {
+          "contract": "fail",
+          "problems": ["Required illuminate action is absent."],
+          "signals": [],
+          "coverage": {
+            "coveredUnits": 2,
+            "totalUnits": 2
+          },
+          "allocations": [
+            {
+              "requirementId": "role-1",
+              "itemId": "lamp",
+              "quantity": 1,
+              "matchedCapabilities": ["light"]
+            },
+            {
+              "requirementId": "role-2",
+              "itemId": "panel",
+              "quantity": 1,
+              "matchedCapabilities": ["flat-panel", "stable-base"]
+            }
+          ],
+          "missing": [],
+          "removalChallenge": {
+            "removedItemIds": ["lamp"],
+            "allocations": [
+              {
+                "requirementId": "role-2",
+                "itemId": "panel",
+                "quantity": 1,
+                "matchedCapabilities": ["flat-panel", "stable-base"]
+              }
+            ],
+            "missing": [
+              {
+                "requirement": {
+                  "id": "role-1",
+                  "label": "lamp",
+                  "quantity": 1,
+                  "explanation": "The desk lamp is used to provide light for illumination comparison.",
+                  "alternatives": [
+                    {
+                      "capabilities": ["light"],
+                      "kinds": ["device"]
+                    }
+                  ]
+                },
+                "quantity": 1
+              }
+            ],
+            "status": "blocked",
+            "changes": ["lamp: no available substitute. Build is blocked."]
+          },
+          "humanReview": "pending",
+          "physicalValidation": "not-performed"
+        }
+      ]
+    },
+    {
+      "case": {
+        "id": "camera-light-panel",
+        "label": "Camera, host, light, and explicit framing evidence",
+        "goal": "Propose a tabletop comparison workflow using only the supplied webcam, laptop host, lamp, and panel: illuminate the panel, use the webcam with its laptop host to capture its appearance under two lamp positions, and compare the captures manually. Declare all four supplied parts as roles, including the compute host. Do not assume mounts, fastening, sample objects, optical accuracy, or a successful test. Represent any additional required resource explicitly rather than silently introducing it.",
+        "inventory": [
+          {
+            "id": "laptop",
+            "name": "Laptop",
+            "kind": "device",
+            "quantity": 1,
+            "available": true,
+            "capabilities": ["compute", "display", "network", "usb-power"],
+            "testedCapabilities": [],
+            "evidence": "declared",
+            "notes": "Demo declaration. Runs the workbench and camera tools in a browser."
+          },
+          {
+            "id": "webcam",
+            "name": "USB webcam",
+            "kind": "device",
+            "quantity": 1,
+            "available": true,
+            "capabilities": ["camera"],
+            "testedCapabilities": [],
+            "evidence": "declared",
+            "notes": "Demo declaration. Test with the Camera Lab before accepting this capability."
+          },
+          {
+            "id": "lamp",
+            "name": "Desk lamp",
+            "kind": "device",
+            "quantity": 1,
+            "available": true,
+            "capabilities": ["light"],
+            "testedCapabilities": [],
+            "evidence": "declared",
+            "notes": "Demo declaration. Position externally; keep ventilation clear."
+          },
+          {
+            "id": "panel",
+            "name": "Plywood offcut",
+            "kind": "material",
+            "quantity": 1,
+            "available": true,
+            "capabilities": ["flat-panel", "stable-base"],
+            "testedCapabilities": [],
+            "dimensions": {
+              "length": 320,
+              "width": 240,
+              "height": 12
+            },
+            "evidence": "declared",
+            "notes": "Demo measurements in mm. Inspect and measure your own material."
+          }
+        ],
+        "count": 1,
+        "requiredActions": ["illuminate", "capture", "compare"],
+        "requiredAllocatedCapabilities": ["camera", "compute", "light", "flat-panel"],
+        "resourcePolicy": "declared-only",
+        "requiredMissingCapabilities": [],
+        "removeItemIds": ["webcam"]
+      },
+      "outcome": "failed",
+      "requests": 2,
+      "elapsedMs": 30814,
+      "error": "The model operation failed; no validated portfolio was returned.",
+      "failureKind": "invalid-concepts"
+    },
+    {
+      "case": {
+        "id": "missing-camera",
+        "label": "Honest missing camera, no imaginary capture",
+        "goal": "Capture an image of the supplied illuminated panel. There is no available camera. Propose an explicitly blocked configuration that declares the missing camera role and a capture action instead of implying the lamp or panel can take pictures. Do not claim any capture happened.",
+        "inventory": [
+          {
+            "id": "lamp",
+            "name": "Desk lamp",
+            "kind": "device",
+            "quantity": 1,
+            "available": true,
+            "capabilities": ["light"],
+            "testedCapabilities": [],
+            "evidence": "declared",
+            "notes": "Demo declaration. Position externally; keep ventilation clear."
+          },
+          {
+            "id": "panel",
+            "name": "Plywood offcut",
+            "kind": "material",
+            "quantity": 1,
+            "available": true,
+            "capabilities": ["flat-panel", "stable-base"],
+            "testedCapabilities": [],
+            "dimensions": {
+              "length": 320,
+              "width": 240,
+              "height": 12
+            },
+            "evidence": "declared",
+            "notes": "Demo measurements in mm. Inspect and measure your own material."
+          }
+        ],
+        "count": 1,
+        "requiredActions": ["capture"],
+        "requiredAllocatedCapabilities": [],
+        "resourcePolicy": "missing-allowed",
+        "requiredMissingCapabilities": ["camera"],
+        "removeItemIds": []
+      },
+      "outcome": "failed",
+      "requests": 2,
+      "elapsedMs": 38662,
+      "error": "The model operation failed; no validated portfolio was returned.",
+      "failureKind": "invalid-concepts"
+    },
+    {
+      "case": {
+        "id": "single-phone",
+        "label": "One multifunction device cannot be counted twice",
+        "goal": "Use exactly one supplied smartphone to capture a scene and display the captured image on that same phone. These are sequential actions. Combine camera and display functions in one physical role rather than requiring two phones. The scene is unspecified; do not add objects, mounts, tools, hidden functions, accuracy claims, or successful tests.",
+        "inventory": [
+          {
+            "id": "phone",
+            "name": "Old smartphone",
+            "kind": "device",
+            "quantity": 1,
+            "available": true,
+            "capabilities": ["camera", "compute", "display", "network"],
+            "testedCapabilities": [],
+            "evidence": "declared",
+            "notes": "Demo declaration. Confirm camera access and power before using your own phone."
+          }
+        ],
+        "count": 1,
+        "requiredActions": ["capture", "display"],
+        "requiredAllocatedCapabilities": [],
+        "resourcePolicy": "declared-only",
+        "requiredMissingCapabilities": [],
+        "removeItemIds": ["phone"]
+      },
+      "outcome": "failed",
+      "requests": 2,
+      "elapsedMs": 22855,
+      "error": "The model operation failed; no validated portfolio was returned.",
+      "failureKind": "invalid-concepts"
+    }
+  ],
+  "boundary": "Contract checks and model critiques do not establish instruction completeness, usefulness, physical feasibility, recognition accuracy, or research novelty. Every generated proposal still requires independent human review and physical validation. Synthetic protocol runs are not model benchmarks."
+}

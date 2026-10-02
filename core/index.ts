@@ -16,3 +16,5 @@ export * from './workbench.js';
 export * from './report.js';
 export * from './ideation.js';
 export * from './inventory-scan.js';
+export * from './evaluation.js';
+export * from './evaluation-cases.js';

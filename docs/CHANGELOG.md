@@ -1,5 +1,13 @@
 # Changes
 
+## 0.1.0-alpha.6 — Live AI evaluation and action-aware repair guidance
+
+The explicit evaluation command runs declared inventory challenges against configured generation/critic models and retains inputs, failures, returned drafts, independent software contracts, removal plans, timings, attempted request counts, and pending human/physical review. Reports separate required actions, allocated capabilities, expected missing resources, text signals, and incomplete critiques. Existing output files are refused before inference; Ctrl+C retains partial results. Injected responses cannot be labeled live benchmarks.
+
+A real local-model diagnostic exposed manual lamp positioning marked as hardware rotation. Validation-repair requests now list permitted actions for the model's declared roles, explain manual positioning versus mechanisms, and prohibit inventing capabilities to make a rejected action validate. The original resource contract stays enforced.
+
+Validation: 103 tests, strict TypeScript, emitted ESM, formatting, and the existing Chromium protocol check. Actual `llama3.2:3b` evaluations are retained: after repair guidance, one of four revised cases produced a draft, which still failed the requested-action contract despite a clean critic. This is not dependable invention, demonstrated physical performance, or a controlled A/B improvement. See [the evaluation guide](EVALUATION.md) and [recorded results](../evaluations/README.md).
+
 ## 0.1.0-alpha.5 — Photo inventory suggestions and owner review
 
 An explicitly configured vision model can propose objects, approximate counts, image regions, possible functions, and existing-inventory matches from a selected photo. Uncertain kinds and empty capability suggestions are retained. Software validates input bytes, proposal bounds, and references; one syntax/schema repair is allowed. Photos never establish measured dimensions, hidden properties, tested capabilities, or compatibility.

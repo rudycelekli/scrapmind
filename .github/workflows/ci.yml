@@ -20,6 +20,7 @@ jobs:
       - run: npm run check
       - run: npm run format:check
       - run: node dist/scripts/cli.js demo
+      - run: node dist/scripts/evaluate.js --list
   browser:
     runs-on: ubuntu-latest
     steps:

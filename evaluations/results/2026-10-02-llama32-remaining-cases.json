@@ -1,0 +1,164 @@
+{
+  "format": "scrapmind-ai-evaluation",
+  "version": 1,
+  "id": "fcd664ae-be30-4d60-a326-b25410901821",
+  "provenance": "live-model",
+  "startedAt": "2026-10-02T22:46:47.838Z",
+  "finishedAt": "2026-10-02T22:48:15.185Z",
+  "provider": {
+    "model": "llama3.2:3b",
+    "reviewModel": "llama3.2:3b",
+    "mode": "local",
+    "profile": "compatible",
+    "format": "json_schema",
+    "maxOutputTokens": 8192
+  },
+  "summary": {
+    "selectedCases": 3,
+    "attemptedCases": 3,
+    "generatedCases": 0,
+    "failedCases": 3,
+    "cancelledCases": 0,
+    "generatedProposals": 0,
+    "contractPasses": 0,
+    "contractFailures": 0,
+    "pendingHumanReviews": 0,
+    "requests": 6
+  },
+  "results": [
+    {
+      "case": {
+        "id": "camera-light-panel",
+        "label": "Capture with explicit framing evidence",
+        "goal": "Propose a tabletop comparison workflow using only the supplied camera, lamp, and panel: illuminate the panel, capture its appearance under two lamp positions, and compare the captures manually. Do not assume mounts, fastening, sample objects, optical accuracy, or a successful test. Represent any additional required resource explicitly rather than silently introducing it.",
+        "inventory": [
+          {
+            "id": "webcam",
+            "name": "USB webcam",
+            "kind": "device",
+            "quantity": 1,
+            "available": true,
+            "capabilities": ["camera"],
+            "testedCapabilities": [],
+            "evidence": "declared",
+            "notes": "Demo declaration. Test with the Camera Lab before accepting this capability."
+          },
+          {
+            "id": "lamp",
+            "name": "Desk lamp",
+            "kind": "device",
+            "quantity": 1,
+            "available": true,
+            "capabilities": ["light"],
+            "testedCapabilities": [],
+            "evidence": "declared",
+            "notes": "Demo declaration. Position externally; keep ventilation clear."
+          },
+          {
+            "id": "panel",
+            "name": "Plywood offcut",
+            "kind": "material",
+            "quantity": 1,
+            "available": true,
+            "capabilities": ["flat-panel", "stable-base"],
+            "testedCapabilities": [],
+            "dimensions": {
+              "length": 320,
+              "width": 240,
+              "height": 12
+            },
+            "evidence": "declared",
+            "notes": "Demo measurements in mm. Inspect and measure your own material."
+          }
+        ],
+        "count": 1,
+        "requiredActions": ["illuminate", "capture", "compare"],
+        "resourcePolicy": "declared-only",
+        "requiredMissingCapabilities": [],
+        "removeItemIds": ["webcam"]
+      },
+      "outcome": "failed",
+      "requests": 2,
+      "elapsedMs": 23767,
+      "error": "The model operation failed; no validated portfolio was returned.",
+      "failureKind": "invalid-concepts"
+    },
+    {
+      "case": {
+        "id": "missing-camera",
+        "label": "Honest missing camera, no imaginary capture",
+        "goal": "Capture an image of the supplied illuminated panel. There is no available camera. Propose an explicitly blocked configuration that declares the missing camera role and a capture action instead of implying the lamp or panel can take pictures. Do not claim any capture happened.",
+        "inventory": [
+          {
+            "id": "lamp",
+            "name": "Desk lamp",
+            "kind": "device",
+            "quantity": 1,
+            "available": true,
+            "capabilities": ["light"],
+            "testedCapabilities": [],
+            "evidence": "declared",
+            "notes": "Demo declaration. Position externally; keep ventilation clear."
+          },
+          {
+            "id": "panel",
+            "name": "Plywood offcut",
+            "kind": "material",
+            "quantity": 1,
+            "available": true,
+            "capabilities": ["flat-panel", "stable-base"],
+            "testedCapabilities": [],
+            "dimensions": {
+              "length": 320,
+              "width": 240,
+              "height": 12
+            },
+            "evidence": "declared",
+            "notes": "Demo measurements in mm. Inspect and measure your own material."
+          }
+        ],
+        "count": 1,
+        "requiredActions": ["capture"],
+        "resourcePolicy": "missing-allowed",
+        "requiredMissingCapabilities": ["camera"],
+        "removeItemIds": []
+      },
+      "outcome": "failed",
+      "requests": 2,
+      "elapsedMs": 25354,
+      "error": "The model operation failed; no validated portfolio was returned.",
+      "failureKind": "invalid-concepts"
+    },
+    {
+      "case": {
+        "id": "single-phone",
+        "label": "One multifunction device cannot be counted twice",
+        "goal": "Use exactly one supplied smartphone to capture a scene and display the captured image on that same phone. These are sequential actions. Combine camera and display functions in one physical role rather than requiring two phones. The scene is unspecified; do not add objects, mounts, tools, hidden functions, accuracy claims, or successful tests.",
+        "inventory": [
+          {
+            "id": "phone",
+            "name": "Old smartphone",
+            "kind": "device",
+            "quantity": 1,
+            "available": true,
+            "capabilities": ["camera", "compute", "display", "network"],
+            "testedCapabilities": [],
+            "evidence": "declared",
+            "notes": "Demo declaration. Confirm camera access and power before using your own phone."
+          }
+        ],
+        "count": 1,
+        "requiredActions": ["capture", "display"],
+        "resourcePolicy": "declared-only",
+        "requiredMissingCapabilities": [],
+        "removeItemIds": ["phone"]
+      },
+      "outcome": "failed",
+      "requests": 2,
+      "elapsedMs": 38222,
+      "error": "The model operation failed; no validated portfolio was returned.",
+      "failureKind": "invalid-concepts"
+    }
+  ],
+  "boundary": "Contract checks and model critiques do not establish instruction completeness, usefulness, physical feasibility, recognition accuracy, or research novelty. Every generated proposal still requires independent human review and physical validation. Synthetic protocol runs are not model benchmarks."
+}
