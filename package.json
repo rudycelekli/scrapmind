@@ -1,6 +1,6 @@
 {
   "name": "scrapmind",
-  "version": "0.1.0-alpha.3",
+  "version": "0.1.0-alpha.4",
   "private": true,
   "description": "Turn the materials and devices you already own into useful things. Inventory-constrained plans, guided builds, and evidence-based Device Alchemy.",
   "type": "module",
@@ -20,7 +20,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "serve": "tsx --env-file-if-exists=.env scripts/server.ts",
-    "invent": "tsx --env-file-if-exists=.env scripts/cli.ts invent"
+    "invent": "tsx --env-file-if-exists=.env scripts/cli.ts invent",
+    "workbench": "tsx --env-file-if-exists=.env scripts/workbench-cli.ts"
   },
   "dependencies": {
     "zod": "^4.6.5"

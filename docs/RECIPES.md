@@ -22,6 +22,8 @@ Model proposals are stamped `source: generated` and `reviewed: false`. A complet
 
 Recipe data never executes commands. Names and prose are not a permission channel. A syntactically valid recipe can still be physically incorrect; review the procedure and perform the defined checks with real parts.
 
+Portfolio-generated recipes can include an `ai` provenance object with the goal, model names, input inventory fingerprint, reasoning, proposed new use, physical assumptions, and resource-review state/issues. These remain model and owner claims, not attestation. Workspace and bundle exports retain this data. The portfolio's action-capability contracts apply during concept generation; imported recipe prose still requires owner review. See [the AI engine](AI.md).
+
 ## Physical contribution requirements
 
 Contributions should include the actual inventory, measurements, failed substitutions, procedure revisions, and observed acceptance results. Do not submit private photographs or identify other people without their agreement. Document whether results are user-reported or independently repeated. Do not convert a successful software allocation into a claim that a physical build succeeded.

@@ -1,8 +1,10 @@
 # Engineering status
 
-Date: 2026-10-02. Release: 0.1.0-alpha.3.
+Date: 2026-10-02. Release: 0.1.0-alpha.4.
 
 ## Executed software validation
+
+81 core/API/model-protocol/persistence tests pass. The emitted CLI was also run through local initialization, readable procedures, inventory substitution, stale-build reporting, bundle audit, and restoration. Its smoke inventory was public demo data and no physical trial occurred.
 
 - Strict TypeScript checking and emitted ESM build.
 - Starter allocation and missing-resource checks.
@@ -22,6 +24,10 @@ Date: 2026-10-02. Release: 0.1.0-alpha.3.
 - Actual Chromium execution of a three-frame synthetic sequence, with measured intervals, a standalone camera-frame trial, trial-photo bundling, and refusal to apply a declared synthetic trial to an owner-device capability. Stalled frame delivery times out and releases the source.
 - Owner-confirmation, device-configuration invalidation, image-checksum requirements, and updating only a tested camera capability. These policy tests use explicitly synthetic inputs, not physical sensor trials.
 - UTF-8 byte limits for workspace and evidence exports, including non-ASCII input.
+- AI portfolio protocol with action-target contracts, capture-evidence checks, schema repair, critique, semantic repair, and fresh review of changed text. Success cases use synthetic responses.
+- Conservative prose signals remain visible when a model critic reports none; malformed critiques are recorded as incomplete. Model response bytes are bounded before JSON parsing. Reasoning token-field compatibility and separate critic routing are covered by synthetic protocol tests.
+- Saved CLI build workflow, image imports, recorded owner claims, full evidence export/import, checksum audits, missing-image reports, recipe and inventory invalidation, private file permissions, exclusive outputs, symlink rejection, and concurrent-write refusal.
+- Reasoning and physical assumptions survive workspace round trips. Saving AI drafts refuses an inventory revision changed during inference.
 
 The repository's CI runs checks on Node.js 22 and 24, plus a Chromium camera job. A successful workflow is evidence for software correctness under its tests, not physical performance. The browser library exists; a designed camera interface is still pending.
 
@@ -30,6 +36,8 @@ The repository's CI runs checks on Node.js 22 and 24, plus a Chromium camera job
 The preinstalled `llama3.2:3b` model was exercised through a loopback Ollama endpoint using only the public demo inventory. Early attempts exposed malformed envelopes and invalid role references. Another schema-valid result omitted physical roles from its steps and invented a clamp-force limit. These observations prompted stronger reference validation, bounded repair, and a distinct draft state.
 
 After tightening the contract to require nonempty step references, a subsequent trial failed role validation after two attempts and was rejected. This is not a successful physical plan or evidence of dependable model-based invention. The adapter's successful protocol cases are tested with explicit synthetic responses; robust generation needs stronger models and a broader evaluation set.
+
+Portfolio exploration exposed a webcam used as a projector, undeclared parts, and incorrect step roles. After adding action-target checks, a subsequent trial was rejected. A tightly constrained prompt produced a draft whose model critic reported no issues, but manual inspection found undeclared fastening and role metadata in human instructions. Those observations prompted software text signals, rejection of role-index prose, and required capture evidence. A later two-role no-fastening request was rejected because its fastening action lacked a suitable role. These are recorded model failures, not validated inventions; see [the AI evaluation account](AI.md).
 
 ## Not demonstrated
 

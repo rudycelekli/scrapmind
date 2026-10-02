@@ -1,5 +1,15 @@
 # Changes
 
+## 0.1.0-alpha.4 — AI portfolios and a saved workbench
+
+The portfolio engine proposes up to three ideas with reasoning, physical roles, action-capability contracts, allocations, and explicit assumptions. Conservative text signals and a configurable model critic expose resource issues; one semantic repair is rechecked and critiqued. Drafts retain model provenance and review state. Generated plans require owner review, and unresolved/incomplete resource review requires a separate acknowledgement. Inference stays explicit and bounded to five calls per operation. Reasoning-model token parameters and a separate critic model are configurable.
+
+The local CLI now retains inventory, custom/AI recipes, builds, imported photos, step progress, and acceptance results. Reads validate schemas and byte bounds; writers use exclusive locks, previous ledgers, content-addressed image files, and atomic metadata replacement. Full evidence bundles import only after all bytes and references validate. Reports separate owner-reported status from image-byte integrity and retain AI assumptions. Existing files and workspace roots are preserved instead of silently overwritten.
+
+Actual small local-model trials exposed invalid references, unsupported functions, undeclared fastening, and false-clean model critique. Those failures informed contracts and regression coverage. They do not establish dependable invention or physical success. The visual workbench and physical starter trials remain pending. See [AI limits](AI.md) and [the saved workbench](WORKBENCH.md).
+
+Validation: 81 core, API, model-protocol, disk-persistence, and CLI integration tests; strict TypeScript; emitted ESM; formatting; and actual Chromium execution with a synthetic camera. Local-model exploration is reported separately from synthetic protocol success cases.
+
 ## 0.1.0-alpha.3 — Timed sequences and device trials
 
 Device Alchemy can now capture foreground still sequences with actual elapsed-time metadata, measured intervals, cancellation, and camera-ended cleanup. Slow encoding or consumers skip overdue schedule slots. Captures wait for an arriving video frame; stalled delivery times out and releases the source. Timed acceptance checks require a coherent sequence and measured span, including the starter time-lapse recipe.

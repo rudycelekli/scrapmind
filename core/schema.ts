@@ -130,6 +130,22 @@ export interface Recipe {
   boundaries: string[];
   source?: 'starter' | 'generated' | 'imported';
   reviewed?: boolean;
+  ai?: {
+    goal: string;
+    model: string;
+    mode: 'local' | 'remote';
+    operationId: string;
+    inventoryFingerprint: string;
+    reasoning: string;
+    newUse: string;
+    assumptionsToTest: string[];
+    resourceReview: {
+      model?: string;
+      status: 'no-issues-reported' | 'issues-found' | 'not-completed';
+      issues: { kind: string; detail: string; stepIndex: number | null }[];
+      boundary: string;
+    };
+  };
 }
 export interface Allocation {
   requirementId: string;

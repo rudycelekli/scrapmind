@@ -80,9 +80,60 @@ export const recipeSchema = z
     boundaries: z.array(text).min(1).max(10),
     source: z.enum(['starter', 'generated', 'imported']).optional(),
     reviewed: z.boolean().optional(),
+    ai: z
+      .object({
+        goal: z.string().trim().min(3).max(1000),
+        model: z.string().trim().min(1).max(200),
+        mode: z.enum(['local', 'remote']),
+        operationId: z.string().uuid(),
+        inventoryFingerprint: z.string().min(1).max(1_000_000),
+        reasoning: z.string().trim().min(1).max(1500),
+        newUse: z.string().trim().min(1).max(1500),
+        assumptionsToTest: z.array(z.string().trim().min(1).max(1500)).min(1).max(8),
+        resourceReview: z
+          .object({
+            model: z.string().trim().min(1).max(200).optional(),
+            status: z.enum(['no-issues-reported', 'issues-found', 'not-completed']),
+            issues: z
+              .array(
+                z
+                  .object({
+                    kind: z.string().min(1).max(100),
+                    detail: z.string().min(1).max(1500),
+                    stepIndex: z.number().int().min(0).max(14).nullable(),
+                  })
+                  .strict(),
+              )
+              .max(12),
+            boundary: z.string().min(1).max(2000),
+          })
+          .strict(),
+      })
+      .strict()
+      .optional(),
   })
   .strict()
   .superRefine((recipe, ctx) => {
+    if (recipe.ai) {
+      const review = recipe.ai.resourceReview;
+      if (
+        (review.status === 'no-issues-reported' && review.issues.length > 0) ||
+        (review.status === 'issues-found' && review.issues.length === 0)
+      )
+        ctx.addIssue({
+          code: 'custom',
+          message: 'AI resource review state must agree with its issue list',
+          path: ['ai', 'resourceReview'],
+        });
+      review.issues.forEach((issue, index) => {
+        if (issue.stepIndex !== null && issue.stepIndex >= recipe.steps.length)
+          ctx.addIssue({
+            code: 'custom',
+            message: 'AI review references a nonexistent step',
+            path: ['ai', 'resourceReview', 'issues', index, 'stepIndex'],
+          });
+      });
+    }
     for (const collection of ['requirements', 'steps', 'checks'] as const) {
       const ids = recipe[collection].map((entry) => entry.id);
       if (new Set(ids).size !== ids.length)

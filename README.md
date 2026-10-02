@@ -2,9 +2,9 @@
 
 **Invent with what you have.**
 
-Materials, spare devices, useful new configurations. SCRAPMIND searches your inventory, assigns parts without double-booking them, explains substitutions, and gives you build steps with acceptance checks. **Device Alchemy** is its device-reuse workflow: a spare camera, a host, and suitable materials can become a candidate scanner, inspection station, or capture rig.
+SCRAPMIND is an AI invention workbench for the materials and spare devices you already own. Its configured model engine proposes new uses, explains its reasoning, declares physical roles, and critiques resource mistakes before saving drafts. The planner assigns parts without double-booking them and exposes substitutions and missing resources. **Device Alchemy** is integrated: a spare camera, a host, and suitable materials can become a candidate scanner, inspection station, or capture rig.
 
-**Status: early engineering alpha.** The planning core, CLI, local API, optional model proposals, and browser camera library work. Device Alchemy can capture images, correct perspective, store photos locally, and attach them to a build revision. The visual workbench and its camera controls are in development. This release does not recognize arbitrary scrap from photographs, establish mechanical compatibility, control remote devices, or demonstrate general invention intelligence. Matching parts is a candidate plan; a real build still needs inspection and a trial.
+**Status: early engineering alpha.** The saved CLI workbench, planning core, local API, AI portfolio protocol, and browser camera library are implemented. Drafts retain reasoning, assumptions, resource-review issues, and model provenance; builds retain steps, acceptance results, and image evidence. Device Alchemy can capture images, correct perspective, and store photos locally. The visual workbench is in development. Small local-model trials exposed unresolved generation and critique errors; dependable invention, arbitrary scrap recognition, mechanical compatibility, and actual physical success remain unestablished.
 
 ## Try the remove-a-part challenge
 
@@ -61,21 +61,40 @@ These recipes are explicit starting procedures, not fabricated CAD models, certi
 
 ## Propose something new
 
-The catalog is not the invention boundary. You can import your own [recipe](examples/document-scanner.json), or explicitly request a draft from a configured OpenAI-compatible model server:
+The catalog is not the proposal boundary. Initialize a saved workbench and explicitly request new drafts from a configured OpenAI-compatible model server:
 
 ```sh
 cp .env.example .env
 # Edit .env to use a model you already have available.
-npm run invent -- --inventory examples/demo-inventory.json --goal "Make a useful desk tool"
+npm run workbench -- init --inventory examples/demo-inventory.json --name "My workbench"
+npm run workbench -- ideate --goal "Make useful new inspection tools from my spare devices" --count 3
+npm run workbench -- plan
 ```
 
 [Ollama](https://docs.ollama.com/api/openai-compatibility) is one supported protocol option. No model is downloaded or contacted by the default demo. A remote provider receives the supplied inventory when you explicitly invoke invention; a loopback provider stays on your machine. Provider keys remain in the ignored `.env` file.
 
-The model returns data, not executable code. SCRAPMIND validates IDs, capabilities, quantities, step references, and bounds, then checks the proposal against the actual inventory. An explicit request makes at most two calls, with one repair attempt for malformed proposals. A generated recipe remains a **draft** even when its allocation is complete, and cannot start a build until reviewed. Model output can still omit needed roles or contain incorrect physical advice; schema validity is not a physical guarantee.
+The engine generates up to three ideas, checks action capabilities and conserved quantities, flags some prose contradictions, requests a resource critique, and attempts a bounded correction. It makes at most five model calls per explicit operation. Model critique cannot override software text signals. A generated recipe remains a **draft** even when its allocation is complete, and cannot start a build until reviewed. Its claimed new use is not proof of global novelty; model advice and physical assumptions still need inspection.
+
+Reasoning-model compatibility and a separately configured critic are supported. No background inference, model downloads, or automatic upgrades occur. See [the AI engine and actual evaluation limits](docs/AI.md).
+
+You can also import your own [recipe](examples/document-scanner.json), or use the legacy `npm run invent` command for a simpler single-recipe schema/repair request:
 
 ```sh
 npm run plan -- --inventory examples/demo-inventory.json --recipe examples/document-scanner.json
 ```
+
+## Build and retain the evidence
+
+```sh
+npm run workbench -- start --recipe document-scanner --id first-scanner
+npm run workbench -- show --build first-scanner
+# Inspect the actual parts, follow the procedure, and record its steps/checks.
+npm run workbench -- availability --item arm --available false
+npm run workbench -- plan --goal "scan a document"
+npm run workbench -- report
+```
+
+Inventory changes preserve earlier results as stale. Imported photos are bound to a build revision and an allocated camera. Reports distinguish recorded owner claims from missing or changed image bytes. Portable bundles include the ledger and original photos, with full validation before import. Local writes preserve previous ledgers and refuse concurrent updates. See [the saved-workbench guide](docs/WORKBENCH.md).
 
 ## Local API and library
 
@@ -84,7 +103,7 @@ npm run serve
 # http://127.0.0.1:4317/api/status
 ```
 
-The API binds to loopback, disables cross-origin requests, and provides catalog, plan, and explicit invention endpoints. See [API documentation](docs/API.md).
+The API binds to loopback, disables cross-origin requests, and provides catalog, plan, single-recipe invention, and AI portfolio endpoints. See [API documentation](docs/API.md).
 
 The TypeScript core is importable from `core/index.ts`. `npm run build` emits runnable ESM, declarations, and source maps in `dist/`. The emitted CLI can run with `node dist/scripts/cli.js demo`.
 
@@ -112,7 +131,7 @@ npm run check
 npm run format:check
 ```
 
-Tests cover quantity and availability invariants, constrained allocation, alternate supports, missing measurements, model output validation, stale-build rejection, workspace round trips, API boundaries, image evidence, and perspective-correction mathematics. Property tests use a recorded seed. Chromium tests also exercise capture, storage, image export, and permission cleanup with a **synthetic camera**. These are software tests, not evidence of a successful physical build.
+Tests cover conserved allocation, substitutions, missing measurements, AI action contracts and critique/repair failures, retained provenance, stale builds, concurrent disk writes, saved CLI workflows, reports, portable evidence, API boundaries, and perspective correction. Property tests use a recorded seed. Model protocol success cases use **synthetic responses**. Chromium tests exercise capture, storage, image export, and permission cleanup with a **synthetic camera**. These are software tests, not evidence of a successful physical build or dependable model invention.
 
 See [the roadmap](docs/ROADMAP.md), [engineering status](docs/STATUS.md), [contributing](CONTRIBUTING.md), and [the recipe contract](docs/RECIPES.md).
 

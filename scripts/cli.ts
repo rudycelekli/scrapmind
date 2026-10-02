@@ -5,6 +5,7 @@ import { recipes } from '../core/recipes.js';
 import { parseInventory, type Plan } from '../core/schema.js';
 import { recipeSchema } from '../core/recipe-schema.js';
 import { invent } from '../core/inventor.js';
+import { configuredProvider } from './provider-config.js';
 
 function printPlan(plan: Plan) {
   console.log(
@@ -49,22 +50,13 @@ async function main() {
   const inventory = parseInventory(JSON.parse(await readFile(args[pathIndex + 1], 'utf8')));
   const goal = goalIndex < 0 ? '' : args[goalIndex + 1];
   if (command === 'invent') {
-    const baseUrl = process.env.SCRAPMIND_AI_BASE_URL,
-      model = process.env.SCRAPMIND_AI_MODEL;
-    if (!baseUrl || !model)
+    const config = configuredProvider();
+    if (!config)
       throw new Error(
         'Configure SCRAPMIND_AI_BASE_URL and SCRAPMIND_AI_MODEL. Nothing has been sent to a provider.',
       );
     if (!goal) throw new Error('Provide --goal for a new invention proposal.');
-    const proposal = await invent(
-      { inventory, goal },
-      {
-        baseUrl,
-        model,
-        apiKey: process.env.SCRAPMIND_AI_KEY,
-        format: process.env.SCRAPMIND_AI_FORMAT === 'json_object' ? 'json_object' : 'json_schema',
-      },
-    );
+    const proposal = await invent({ inventory, goal }, config);
     console.log(JSON.stringify(proposal, null, 2));
     return;
   }

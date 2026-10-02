@@ -5,6 +5,8 @@ import { discoverPlans } from '../core/planner.js';
 import { inventorySchema } from '../core/schema.js';
 import { recipeSchema } from '../core/recipe-schema.js';
 import { recipes } from '../core/recipes.js';
+import { ideate } from '../core/ideation.js';
+import { validateProvider } from '../core/model.js';
 
 function respond(response: ServerResponse, status: number, value: unknown) {
   response.writeHead(status, {
@@ -27,16 +29,7 @@ async function body(request: IncomingMessage): Promise<unknown> {
 
 /** Loopback API. It does not expose inventory storage or device control. */
 export function createApi(config?: ProviderConfig, fetcher: typeof fetch = fetch) {
-  if (config) {
-    const url = new URL(config.baseUrl);
-    if (
-      !['http:', 'https:'].includes(url.protocol) ||
-      url.username ||
-      url.password ||
-      !config.model.trim()
-    )
-      throw new Error('Invalid model provider configuration.');
-  }
+  if (config) validateProvider(config);
   let inventing = false;
   return createServer(async (request, response) => {
     const host = request.headers.host ?? '';
@@ -50,13 +43,22 @@ export function createApi(config?: ProviderConfig, fetcher: typeof fetch = fetch
     const path = request.url?.split('?')[0];
     if (request.method === 'GET' && path === '/api/status')
       return respond(response, 200, {
-        version: '0.1.0-alpha.3',
+        version: '0.1.0-alpha.4',
         model: config
-          ? { enabled: true, mode: providerMode(config), name: config.model }
+          ? {
+              enabled: true,
+              mode: providerMode(config),
+              name: config.model,
+              reviewModel: config.reviewModel ?? config.model,
+              profile: config.profile ?? 'compatible',
+            }
           : { enabled: false },
       });
     if (request.method === 'GET' && path === '/api/recipes') return respond(response, 200, recipes);
-    if (request.method !== 'POST' || !['/api/plan', '/api/invent'].includes(path ?? ''))
+    if (
+      request.method !== 'POST' ||
+      !['/api/plan', '/api/invent', '/api/ideate'].includes(path ?? '')
+    )
       return respond(response, 404, { error: 'Unknown API route.' });
     if (
       request.headers['content-type']?.split(';')[0].trim().toLowerCase() !== 'application/json' ||
@@ -65,11 +67,11 @@ export function createApi(config?: ProviderConfig, fetcher: typeof fetch = fetch
       return respond(response, 415, {
         error: 'Send application/json with X-Scrapmind-Request: 1.',
       });
-    if (path === '/api/invent' && !config)
+    if (path !== '/api/plan' && !config)
       return respond(response, 503, {
         error: 'No model configured. Nothing was sent to a provider.',
       });
-    if (path === '/api/invent' && inventing)
+    if (path !== '/api/plan' && inventing)
       return respond(response, 429, {
         error: 'An invention request is already running. Try again when it finishes.',
       });
@@ -96,7 +98,13 @@ export function createApi(config?: ProviderConfig, fetcher: typeof fetch = fetch
         });
       inventing = true;
       try {
-        respond(response, 200, await invent(input, config!, fetcher));
+        respond(
+          response,
+          200,
+          path === '/api/ideate'
+            ? await ideate(input, config!, fetcher)
+            : await invent(input, config!, fetcher),
+        );
       } finally {
         inventing = false;
       }

@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { planRecipe } from './planner.js';
 import { recipeSchema } from './recipe-schema.js';
 import { capabilities, inventorySchema } from './schema.js';
+import { modelContent, validateProvider, requestTuning } from './model.js';
 
 export const inventionRequestSchema = z
   .object({
@@ -19,6 +20,9 @@ export interface ProviderConfig {
   model: string;
   apiKey?: string;
   format?: 'json_schema' | 'json_object';
+  profile?: 'compatible' | 'reasoning';
+  maxOutputTokens?: number;
+  reviewModel?: string;
 }
 const proposalSchema = z.object({ recipe: recipeSchema }).strict();
 const jsonSchema = z.toJSONSchema(proposalSchema, { unrepresentable: 'any' });
@@ -36,9 +40,7 @@ export async function invent(
   fetcher: typeof fetch = fetch,
 ) {
   const request = inventionRequestSchema.parse(rawRequest);
-  const url = new URL(config.baseUrl);
-  if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password)
-    throw new Error('Use an HTTP(S) provider URL without embedded credentials.');
+  validateProvider(config);
   const text = JSON.stringify({ goal: request.goal, inventory: request.inventory });
   const content = request.image
     ? [
@@ -60,8 +62,7 @@ export async function invent(
       },
       body: JSON.stringify({
         model: config.model,
-        temperature: 0,
-        max_tokens: 4096,
+        ...requestTuning(config, 0, 4096),
         response_format:
           config.format === 'json_object'
             ? { type: 'json_object' }
@@ -73,18 +74,7 @@ export async function invent(
       }),
       signal: AbortSignal.timeout(90_000),
     });
-    if (!response.ok)
-      throw new Error(
-        `The configured model returned HTTP ${response.status}. Check its configuration.`,
-      );
-    const envelope = z
-      .object({
-        choices: z
-          .array(z.object({ message: z.object({ content: z.string().max(100_000) }) }))
-          .min(1),
-      })
-      .parse(await response.json());
-    const raw = envelope.choices[0].message.content;
+    const raw = await modelContent(response);
     try {
       const proposed = proposalSchema.parse(
         JSON.parse(raw.replace(/^```(?:json)?\s*|\s*```$/g, '').trim()),

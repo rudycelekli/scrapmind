@@ -12,3 +12,6 @@ export * from './image-store.js';
 export * from './evidence-bundle.js';
 export * from './sequence.js';
 export * from './device-trial.js';
+export * from './workbench.js';
+export * from './report.js';
+export * from './ideation.js';

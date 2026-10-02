@@ -13,6 +13,9 @@
 - Captures tied to allocated devices and build revisions; checksum verification and original/derivative lineage.
 - Foreground timed capture sequences, actual-interval reporting, cancellation, and required temporal evidence.
 - Standalone camera-frame trials, owner-confirmed device association, and portable trial images.
+- Saved CLI workbench, exclusive writes, previous ledgers, retained photo files, readable build procedures, and auditable reports.
+- AI portfolios with resource-action contracts, allocation, conservative text signals, model critique, bounded repair, and retained reasoning/assumptions.
+- Reasoning-model request compatibility and configurable critic models; evaluation quality remains open.
 
 ## Next: a usable visual workbench
 
