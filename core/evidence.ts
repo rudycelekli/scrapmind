@@ -2,6 +2,15 @@ import { z } from 'zod';
 
 export const MAX_IMAGE_BYTES = 20_000_000;
 export const MAX_IMAGE_PIXELS = 24_000_000;
+export const captureTimingSchema = z
+  .object({
+    sequenceId: z.string().min(1).max(100),
+    frameIndex: z.number().int().min(0).max(59),
+    elapsedMs: z.number().min(0).max(86400000),
+    targetElapsedMs: z.number().min(0).max(86400000),
+  })
+  .strict();
+export type CaptureTiming = z.infer<typeof captureTimingSchema>;
 export const imageArtifactSchema = z
   .object({
     id: z.string().min(1).max(100),
@@ -12,6 +21,7 @@ export const imageArtifactSchema = z
     source: z.enum(['browser-capture', 'imported-image', 'test-fixture']),
     recordedAt: z.string().datetime(),
     capturedAt: z.string().datetime().optional(),
+    timing: captureTimingSchema.optional(),
     mimeType: z.enum(['image/png', 'image/jpeg']),
     width: z.number().int().min(2).max(16000),
     height: z.number().int().min(2).max(16000),
@@ -28,6 +38,8 @@ export const imageArtifactSchema = z
       ctx.addIssue({ code: 'custom', message: 'Only derived images must reference a parent' });
     if (artifact.source === 'browser-capture' && !artifact.capturedAt)
       ctx.addIssue({ code: 'custom', message: 'Browser captures require a frame timestamp' });
+    if (artifact.timing && !artifact.capturedAt)
+      ctx.addIssue({ code: 'custom', message: 'Sequence timing requires a capture timestamp' });
   });
 export type ImageArtifact = z.infer<typeof imageArtifactSchema>;
 export type ImageBinding = Pick<
@@ -97,6 +109,7 @@ export async function createImageArtifact(
   source: ImageArtifact['source'],
   capturedAt?: string,
   parentId?: string,
+  timing?: CaptureTiming,
 ): Promise<ImageArtifact> {
   if (blob.size > MAX_IMAGE_BYTES) throw new Error('Image exceeds byte limit.');
   const bytes = new Uint8Array(await blob.arrayBuffer());
@@ -116,6 +129,7 @@ export async function createImageArtifact(
     sha256: await digest(bytes),
     operation: parentId ? 'perspective-correction' : 'original',
     ...(parentId ? { parentId } : {}),
+    ...(timing ? { timing } : {}),
   });
 }
 

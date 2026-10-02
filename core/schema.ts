@@ -113,6 +113,7 @@ export interface AcceptanceCheck {
   procedure: string;
   evidenceKind: 'observation' | 'measurement' | 'capture';
   minArtifacts?: number;
+  minCaptureSpanMs?: number;
 }
 export interface Recipe {
   id: string;

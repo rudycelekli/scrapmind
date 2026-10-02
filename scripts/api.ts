@@ -50,7 +50,7 @@ export function createApi(config?: ProviderConfig, fetcher: typeof fetch = fetch
     const path = request.url?.split('?')[0];
     if (request.method === 'GET' && path === '/api/status')
       return respond(response, 200, {
-        version: '0.1.0-alpha.2',
+        version: '0.1.0-alpha.3',
         model: config
           ? { enabled: true, mode: providerMode(config), name: config.model }
           : { enabled: false },

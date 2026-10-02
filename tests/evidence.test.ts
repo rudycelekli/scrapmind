@@ -143,3 +143,41 @@ it('cannot report a pass from imported check metadata alone; step completion is 
     plan.recipe.steps[0].id,
   );
 });
+
+it('requires a coherent sequence and measured span for a timed capture check', async () => {
+  const timedPlan = planRecipe(
+    {
+      ...recipes[0],
+      checks: [{ ...recipes[0].checks[0], minArtifacts: 2, minCaptureSpanMs: 500 }],
+    },
+    demoInventory(),
+  );
+  let session = startBuild(timedPlan, 'build');
+  const blob = pngBlob();
+  for (const [id, sequenceId, frameIndex, elapsedMs] of [
+    ['first', 'one-sequence', 0, 100],
+    ['early', 'one-sequence', 1, 400],
+    ['last', 'one-sequence', 2, 600],
+    ['unrelated', 'another-sequence', 3, 2000],
+  ] as const) {
+    const artifact = await createImageArtifact(
+      blob,
+      { ...binding, id, recipeFingerprint: timedPlan.recipeFingerprint },
+      'browser-capture',
+      new Date().toISOString(),
+      undefined,
+      { sequenceId, frameIndex, elapsedMs, targetElapsedMs: elapsedMs },
+    );
+    session = await attachImage(session, timedPlan, artifact, blob);
+  }
+  expect(() =>
+    recordCheck(session, timedPlan, { ...result, artifactIds: ['first', 'early'] }),
+  ).toThrow('attached images');
+  expect(() =>
+    recordCheck(session, timedPlan, { ...result, artifactIds: ['first', 'unrelated'] }),
+  ).toThrow('attached images');
+  expect(
+    recordCheck(session, timedPlan, { ...result, artifactIds: ['first', 'last'] }).results[0]
+      .outcome,
+  ).toBe('passed');
+});

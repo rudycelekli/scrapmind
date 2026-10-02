@@ -92,6 +92,8 @@ The TypeScript core is importable from `core/index.ts`. `npm run build` emits ru
 
 The browser component opens a camera on an explicit user action, captures PNG or JPEG images, imports local photos, and straightens a selected four-corner region. Captures stay local. The build ledger verifies image checksums and requires an allocated camera and matching build revision. A corrected image retains its original image as evidence.
 
+Timed sequences record actual intervals and skip overdue slots. A separate [camera capability trial](docs/DEVICE-TRIALS.md) produces a decodable image and releases the source. The owner must identify the corresponding inventory device before applying that result; it updates only the tested camera capability. Optical quality and assembly fit still need their own checks.
+
 Photos can be saved in IndexedDB and exported with the workspace in a portable evidence bundle. A metadata-only workspace export is also available. See [camera usage and evidence rules](docs/CAMERA.md). These are developer-facing components awaiting the workbench, rather than a finished camera app.
 
 ## Evidence, not pretend confidence

@@ -7,6 +7,7 @@ import {
   verifyImageArtifact,
   type ImageArtifact,
   type ImageBinding,
+  type CaptureTiming,
 } from './evidence.js';
 
 export interface CapturedImage {
@@ -44,10 +45,19 @@ function canvasFor(width: number, height: number): HTMLCanvasElement {
 /** Open only in response to the user's explicit camera action. Audio is never requested. */
 export class CameraSession {
   private stopped = false;
+  private readonly lifecycle = new AbortController();
   private constructor(
     readonly video: HTMLVideoElement,
     private readonly stream: MediaStream,
-  ) {}
+  ) {
+    stream
+      .getVideoTracks()
+      .forEach((track) => track.addEventListener('ended', () => this.stop(), { once: true }));
+  }
+
+  get endedSignal(): AbortSignal {
+    return this.lifecycle.signal;
+  }
 
   static async open(
     options: { deviceId?: string; timeoutMs?: number } = {},
@@ -102,23 +112,39 @@ export class CameraSession {
     }
   }
 
-  private firstFrame(timeoutMs: number): Promise<void> {
+  private firstFrame(timeoutMs: number, requireNewFrame = false): Promise<void> {
     return new Promise((resolve, reject) => {
+      let finished = false;
       let frameId: number | undefined;
       let poll: ReturnType<typeof setTimeout> | undefined;
+      const initialTime = this.video.currentTime;
       const timer = setTimeout(
         () => finish(new Error('The camera did not produce a frame.')),
         timeoutMs,
       );
       const finish = (error?: Error) => {
+        if (finished) return;
+        finished = true;
         clearTimeout(timer);
         clearTimeout(poll);
+        this.endedSignal.removeEventListener('abort', ended);
         if (frameId !== undefined) this.video.cancelVideoFrameCallback(frameId);
         if (error) reject(error);
         else resolve();
       };
+      const ended = () => finish(new Error('The camera session ended before a frame arrived.'));
+      if (this.endedSignal.aborted) {
+        ended();
+        return;
+      }
+      this.endedSignal.addEventListener('abort', ended, { once: true });
       const ready = () => {
-        if (this.video.videoWidth && this.video.readyState >= 2) finish();
+        if (
+          this.video.videoWidth &&
+          this.video.readyState >= 2 &&
+          (!requireNewFrame || this.video.currentTime > initialTime)
+        )
+          finish();
         else poll = setTimeout(ready, 20);
       };
       if (typeof this.video.requestVideoFrameCallback === 'function')
@@ -148,23 +174,46 @@ export class CameraSession {
   async capture(
     binding: ImageBinding,
     mimeType: 'image/png' | 'image/jpeg' = 'image/jpeg',
+    clock?: { sequenceId: string; frameIndex: number; originMs: number; targetElapsedMs: number },
   ): Promise<CapturedImage> {
     if (!this.active || this.video.readyState < 2)
       throw new Error('The camera has no live frame. Open it again explicitly.');
+    try {
+      await this.firstFrame(5000, true);
+    } catch (error) {
+      this.stop();
+      throw error;
+    }
     const capturedAt = new Date().toISOString();
     const canvas = canvasFor(this.video.videoWidth, this.video.videoHeight);
     const context = canvas.getContext('2d');
     if (!context) throw new Error('Canvas image capture is unavailable.');
     context.drawImage(this.video, 0, 0);
+    const timing: CaptureTiming | undefined = clock
+      ? {
+          sequenceId: clock.sequenceId,
+          frameIndex: clock.frameIndex,
+          elapsedMs: performance.now() - clock.originMs,
+          targetElapsedMs: clock.targetElapsedMs,
+        }
+      : undefined;
     const blob = await encode(canvas, mimeType);
     return {
       blob,
-      artifact: await createImageArtifact(blob, binding, 'browser-capture', capturedAt),
+      artifact: await createImageArtifact(
+        blob,
+        binding,
+        'browser-capture',
+        capturedAt,
+        undefined,
+        timing,
+      ),
     };
   }
 
   stop(): void {
     this.stopped = true;
+    this.lifecycle.abort();
     this.stream.getTracks().forEach((track) => track.stop());
     this.video.pause();
     this.video.srcObject = null;
@@ -226,6 +275,7 @@ export async function correctPerspective(
         parent.source,
         parent.capturedAt,
         parent.id,
+        parent.timing,
       ),
     };
   } finally {

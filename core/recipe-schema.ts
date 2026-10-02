@@ -71,6 +71,7 @@ export const recipeSchema = z
             procedure: text,
             evidenceKind: z.enum(['observation', 'measurement', 'capture']),
             minArtifacts: z.number().int().min(1).max(20).optional(),
+            minCaptureSpanMs: z.number().int().min(1).max(86400000).optional(),
           })
           .strict(),
       )
@@ -93,6 +94,15 @@ export const recipeSchema = z
     }
     const ids = new Set(recipe.requirements.map((entry) => entry.id));
     recipe.checks.forEach((check, index) => {
+      if (
+        check.minCaptureSpanMs !== undefined &&
+        (check.evidenceKind !== 'capture' || (check.minArtifacts ?? 1) < 2)
+      )
+        ctx.addIssue({
+          code: 'custom',
+          message: 'Timed capture checks require at least two images',
+          path: ['checks', index, 'minCaptureSpanMs'],
+        });
       if (check.minArtifacts !== undefined && check.evidenceKind !== 'capture')
         ctx.addIssue({
           code: 'custom',

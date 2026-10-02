@@ -1,6 +1,6 @@
 # Engineering status
 
-Date: 2026-10-02. Release: 0.1.0-alpha.2.
+Date: 2026-10-02. Release: 0.1.0-alpha.3.
 
 ## Executed software validation
 
@@ -18,6 +18,10 @@ Date: 2026-10-02. Release: 0.1.0-alpha.2.
 - Perspective-corrected images retain their parent; multiple crops cannot count as multiple originals.
 - Portable evidence bundles include all referenced image bytes and reject missing, altered, duplicate, or unrelated images.
 - Actual Chromium media, canvas, JPEG decoding, IndexedDB, and cryptographic API execution with a **synthetic 1920 × 1080 camera**. The test corrects a frame to a decodable 160 × 120 PNG, reopens image storage, round-trips an image bundle, invalidates a changed inventory, handles permission denial, releases a late-granted stream, and stops tracks.
+- Timed sequences: actual elapsed timestamps, skipped overdue slots, single-frame encoding, cancellation, and camera-ended cleanup. Fake-time tests establish behavior under a 250 ms encoder with 100 ms requested intervals; measured starts are 0, 300, and 600 ms rather than a catch-up burst.
+- Actual Chromium execution of a three-frame synthetic sequence, with measured intervals, a standalone camera-frame trial, trial-photo bundling, and refusal to apply a declared synthetic trial to an owner-device capability. Stalled frame delivery times out and releases the source.
+- Owner-confirmation, device-configuration invalidation, image-checksum requirements, and updating only a tested camera capability. These policy tests use explicitly synthetic inputs, not physical sensor trials.
+- UTF-8 byte limits for workspace and evidence exports, including non-ASCII input.
 
 The repository's CI runs checks on Node.js 22 and 24, plus a Chromium camera job. A successful workflow is evidence for software correctness under its tests, not physical performance. The browser library exists; a designed camera interface is still pending.
 

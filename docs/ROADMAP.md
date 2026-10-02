@@ -11,6 +11,8 @@
 - Loopback API, CLI, runnable TypeScript library, tests and CI.
 - Browser camera capture, imported images, manual perspective correction, local image storage, and portable evidence bundles.
 - Captures tied to allocated devices and build revisions; checksum verification and original/derivative lineage.
+- Foreground timed capture sequences, actual-interval reporting, cancellation, and required temporal evidence.
+- Standalone camera-frame trials, owner-confirmed device association, and portable trial images.
 
 ## Next: a usable visual workbench
 
@@ -18,7 +20,7 @@
 - A clear assembly view linked to the actual allocated parts.
 - The remove-a-part challenge, explained as it replans.
 - Inline instructions, acceptance results, and portable build reports.
-- Camera Lab interface: integrate the working browser capture/correction library, device selection, manual crop corners, and timestamped sequences.
+- Camera Lab interface: integrate the working browser capture/correction/sequence library, device trials, device selection, and manual crop corners.
 - Accessible keyboard operation, reduced motion, responsive layouts, failure recovery.
 
 Design context is awaiting the user's product interview choices. The first interface should serve a real build workflow, not imply physical success through a polished rendering.

@@ -16,6 +16,8 @@ Every step references at least one declared requirement ID and includes a check.
 
 A capture check can specify `minArtifacts` (1–20). Passing it requires that many distinct original images attached to the current build and attributed to an allocated camera. Derivatives of the same original count once. Other check types cannot specify this field. See [the image evidence rules](CAMERA.md).
 
+`minCaptureSpanMs` (1–86,400,000) requires a capture check with at least two originals. They must have ordered elapsed-time metadata from one sequence and device, spanning at least that many milliseconds. Wall-clock labels alone do not satisfy this timing contract. The starter time-lapse recipe requires a span of at least 100 ms and an owner check against the intended observation interval.
+
 Model proposals are stamped `source: generated` and `reviewed: false`. A complete allocation remains `draft` until the recipe has been reviewed. Review must check that the prose does not introduce undeclared parts or invented physical specifications. After that review, explicitly set `reviewed: true` in the recipe to allow a build session. This flag is a user statement, not independent certification.
 
 Recipe data never executes commands. Names and prose are not a permission channel. A syntactically valid recipe can still be physically incorrect; review the procedure and perform the defined checks with real parts.

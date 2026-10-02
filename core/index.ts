@@ -10,3 +10,5 @@ export * from './evidence.js';
 export * from './camera.js';
 export * from './image-store.js';
 export * from './evidence-bundle.js';
+export * from './sequence.js';
+export * from './device-trial.js';

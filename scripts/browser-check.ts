@@ -108,6 +108,74 @@ try {
       const imported = await lib.importImage(jpeg.blob, { ...binding, id: 'imported' });
       check(imported.artifact.source === 'imported-image', 'Import provenance lost');
       check(imported.artifact.capturedAt === undefined, 'Import invented a capture timestamp');
+      const timedPlan = lib.planRecipe(
+        lib.recipes.find((recipe) => recipe.id === 'timelapse-rig')!,
+        lib.demoInventory(),
+      );
+      let timedBuild = lib.startBuild(timedPlan, 'timed-build');
+      const timedBinding = {
+        ...binding,
+        buildId: timedBuild.id,
+        recipeFingerprint: timedPlan.recipeFingerprint,
+      };
+      const sequenceImages: Awaited<ReturnType<typeof camera.capture>>[] = [];
+      for await (const image of lib.captureSequence(camera, timedBinding, {
+        id: 'browser-sequence',
+        count: 3,
+        intervalMs: 150,
+      })) {
+        sequenceImages.push(image);
+        timedBuild = await lib.attachImage(timedBuild, timedPlan, image.artifact, image.blob);
+      }
+      const sequenceSummary = lib.describeSequence(sequenceImages);
+      check(
+        sequenceSummary.frameCount === 3 && sequenceSummary.elapsedMs >= 100,
+        'Timed sequence did not span its required interval',
+      );
+      timedBuild = lib.recordCheck(timedBuild, timedPlan, {
+        checkId: 'sequence',
+        outcome: 'passed',
+        note: 'Synthetic timed camera sequence; no physical trial.',
+        recordedAt: new Date().toISOString(),
+        artifactIds: sequenceImages.map((image) => image.artifact.id),
+      });
+      const cancel = new AbortController();
+      const cancelSequence = lib.captureSequence(
+        camera,
+        binding,
+        { id: 'cancel-sequence', count: 2, intervalMs: 60000 },
+        cancel.signal,
+      );
+      await cancelSequence.next();
+      const cancelPending = cancelSequence.next();
+      cancel.abort();
+      await rejects(() => cancelPending, /cancelled/);
+      check(camera.active, 'Cancelling a sequence unexpectedly closed the preview');
+      // Record the synthetic trial and inspect the stream cleanup separately.
+      const trialItem = lib.demoInventory().find((item) => item.id === cameraItem)!;
+      const originalGetMedia = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);
+      let trialStream: MediaStream | undefined;
+      navigator.mediaDevices.getUserMedia = async (constraints) => {
+        trialStream = await originalGetMedia(constraints);
+        return trialStream;
+      };
+      const probe = await lib.runCameraTrial(trialItem, {
+        context: 'synthetic-test',
+        timeoutMs: 10000,
+      });
+      navigator.mediaDevices.getUserMedia = originalGetMedia;
+      check(
+        probe.trial.outcome === 'frame-produced' && probe.image,
+        'Synthetic camera trial did not produce a frame',
+      );
+      check(
+        trialStream && trialStream.getTracks().every((track) => track.readyState === 'ended'),
+        'Trial camera was not released',
+      );
+      await rejects(
+        () => lib.applyCameraTrial(lib.demoInventory(), probe.trial, probe.image!.blob, true),
+        /synthetic or failed/,
+      );
       const changedBytes = new Uint8Array(await original.blob.arrayBuffer());
       changedBytes[changedBytes.length - 1] ^= 1;
       await rejects(
@@ -129,6 +197,7 @@ try {
       const stored = await lib.ImageStore.open('scrapmind-browser-test');
       await stored.put(original);
       await stored.put(corrected);
+      await stored.put(probe.image!);
       await rejects(() => stored.put(original), /immutable/);
       stored.close();
       const reopened = await lib.ImageStore.open('scrapmind-browser-test');
@@ -146,11 +215,16 @@ try {
         inventory: lib.demoInventory(),
         recipes: [],
         builds: [session],
+        deviceTrials: [probe.trial],
         exportedAt: new Date().toISOString(),
       };
       const bundleJson = await lib.exportEvidenceBundle(workspace, (id) => reopened.get(id));
       const restoredBundle = await lib.importEvidenceBundle(bundleJson);
-      check(restoredBundle.images.length === 2, 'Bundle lost image evidence');
+      check(restoredBundle.images.length === 3, 'Bundle lost image evidence');
+      check(
+        restoredBundle.workspace.deviceTrials[0].context === 'synthetic-test',
+        'Bundle lost the trial context',
+      );
       check(
         await lib.verifyImageArtifact(
           restoredBundle.images[1].artifact,
@@ -186,7 +260,15 @@ try {
       await reopened.remove(original.artifact.id);
       check((await reopened.get(original.artifact.id)) === undefined, 'Explicit delete failed');
       reopened.close();
+      const stopping = lib.captureSequence(camera, binding, {
+        id: 'stop-sequence',
+        count: 2,
+        intervalMs: 60000,
+      });
+      await stopping.next();
+      const stoppingPending = stopping.next();
       camera.stop();
+      await rejects(() => stoppingPending, /camera ended/);
       check(!camera.active && camera.video.srcObject === null, 'Camera tracks survived stop');
       await rejects(() => camera.capture(binding), /no live frame/);
       // An external disconnection also makes capture fail, without an implicit reopen.
@@ -196,12 +278,22 @@ try {
       check(!disconnected.active, 'An ended track was reported live');
       await rejects(() => disconnected.capture(binding), /no live frame/);
       disconnected.stop();
+      const stalled = await lib.CameraSession.open();
+      // Simulate a browser source whose previously-ready video stops delivering callbacks.
+      stalled.video.requestVideoFrameCallback = () => 0;
+      await rejects(() => stalled.capture(binding), /did not produce a frame/);
+      check(!stalled.active && stalled.video.srcObject === null, 'Stalled camera was not released');
       // Simulate denial and a late permission grant. No real device is involved.
       const nativeGetUserMedia = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);
       navigator.mediaDevices.getUserMedia = async () => {
         throw new DOMException('Denied by synthetic test', 'NotAllowedError');
       };
       await rejects(() => lib.CameraSession.open(), /Denied/);
+      const deniedTrial = await lib.runCameraTrial(trialItem, { context: 'synthetic-test' });
+      check(
+        deniedTrial.trial.outcome === 'failed' && !deniedTrial.image,
+        'Denied trial created passing evidence',
+      );
       const canvas = document.createElement('canvas');
       canvas.width = 8;
       canvas.height = 8;
@@ -224,12 +316,16 @@ try {
         height,
         correctedBytes: corrected.blob.size,
         bundledImages: restoredBundle.images.length,
+        sequenceFrames: sequenceSummary.frameCount,
+        actualIntervalsMs: sequenceSummary.intervalsMs,
+        deviceTrial: probe.trial.outcome,
+        deviceTrialContext: probe.trial.context,
         provenance: 'synthetic-browser-camera',
       };
     });
     assert.deepEqual(errors, []);
     console.log(
-      'PASS: synthetic Chromium camera, perspective correction, image storage, build evidence, denial and cleanup.',
+      'PASS: synthetic Chromium capture, timed sequences, device trials, correction, local evidence, denial and cleanup.',
     );
     console.log(JSON.stringify(result));
   } finally {

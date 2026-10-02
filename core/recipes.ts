@@ -343,7 +343,7 @@ export const recipes: Recipe[] = [
       step(
         'schedule',
         'Choose the capture interval',
-        'Use interval capture in your existing camera software if supported, or take manual captures at recorded times. Integrated SCRAPMIND interval capture is planned.',
+        'Use SCRAPMIND’s captureSequence browser library to record at least two frames, or supply equivalent timing metadata from another camera tool. The visual interval controls are in development. Inspect the measured interval rather than assuming exact scheduling.',
         ['camera', 'host'],
         'Two sequential captures have actual timestamps and consistent framing.',
       ),
@@ -357,13 +357,16 @@ export const recipes: Recipe[] = [
     ],
     checks: [
       cameraChecks[1],
-      check(
-        'sequence',
-        'At least two timed captures exist',
-        'Save the timestamped captures and record the observed interval.',
-        'capture',
-        2,
-      ),
+      {
+        ...check(
+          'sequence',
+          'At least two timed captures exist',
+          'Save at least two frames from one sequence spanning at least 100 ms. Record the measured intervals and compare them with the observation interval you intended.',
+          'capture',
+          2,
+        ),
+        minCaptureSpanMs: 100,
+      },
     ],
     boundaries: [
       'Keep the device powered and the page active. Background scheduling is not guaranteed.',

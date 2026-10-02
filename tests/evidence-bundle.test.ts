@@ -31,6 +31,7 @@ async function fixture() {
     inventory,
     recipes: [],
     builds: [session],
+    deviceTrials: [],
     exportedAt: new Date().toISOString(),
   };
   return { workspace, image: { artifact, blob } };

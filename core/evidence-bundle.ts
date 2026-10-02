@@ -4,7 +4,7 @@ import { verifyImageArtifact } from './evidence.js';
 import { workspaceSchema, type Workspace } from './workspace.js';
 
 const MAX_BUNDLE_IMAGE_BYTES = 20_000_000;
-const MAX_BUNDLE_JSON_CHARS = 35_000_000;
+const MAX_BUNDLE_BYTES = 35_000_000;
 const bundleSchema = z
   .object({
     format: z.literal('scrapmind-evidence-bundle'),
@@ -28,7 +28,10 @@ const bundleSchema = z
   .strict();
 
 function artifactsFor(workspace: Workspace) {
-  const artifacts = workspace.builds.flatMap((build) => build.artifacts);
+  const artifacts = [
+    ...workspace.builds.flatMap((build) => build.artifacts),
+    ...workspace.deviceTrials.flatMap((trial) => (trial.artifact ? [trial.artifact] : [])),
+  ];
   if (artifacts.length > 1000) throw new Error('Evidence bundle is limited to 1000 images.');
   if (new Set(artifacts.map((artifact) => artifact.id)).size !== artifacts.length)
     throw new Error('Evidence bundle requires globally unique artifact IDs.');
@@ -68,7 +71,11 @@ export async function exportEvidenceBundle(
     workspace: parsed,
     images,
   });
-  if (json.length > MAX_BUNDLE_JSON_CHARS) throw new Error('Evidence bundle exceeds 35 MB.');
+  if (
+    json.length > MAX_BUNDLE_BYTES ||
+    new TextEncoder().encode(json).byteLength > MAX_BUNDLE_BYTES
+  )
+    throw new Error('Evidence bundle exceeds 35 MB.');
   return json;
 }
 
@@ -76,7 +83,11 @@ export async function exportEvidenceBundle(
 export async function importEvidenceBundle(
   json: string,
 ): Promise<{ workspace: Workspace; images: CapturedImage[] }> {
-  if (json.length > MAX_BUNDLE_JSON_CHARS) throw new Error('Evidence bundle exceeds 35 MB.');
+  if (
+    json.length > MAX_BUNDLE_BYTES ||
+    new TextEncoder().encode(json).byteLength > MAX_BUNDLE_BYTES
+  )
+    throw new Error('Evidence bundle exceeds 35 MB.');
   const bundle = bundleSchema.parse(JSON.parse(json));
   const artifacts = artifactsFor(bundle.workspace);
   if (

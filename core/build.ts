@@ -65,7 +65,8 @@ export const buildSessionSchema = z
           parentIndex >= session.artifacts.indexOf(artifact) ||
           parent.itemId !== artifact.itemId ||
           parent.source !== artifact.source ||
-          parent.capturedAt !== artifact.capturedAt
+          parent.capturedAt !== artifact.capturedAt ||
+          JSON.stringify(parent.timing) !== JSON.stringify(artifact.timing)
         )
           ctx.addIssue({
             code: 'custom',
@@ -97,6 +98,7 @@ function hasCaptureEvidence(session: BuildSession, plan: Plan, result: CheckResu
   if (!check) return false;
   if (check.evidenceKind !== 'capture') return true;
   const roots = new Set<string>();
+  const originalImages: ImageArtifact[] = [];
   for (const id of references(result)) {
     let artifact = session.artifacts.find((entry) => entry.id === id);
     if (!artifact || artifact.source === 'test-fixture') return false;
@@ -112,9 +114,35 @@ function hasCaptureEvidence(session: BuildSession, plan: Plan, result: CheckResu
       if (!parent) return false;
       artifact = parent;
     }
+    if (!roots.has(artifact.id)) originalImages.push(artifact);
     roots.add(artifact.id);
   }
-  return roots.size >= (check.minArtifacts ?? 1);
+  if (roots.size < (check.minArtifacts ?? 1)) return false;
+  if (check.minCaptureSpanMs !== undefined) {
+    const ordered = originalImages.sort(
+      (a, b) => (a.timing?.frameIndex ?? -1) - (b.timing?.frameIndex ?? -1),
+    );
+    const first = ordered[0];
+    if (
+      !first.timing ||
+      ordered.some(
+        (image, index) =>
+          !image.timing ||
+          image.timing.sequenceId !== first.timing!.sequenceId ||
+          image.itemId !== first.itemId ||
+          image.source !== first.source ||
+          (index > 0 &&
+            (image.timing.frameIndex <= ordered[index - 1].timing!.frameIndex ||
+              image.timing.elapsedMs <= ordered[index - 1].timing!.elapsedMs)),
+      )
+    )
+      return false;
+    return (
+      ordered[ordered.length - 1].timing!.elapsedMs - first.timing.elapsedMs >=
+      check.minCaptureSpanMs
+    );
+  }
+  return true;
 }
 
 export function startBuild(plan: Plan, id: string, now = new Date().toISOString()): BuildSession {
