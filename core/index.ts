@@ -18,3 +18,4 @@ export * from './ideation.js';
 export * from './inventory-scan.js';
 export * from './evaluation.js';
 export * from './evaluation-cases.js';
+export * from './browser-workspace.js';

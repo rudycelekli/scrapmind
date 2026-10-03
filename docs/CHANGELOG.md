@@ -1,5 +1,13 @@
 # Changes
 
+## 0.1.0-alpha.8 — The visual invention workbench
+
+A responsive local interface connects declared inventory, live role maps, substitutions, authored procedures, explicit AI generation/critique, draft review, guided builds, observations, and evidence. Camera Lab integrates explicit source association, live capture, imported originals, foreground sequences, draggable/numeric perspective corners, and standalone frame trials. Photo suggestions retain visible originals and require owner declarations. Full bundles and auditable reports are downloadable.
+
+Browser metadata uses IndexedDB revision checks so stale tabs cannot overwrite newer work. Form entries survive errors. Stored images retain immutable IDs and checksums; changed inputs preserve earlier build history as stale. Public assets retain loopback/Origin checks and restrictive browser policies. Stopping a model request propagates cancellation to dispatch; already sent provider calls cannot be undone.
+
+Validation: 109 unit tests, strict TypeScript, emitted ESM/web build, existing camera protocol checks, and actual Chromium interface workflows with synthetic camera/model responses. Desktop and narrow-screen renders were inspected. Source photos in the interface, typed roles, and green status tags do not prove recognition, physical assembly, or novelty. Broader usability, accessibility conformance, stronger-model quality, actual hardware trials, and phone pairing remain open. See [the visual workflow](VISUAL-WORKBENCH.md).
+
 ## 0.1.0-alpha.7 — Explicit reasoning controls and hidden-support review
 
 Model operations accept an optional validated reasoning-effort setting, independently of token-field compatibility. Default requests omit it. Generation, critique, legacy invention, and vision use the same explicit setting; status and evaluation artifacts expose requested configuration without credentials. Supported effort values depend on the chosen provider/model.

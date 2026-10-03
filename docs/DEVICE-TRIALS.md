@@ -41,7 +41,7 @@ The device fingerprint includes its declared identity, availability, capabilitie
 
 Workspaces now include `deviceTrials`. Older files default to an empty list. An evidence bundle includes a standalone trial's image alongside any build images, and verifies all referenced bytes on import. Build evidence is collected separately: a pre-build capability trial cannot silently substitute for an image of the final assembly, because its artifact is bound to the trial rather than the build.
 
-Use `context: 'synthetic-test'` in automated tests and simulations. Such a trial is useful software evidence, and cannot be applied as an owner-device capability. The repository's Chromium suite uses this context explicitly. No actual user's camera or physical assembly has been validated by that suite.
+Use `context: 'synthetic-test'` in automated tests and simulations. Such a trial is useful software evidence, and cannot be applied as an owner-device capability. The core camera suite uses this context explicitly. The visual suite also simulates owner workflows against a fake camera and records no physical validation; an automated checkbox is not an actual hardware association. No actual user's camera or physical assembly has been validated by that suite.
 
 ## Repeatable physical challenge
 

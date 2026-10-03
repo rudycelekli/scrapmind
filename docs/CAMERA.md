@@ -1,5 +1,7 @@
 # Device Alchemy image tools
 
+The visual Camera Lab integrates these primitives. Start `npm run serve` and see [the visual workflow](VISUAL-WORKBENCH.md#camera-lab).
+
 The TypeScript library can now open a browser camera on an explicit user action, save PNG or JPEG frames, import local photos, and perform manual four-corner perspective correction. It is a working browser component; the product workbench and camera controls are still being developed.
 
 ## Capture and bind evidence

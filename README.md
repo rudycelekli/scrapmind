@@ -4,7 +4,22 @@
 
 SCRAPMIND is an AI invention workbench for the materials and spare devices you already own. Its configured model engine proposes new uses, explains its reasoning, declares physical roles, and critiques resource mistakes before saving drafts. The planner assigns parts without double-booking them and exposes substitutions and missing resources. **Device Alchemy** is integrated: a spare camera, a host, and suitable materials can become a candidate scanner, inspection station, or capture rig.
 
-**Status: early engineering alpha.** The saved CLI workbench, planning core, local API, AI portfolio protocol, and browser camera library are implemented. Drafts retain reasoning, assumptions, resource-review issues, and model provenance; builds retain steps, acceptance results, and image evidence. Device Alchemy can capture images, correct perspective, and store photos locally. The visual workbench is in development. Small local-model trials exposed unresolved generation and critique errors; dependable invention, arbitrary scrap recognition, mechanical compatibility, and actual physical success remain unestablished.
+**Status: early engineering alpha.** The visual workbench, saved CLI, planning core, local API, AI portfolio protocol, and camera library are implemented. Drafts retain reasoning, assumptions, resource-review issues, and model provenance; builds retain steps, acceptance results, and image evidence. Device Alchemy can capture images, correct perspective, and store photos locally. The interface connects inventory, role maps, AI draft review, guided builds, Camera Lab, photo suggestions, and evidence exports. Small local-model trials exposed unresolved generation and critique errors; dependable invention, arbitrary scrap recognition, mechanical compatibility, and actual physical success remain unestablished.
+
+## Open your workbench
+
+After cloning and running `npm ci`:
+
+```sh
+npm run serve
+# Open http://127.0.0.1:4317
+```
+
+Start with the labeled demo inventory or an empty workbench, remove a part to see substitutions, and record your build. Configure a model to explicitly generate and critique new AI ideas. Camera Lab captures originals, timed frames, and perspective corrections; Evidence retains observations, photo review, and portable exports. Your browser workspace is separate from the CLI directory; transfer it using a bundle.
+
+![SCRAPMIND visual workbench with declared demo parts](docs/assets/workbench.png)
+
+See [the visual workflow and storage limits](docs/VISUAL-WORKBENCH.md).
 
 ## Try the remove-a-part challenge
 

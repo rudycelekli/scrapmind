@@ -21,4 +21,4 @@ This is an independent open-source maker project, not a Snorkel client engagemen
 - Run `npm run check` before pushing changes. Use behavioral and allocation-invariant tests.
 - Document limitations beside the relevant feature; do not claim a general invention engine or demonstrated research novelty without evidence.
 - Do not commit secrets, private inventories, captured images, or machine-specific paths.
-- UI design context is captured in PRODUCT.md after the user's pending product interview. Preserve the current CLI and core while developing the interface.
+- The user confirmed the maker-workbench direction. Read PRODUCT.md and DESIGN.md for interface work. Preserve CLI/core contracts, keep media and keys local, and run the actual Chromium interface checks when changing browser workflows.

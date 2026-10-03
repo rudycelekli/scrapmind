@@ -95,14 +95,14 @@
     {
       "id": "connect",
       "title": "Connect the image source",
-      "instruction": "Connect the webcam to its host or use the old phone’s existing camera app. SCRAPMIND Camera Lab is planned; use existing capture software in this alpha. Remote phone pairing is a separate capability.",
+      "instruction": "Connect the webcam to its browser host. In SCRAPMIND Camera Lab, select a browser camera and confirm its inventory association. For a separate phone, use its existing camera app and import images from that declared device; remote phone pairing is not available.",
       "requirements": ["camera", "host"],
       "check": "Your existing camera software shows a real live preview."
     },
     {
       "id": "capture",
       "title": "Make the first scan",
-      "instruction": "Use your existing camera software to capture a page. Crop and straighten in an image tool if needed, then inspect the smallest text. The integrated SCRAPMIND capture interface is planned.",
+      "instruction": "In SCRAPMIND Camera Lab, capture or import an original image from the allocated device. Use the four-corner perspective correction if needed, retaining the original. Inspect the smallest text and page boundaries before recording the capture check.",
       "requirements": ["camera", "host"],
       "check": "The saved image contains readable text and the full page."
     }

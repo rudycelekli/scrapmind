@@ -8,8 +8,10 @@ import { recipes } from '../core/recipes.js';
 import { ideate } from '../core/ideation.js';
 import { validateProvider } from '../core/model.js';
 import { scanInventory } from '../core/inventory-scan.js';
+import { serveWebAsset } from './web-assets.js';
 
 function respond(response: ServerResponse, status: number, value: unknown) {
+  if (response.destroyed || response.writableEnded) return;
   response.writeHead(status, {
     'Content-Type': 'application/json; charset=utf-8',
     'Cache-Control': 'no-store',
@@ -29,7 +31,11 @@ async function body(request: IncomingMessage): Promise<unknown> {
 }
 
 /** Loopback API. It does not expose inventory storage or device control. */
-export function createApi(config?: ProviderConfig, fetcher: typeof fetch = fetch) {
+export function createApi(
+  config?: ProviderConfig,
+  fetcher: typeof fetch = fetch,
+  options: { webDirectory?: string } = {},
+) {
   if (config) validateProvider(config);
   let inventing = false;
   return createServer(async (request, response) => {
@@ -42,9 +48,16 @@ export function createApi(config?: ProviderConfig, fetcher: typeof fetch = fetch
     )
       return respond(response, 403, { error: 'Cross-origin API access is disabled.' });
     const path = request.url?.split('?')[0];
+    if (
+      request.method === 'GET' &&
+      options.webDirectory &&
+      path &&
+      (await serveWebAsset(path, options.webDirectory, response))
+    )
+      return;
     if (request.method === 'GET' && path === '/api/status')
       return respond(response, 200, {
-        version: '0.1.0-alpha.7',
+        version: '0.1.0-alpha.8',
         model: config
           ? {
               enabled: true,
@@ -84,6 +97,18 @@ export function createApi(config?: ProviderConfig, fetcher: typeof fetch = fetch
       return respond(response, 429, {
         error: 'An invention request is already running. Try again when it finishes.',
       });
+    const cancelled = new AbortController();
+    response.once('close', () => {
+      if (!response.writableEnded) cancelled.abort();
+    });
+    const operationFetch: typeof fetch = (url, init) => {
+      if (cancelled.signal.aborted)
+        return Promise.reject(new DOMException('The request was cancelled.', 'AbortError'));
+      return fetcher(url, {
+        ...init,
+        signal: init?.signal ? AbortSignal.any([cancelled.signal, init.signal]) : cancelled.signal,
+      });
+    };
     try {
       const input = await body(request);
       if (path === '/api/plan') {
@@ -111,10 +136,10 @@ export function createApi(config?: ProviderConfig, fetcher: typeof fetch = fetch
           response,
           200,
           path === '/api/scan'
-            ? (await scanInventory(input, config!, fetcher)).scan
+            ? (await scanInventory(input, config!, operationFetch)).scan
             : path === '/api/ideate'
-              ? await ideate(input, config!, fetcher)
-              : await invent(input, config!, fetcher),
+              ? await ideate(input, config!, operationFetch)
+              : await invent(input, config!, operationFetch),
         );
       } finally {
         inventing = false;

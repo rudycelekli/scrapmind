@@ -19,7 +19,7 @@
 - Explicit vision-model inventory suggestions, retained source photos, owner declarations, and portable review decisions. Recognition accuracy remains untested with real workshop images.
 - Reproducible live-model inventory challenges, retained failures/drafts, explicit contract metrics, removal challenges, cancellation, and a separate human-review rubric. General invention quality remains unproven.
 
-## Next: a usable visual workbench
+## Implemented visual workbench
 
 - Inventory editing, measurements, availability, and goal-driven discovery.
 - A clear assembly view linked to the actual allocated parts.
@@ -28,9 +28,9 @@
 - Camera Lab interface: integrate the working browser capture/correction/sequence library, device trials, device selection, and manual crop corners.
 - Accessible keyboard operation, reduced motion, responsive layouts, failure recovery.
 
-Design context is awaiting the user's product interview choices. The first interface should serve a real build workflow, not imply physical success through a polished rendering.
+The user confirmed the maker-workbench direction. The implemented interface uses the core contracts, preserves browser revisions, exposes source photos for review, and is exercised in actual Chromium with synthetic media/model responses. Broader maker usability and accessibility audits remain open. See [the visual workflow](VISUAL-WORKBENCH.md).
 
-## Then: close the physical loop
+## Next: close the physical loop and evaluate quality
 
 - Complete and record actual physical starter builds with measured inventories.
 - Compare instruction-only baselines against adaptive support.

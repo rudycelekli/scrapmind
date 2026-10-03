@@ -63,3 +63,5 @@ Use [the evaluation guide](../docs/EVALUATION.md) to run individual cases or a c
 Ollama's [OpenAI compatibility guide](https://docs.ollama.com/api/openai-compatibility#setting-the-local-context-size) explains how to configure a named local model's context size. Its [context-length documentation](https://docs.ollama.com/context-length) describes inspecting the allocated context. The Llama evaluations used the preinstalled model without reconfiguring the server or downloading a model. They did not establish context truncation as the cause of the observed action error. The later explicitly installed Qwen model and named context variant are described below.
 
 Four small engineering cases are not representative evidence of general invention intelligence. Keep semantic reviews, physical trials, and novelty evaluation separate from contract metrics.
+
+During later interface development, the task-owned Qwen3 download and its named evaluation variant were removed to recover disk space. The preinstalled models were preserved. The metadata snapshot and reports above retain their original historical state; reproducing Qwen runs requires the explicit installation commands.

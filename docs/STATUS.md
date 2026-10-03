@@ -1,10 +1,10 @@
 # Engineering status
 
-Date: 2026-10-02. Release: 0.1.0-alpha.7.
+Date: 2026-10-02. Release: 0.1.0-alpha.8.
 
 ## Executed software validation
 
-107 core/API/model-protocol/persistence/evaluation tests pass. The emitted CLI was also run through local initialization, readable procedures, inventory substitution, stale-build reporting, bundle audit, and restoration. An additional emitted-CLI smoke run exercised empty initialization, a synthetic HTTP vision response, owner review, declared inventory, photo checksums, bundle audit, and restoration. These smoke runs used public demo data or synthetic fixtures; no live vision inference or physical trial occurred.
+109 core/API/model-protocol/persistence/evaluation/static-asset tests pass. The emitted CLI was also run through local initialization, readable procedures, inventory substitution, stale-build reporting, bundle audit, and restoration. An additional emitted-CLI smoke run exercised empty initialization, a synthetic HTTP vision response, owner review, declared inventory, photo checksums, bundle audit, and restoration. These smoke runs used public demo data or synthetic fixtures; no live vision inference or physical trial occurred.
 
 - Strict TypeScript checking and emitted ESM build.
 - Starter allocation and missing-resource checks.
@@ -37,7 +37,15 @@ Date: 2026-10-02. Release: 0.1.0-alpha.7.
 - Evaluation case validation, required actions and allocated capabilities, expected missing resources, one-phone quantity conservation, independent assessment, removal challenges, incomplete-critic accounting, failed generation, cancellation, bounded failure categories, private output reservation, and refusal to label injected responses as live benchmarks. Unit-test model responses remain synthetic.
 - The emitted evaluation entry point lists cases without inference. An actual child-process Ctrl+C smoke check aborts a synthetic hanging HTTP fixture, returns 130, and saves the cancelled case report. No model inference occurs in that smoke check.
 
-The repository's CI runs checks on Node.js 22 and 24, plus a Chromium camera job. A successful workflow is evidence for software correctness under its tests, not physical performance. The browser library exists; a designed camera interface is still pending.
+The repository's CI runs checks on Node.js 22 and 24, plus a Chromium camera job. A successful workflow is evidence for software correctness under its tests, not physical performance. The visual workbench integrates inventory, allocation maps, AI drafts, guided builds, Camera Lab, and evidence. Its actual Chromium checks use synthetic media and model responses.
+
+## Visual workbench validation
+
+The user confirmed the product direction; `PRODUCT.md` and `DESIGN.md` now record it. Actual Chromium interface execution covers replanning, persisted build progress, reload, image-source association, capture, perspective lineage, timed frames, full bundle export, conflicting-tab refusal, stale records, escaped inventory names, form recovery, narrow layouts, reduced motion, explicit AI generation, draft review, photo input, and simulated owner declarations. The camera and model outputs are synthetic. These checks do not establish real recognition, hardware identity, physical build success, or full accessibility conformance.
+
+Public assets are limited to three known built files and retain loopback/Origin checks. Browser policies forbid inline scripts, embedding, microphone access, and background external requests. API client disconnection aborts active provider dispatch and prevents subsequent dispatch; already sent requests may have been processed. The two new unit tests cover asset boundaries/policy and actual client cancellation against a synthetic provider.
+
+The selected Qwen3 development download and its task-owned context variant were removed to free disk space during interface development. Original preinstalled models were preserved; recorded reports and exact model digests remain historical evidence, with optional manual reproduction commands.
 
 ## Actual local-model exploration
 
@@ -54,10 +62,10 @@ An explicitly downloaded `qwen3:1.7b` text model was evaluated with default effo
 ## Not demonstrated
 
 - Physical assembly success, mounting compatibility, stability ratings, electrical suitability, or measured optical quality.
-- Capture from an actual physical camera, phone pairing, dimensioned fabrication, or a finished visual workbench.
+- Capture from an actual physical camera, phone pairing, dimensioned fabrication, independent accessibility conformance, or completion of broader usability/physical evaluation.
 - Arbitrary object recognition, general invention intelligence, learned physical planning, or research novelty.
 - Live vision-model recognition accuracy. The recorded Llama and Qwen text models and evaluation variant report no vision capability; no images were sent to them and no vision model was downloaded.
 
 ## Next concrete work
 
-Complete the product interview, integrate the camera library into the visual workbench, record a physical starter build, and evaluate generation on varied actual inventories. See [the roadmap](ROADMAP.md).
+Record a physical starter build, test the visual workflow with makers and varied actual inventories, audit accessibility more broadly, and evaluate stronger generation/vision models. See [the roadmap](ROADMAP.md).

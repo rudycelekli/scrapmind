@@ -140,6 +140,48 @@ it('rejects malformed data and requests without the explicit API header', async 
   ).toBe(400);
 });
 
+it('aborts active provider dispatch and refuses further dispatches when the client disconnects', async () => {
+  let entered!: () => void;
+  let aborted!: () => void;
+  const started = new Promise<void>((resolve) => {
+    entered = resolve;
+  });
+  const stopped = new Promise<void>((resolve) => {
+    aborted = resolve;
+  });
+  let calls = 0;
+  const url = await start(
+    { baseUrl: 'http://localhost/v1', model: 'synthetic-test' },
+    async (_url, init) => {
+      calls++;
+      entered();
+      return new Promise<Response>((_resolve, reject) => {
+        init!.signal!.addEventListener(
+          'abort',
+          () => {
+            aborted();
+            reject(new DOMException('Synthetic provider aborted.', 'AbortError'));
+          },
+          { once: true },
+        );
+      });
+    },
+  );
+  const controller = new AbortController();
+  const request = fetch(`${url}/api/ideate`, {
+    method: 'POST',
+    signal: controller.signal,
+    headers: { 'Content-Type': 'application/json', 'X-Scrapmind-Request': '1' },
+    body: JSON.stringify({ inventory: demoInventory(), goal: 'compare a panel', count: 1 }),
+  });
+  void request.catch(() => {});
+  await started;
+  controller.abort();
+  await expect(request).rejects.toThrow();
+  await stopped;
+  expect(calls).toBe(1);
+});
+
 it('keeps photo inference disabled until configured and returns observations without echoing image bytes', async () => {
   let calls = 0;
   const fetcher: typeof fetch = async (_url, init) => {

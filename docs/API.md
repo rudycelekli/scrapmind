@@ -56,7 +56,7 @@ Each explicit operation makes at most five model calls, with a 240-second operat
 
 Provider configuration supports `SCRAPMIND_AI_REVIEW_MODEL`, `SCRAPMIND_AI_PROFILE`, `SCRAPMIND_AI_REASONING_EFFORT`, and `SCRAPMIND_AI_MAX_OUTPUT_TOKENS` in addition to the existing settings. Status reports configured effort or `provider-default`; that is configuration, not a measured capability. See [AI configuration and limits](AI.md).
 
-The API is a local development interface, not a public multi-user service. Authentication, multi-user storage, remote deployment, and device pairing are separate roadmap work.
+The visual workbench is served at `/` when starting `npm run serve`. Only its three built public assets are exposed, with restrictive browser policies after loopback and Origin checks. Client disconnection aborts active model dispatch and prevents subsequent dispatch; already sent provider calls may have been processed. The API is a single-owner loopback interface, not a public multi-user service. Authentication, multi-user storage, remote deployment, and device pairing are separate roadmap work.
 
 ## Inventory photo observations
 

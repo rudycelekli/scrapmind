@@ -1,6 +1,6 @@
 {
   "name": "scrapmind",
-  "version": "0.1.0-alpha.7",
+  "version": "0.1.0-alpha.8",
   "private": true,
   "description": "Turn the materials and devices you already own into useful things. Inventory-constrained plans, guided builds, and evidence-based Device Alchemy.",
   "type": "module",
@@ -9,7 +9,7 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "build": "tsc -p tsconfig.build.json && node dist/scripts/build-web.js",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -19,10 +19,11 @@
     "check": "npm run typecheck && npm test && npm run build",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "serve": "tsx --env-file-if-exists=.env scripts/server.ts",
+    "serve": "npm run build && tsx --env-file-if-exists=.env scripts/server.ts",
     "invent": "tsx --env-file-if-exists=.env scripts/cli.ts invent",
     "evaluate": "tsx --env-file-if-exists=.env scripts/evaluate.ts",
-    "workbench": "tsx --env-file-if-exists=.env scripts/workbench-cli.ts"
+    "workbench": "tsx --env-file-if-exists=.env scripts/workbench-cli.ts",
+    "test:web": "npm run build && node dist/scripts/web-check.js"
   },
   "dependencies": {
     "zod": "^4.6.5"

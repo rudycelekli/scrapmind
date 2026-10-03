@@ -12,5 +12,5 @@
     "esModuleInterop": true,
     "types": ["node"]
   },
-  "include": ["core", "scripts", "tests", "vitest.config.ts"]
+  "include": ["core", "scripts", "web", "tests", "vitest.config.ts"]
 }
